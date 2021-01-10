@@ -12,7 +12,13 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/com/tathao/eshopping/config/WebSecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/tathao/eshopping/config/ApplicationContextConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/tathao/eshopping/config/WebMvcConfig.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>

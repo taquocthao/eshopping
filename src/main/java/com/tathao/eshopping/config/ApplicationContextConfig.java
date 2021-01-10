@@ -49,7 +49,7 @@ public class ApplicationContextConfig extends ApplicationObjectSupport{
 	public InternalResourceViewResolver getViewResolver2() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		
-		viewResolver.setPrefix("/WEB-INF/view/");
+		viewResolver.setPrefix("/WEB-INF/view");
 		viewResolver.setSuffix(".jsp");
 		viewResolver.setOrder(2);
 		

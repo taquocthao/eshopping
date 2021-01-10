@@ -10,11 +10,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Transactional
 public class MainController extends ApplicationObjectSupport {
 
-	@RequestMapping(value = {"/admin", "/admin/home.html"})
-	public ModelAndView homePageShopper() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("homePage");
+	@RequestMapping(value = {"/admin.html", "/admin/home.html"})
+	public ModelAndView homePageAdmin() {
+		ModelAndView mav = new ModelAndView("homePageAdmin");
 		return mav;
 	}
-	
+
+
+	@RequestMapping(value = {"/home.html"})
+	public ModelAndView homePageShopper() {
+		ModelAndView mav = new ModelAndView("homePageShopper");
+		return mav;
+	}
 }

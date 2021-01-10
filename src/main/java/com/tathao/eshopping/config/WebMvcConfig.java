@@ -30,7 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/asset/css/");
-		registry.addResourceHandler("/img/**").addResourceLocations("/asset/imgages/");
+		registry.addResourceHandler("/img/**").addResourceLocations("/asset/images/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/asset/js/");
 	}
 	

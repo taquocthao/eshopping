@@ -7,5 +7,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/EShopping</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="FCVSmartShopper@localhost" uuid="c6552d01-6ff2-455b-b75f-5fec8a552fb9">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/FCVSmartShopper</jdbc-url>
+    </data-source>
   </component>
 </project>

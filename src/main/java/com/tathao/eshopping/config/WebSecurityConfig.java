@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// No login required	
 		http.authorizeRequests()
-			.antMatchers("/", "/home","/login.html", "/logout.html")
+			.antMatchers( "/home.html","/login.html", "/logout.html")
 			.permitAll();
 		
 		// admin
@@ -41,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// form login config
 		http.authorizeRequests().and().formLogin()
-		.loginProcessingUrl("/admin/login.html")
 		.loginPage("/admin/login.html")
 		.defaultSuccessUrl("/admin/index.html")
 		.failureUrl("/admin/login.html?error=true")
