@@ -441,11 +441,11 @@ body .header {
 }
 
 .usermenu li a.log {
-    background: url(../images/loginbg.png) left top no-repeat;
+    background: url(../img/loginbg.png) left top no-repeat;
 }
 
 .usermenu li a.reg {
-    background: url(../images/regbg.png) left top no-repeat;
+    background: url(../img/regbg.png) left top no-repeat;
 }
 
 /* NAV style */
@@ -608,7 +608,7 @@ body .header {
     width: 32px;
     height: 32px;
     margin-right: 24px;
-    background: url(../images/carticon.png) center center no-repeat;
+    background: url(../img/carticon.png) center center no-repeat;
     background-color: rgba(255, 255, 255, 0.1);
     -webkit-border-radius: 5px;
     border-radius: 5px;
