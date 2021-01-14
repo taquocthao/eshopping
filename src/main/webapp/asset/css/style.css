@@ -259,7 +259,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus,
 
 .button:hover, button:hover {
     border: 1px solid #fe5252;
-    color: #fe5252;
+    color: #fe5252 !important;
 }
 
 .add-cart {
@@ -521,10 +521,6 @@ body .header {
 
 .dropdown-hover:hover > .dropdown-menu, .open > .dropdown-menu {
     display: block;
-}
-
-.navbar-toggler .icon-bar {
-    background: #fff;
 }
 
 /* Opton Bar */

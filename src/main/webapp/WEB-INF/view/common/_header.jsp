@@ -66,59 +66,63 @@
 							</ul>
 						</li>
 					</ul>
+
 					<!-- navigation bar -->
-					<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navCategory" aria-controls="navbarNav">
-						<span class="navbar-toggler-icon"></span>
-					</button>
 					<nav class="navbar navbar-expand-sm navbar-dark">
-						<ul class="nav navbar-nav">
-							<li class="nav-item active dropdown">
-								<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Home</a>
-								<div class="dropdown-menu">
-									<ul class="mega-menu-links">
-										<li><a href="index.html">home</a></li>
-										<li><a href="home2.html">home2</a></li>
-										<li><a href="home3.html">home3</a></li>
-										<li><a href="productlitst.html">Productlitst</a></li>
-										<li><a href="productgird.html">Productgird</a></li>
-										<li><a href="details.html">Details</a></li>
-										<li><a href="cart.html">Cart</a></li>
-										<li><a href="checkout.html">CheckOut</a></li>
-										<li><a href="checkout2.html">CheckOut2</a></li>
-										<li><a href="contact.html">contact</a></li>
-									</ul>
-								</div>
-							</li>
-							<li class="nav-item"><a class="nav-link" href="productgird.html">men</a></li>
-							<li class="nav-item"><a class="nav-link" href="productlitst.html">women</a></li>
-							<li class="nav-item dropdown">
-								<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Fashion</a>
-								<div class="dropdown-menu mega-menu">
-									<div class="row">
-										<div class="col-md-6 col-sm-6">
-											<ul class="mega-menu-links">
-												<li><a href="productgird.html">New Collection</a></li>
-												<li><a href="productgird.html">Shirts & tops</a></li>
-												<li><a href="productgird.html">Laptop & Brie</a></li>
-												<li><a href="productgird.html">Dresses</a></li>
-												<li><a href="productgird.html">Blazers & Jackets</a></li>
-												<li><a href="productgird.html">Shoulder Bags</a></li>
-											</ul>
-										</div>
-										<div class="col-md-6 col-sm-6">
-											<ul class="mega-menu-links">
-												<li><a href="productgird.html">New Collection</a></li>
-												<li><a href="productgird.html">Shirts & tops</a></li>
-												<li><a href="productgird.html">Laptop & Brie</a></li>
-												<li><a href="productgird.html">Dresses</a></li>
-												<li><a href="productgird.html">Blazers & Jackets</a></li>
-												<li><a href="productgird.html">Shoulder Bags</a></li>
-											</ul>
+						<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navCategory" aria-controls="navbarNav">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="fa fa-bars"></span>
+						</button>
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav">
+								<li class="nav-item active dropdown">
+									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Home</a>
+									<div class="dropdown-menu">
+										<ul class="mega-menu-links">
+											<li><a href="index.html">home</a></li>
+											<li><a href="home2.html">home2</a></li>
+											<li><a href="home3.html">home3</a></li>
+											<li><a href="productlitst.html">Productlitst</a></li>
+											<li><a href="productgird.html">Productgird</a></li>
+											<li><a href="details.html">Details</a></li>
+											<li><a href="cart.html">Cart</a></li>
+											<li><a href="checkout.html">CheckOut</a></li>
+											<li><a href="checkout2.html">CheckOut2</a></li>
+											<li><a href="contact.html">contact</a></li>
+										</ul>
+									</div>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="productgird.html">men</a></li>
+								<li class="nav-item"><a class="nav-link" href="productlitst.html">women</a></li>
+								<li class="nav-item dropdown">
+									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Fashion</a>
+									<div class="dropdown-menu mega-menu">
+										<div class="row">
+											<div class="col-md-6 col-sm-6">
+												<ul class="mega-menu-links">
+													<li><a href="productgird.html">New Collection</a></li>
+													<li><a href="productgird.html">Shirts & tops</a></li>
+													<li><a href="productgird.html">Laptop & Brie</a></li>
+													<li><a href="productgird.html">Dresses</a></li>
+													<li><a href="productgird.html">Blazers & Jackets</a></li>
+													<li><a href="productgird.html">Shoulder Bags</a></li>
+												</ul>
+											</div>
+											<div class="col-md-6 col-sm-6">
+												<ul class="mega-menu-links">
+													<li><a href="productgird.html">New Collection</a></li>
+													<li><a href="productgird.html">Shirts & tops</a></li>
+													<li><a href="productgird.html">Laptop & Brie</a></li>
+													<li><a href="productgird.html">Dresses</a></li>
+													<li><a href="productgird.html">Blazers & Jackets</a></li>
+													<li><a href="productgird.html">Shoulder Bags</a></li>
+												</ul>
+											</div>
 										</div>
 									</div>
-								</div>
-							</li>
+								</li>
 						</ul>
+						</div>
 					</nav>
 				</div>
 			</div>
