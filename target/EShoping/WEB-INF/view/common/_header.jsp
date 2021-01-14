@@ -4,20 +4,24 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-2 col-sm-2">
-				<div class="logo"><a href="/home.html"><img src="<c:url value="/img/logo.png"/>" alt="Ú clothing"></a></div>
+				<div class="logo"><a href="<c:url value="/home.html"/>"><img src="<c:url value="/img/logo.png"/>" alt="Ú clothing"></a></div>
 			</div>
 			<div class="col-md-10 col-sm-10">
 				<div class="header_top">
-					<div class="row">
-						<div class="col-md-3">
+					<div class="row mt-2">
+						<!--search product-->
+						<div class="col-md-7">
+							<div class="input-group">
+								<input class="form-control" placeholder="Enter your search term..." type="search" name="search">
+								<div class="input-group-append">
+									<a href="#" class="btn btn-search-home"><i class="fa fa-search"></i></a>
+								</div>
+							</div>
+
 						</div>
-						<div class="col-md-6">
-							<form>
-								<input class="search-submit" type="submit" value="">
-								<input class="search-input" placeholder="Enter your search term..." type="text" value="" name="search">
-							</form>
-						</div>
-						<div class="col-md-3">
+
+						<!--user information-->
+						<div class="col-md-5">
 							<ul class="usermenu">
 								<li><a href="checkout.html" class="log">Login</a></li>
 								<li><a href="checkout2.html" class="reg">Register</a></li>
@@ -27,33 +31,34 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="header_bottom">
+					<!-- shopping cart -->
 					<ul class="option">
 						<li class="option-cart">
 							<a href="#" class="cart-icon">cart <span class="cart_no">02</span></a>
 							<ul class="option-cart-item">
 								<li>
 									<div class="cart-item">
-										<div class="image"><img src="images/products/thum/products-01.png" alt=""></div>
+										<div class="image"><img src="<c:url value="/img/thum/products-01.png"/>" alt=""></div>
 										<div class="item-description">
 											<p class="name">Lincoln chair</p>
 											<p>Size: <span class="light-red">One size</span><br>Quantity: <span class="light-red">01</span></p>
 										</div>
 										<div class="right">
 											<p class="price">$30.00</p>
-											<a href="#" class="remove"><img src="images/remove.png" alt="remove"></a>
+											<a href="#" class="remove"><img src="<c:url value="/img/remove.png"/>" alt="remove"></a>
 										</div>
 									</div>
 								</li>
 								<li>
 									<div class="cart-item">
-										<div class="image"><img src="images/products/thum/products-02.png" alt=""></div>
+										<div class="image"><img src="<c:url value="/img/thum/products-02.png"/>" alt=""></div>
 										<div class="item-description">
 											<p class="name">Lincoln chair</p>
 											<p>Size: <span class="light-red">One size</span><br>Quantity: <span class="light-red">01</span></p>
 										</div>
 										<div class="right">
 											<p class="price">$30.00</p>
-											<a href="#" class="remove"><img src="images/remove.png" alt="remove"></a>
+											<a href="#" class="remove"><img src="<c:url value="/img/remove.png"/>" alt="remove"></a>
 										</div>
 									</div>
 								</li>
@@ -61,18 +66,15 @@
 							</ul>
 						</li>
 					</ul>
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-					<div class="navbar-collapse collapse">
+
+					<!-- navigation bar -->
+					<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navCategory" aria-controls="navbarNav">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<nav class="navbar navbar-expand-sm navbar-dark">
 						<ul class="nav navbar-nav">
-							<li class="active dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Home</a>
+							<li class="nav-item active dropdown">
+								<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Home</a>
 								<div class="dropdown-menu">
 									<ul class="mega-menu-links">
 										<li><a href="index.html">home</a></li>
@@ -88,10 +90,10 @@
 									</ul>
 								</div>
 							</li>
-							<li><a href="productgird.html">men</a></li>
-							<li><a href="productlitst.html">women</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Fashion</a>
+							<li class="nav-item"><a class="nav-link" href="productgird.html">men</a></li>
+							<li class="nav-item"><a class="nav-link" href="productlitst.html">women</a></li>
+							<li class="nav-item dropdown">
+								<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Fashion</a>
 								<div class="dropdown-menu mega-menu">
 									<div class="row">
 										<div class="col-md-6 col-sm-6">
@@ -117,13 +119,8 @@
 									</div>
 								</div>
 							</li>
-							<li><a href="productgird.html">gift</a></li>
-							<li><a href="productgird.html">kids</a></li>
-							<li><a href="productgird.html">blog</a></li>
-							<li><a href="productgird.html">jewelry</a></li>
-							<li><a href="contact.html">contact us</a></li>
 						</ul>
-					</div>
+					</nav>
 				</div>
 			</div>
 		</div>

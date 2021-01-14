@@ -1,6 +1,6 @@
 
 Drop table If Exists Users;
-create table "Eshopping".Users(
+create table Users(
 	UserId BIGSERIAL PRIMARY KEY not null,
 	UserGroupId BIGINT not null,
 	Username varchar(255) not null,
@@ -17,7 +17,7 @@ create table "Eshopping".Users(
 	UNIQUE(UserGroupId, Username)
 );
 
-alter table "Eshopping".Users ADD constraint fk_user_usergroupid FOREIGN KEY(usergroupid) REFERENCES "Eshopping".UserGroup(usergroupid);
+alter table Users ADD constraint fk_user_usergroupid FOREIGN KEY(usergroupid) REFERENCES UserGroup(usergroupid);
 
-INSERT INTO "Eshopping".users (usergroupid, username, code, password, fullname, email, phonenumber, status, createddate, modifieddate) 
+INSERT INTO users (usergroupid, username, code, password, fullname, email, phonenumber, status, createddate, modifieddate) 
 VALUES (1, 'admin', 'ADMIN', '$2a$10$Mp7trdcVsKg.KSfTJeJL/OdyxlZ1xOe2nxI23LcSIer1DOVINTkeu', 'System Administrator', null, '123456789', true, now(), now())

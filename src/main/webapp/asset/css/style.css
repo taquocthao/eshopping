@@ -272,10 +272,6 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus,
 }
 
 /* End of global estyle-------------------------------------------------- *//* customizable Style */
-.wrapper {
-    position: relative;
-    width: 100%;
-}
 
 .header, .footer, .container_fullwidth {
     position: relative;
@@ -314,12 +310,6 @@ body .header {
     float: left;
     position: relative;
     padding: 20px 0;
-}
-
-.header_top {
-    float: right;
-    width: 100%;
-    position: relative;
 }
 
 .header_bottom {
@@ -533,7 +523,7 @@ body .header {
     display: block;
 }
 
-.navbar-toggle .icon-bar {
+.navbar-toggler .icon-bar {
     background: #fff;
 }
 
@@ -2709,12 +2699,6 @@ form.newsletter input[type="submit"]:hover {
         padding: 10px 20px;
     }
 
-    .header_top {
-        float: right;
-        position: relative;
-        width: 70%;
-    }
-
     .option {
         margin-top: 15px;
     }
@@ -2723,7 +2707,7 @@ form.newsletter input[type="submit"]:hover {
         position: relative;
     }
 
-    .navbar-toggle {
+    .navbar-toggler {
         background-color: rgba(255, 255, 255, 0.1);
         -webkit-border-radius: 5px;
         border-radius: 5px;
@@ -2808,7 +2792,7 @@ form.newsletter input[type="submit"]:hover {
 }
 
 @media (max-width: 640px) {
-    .navbar-toggle, .option {
+    .navbar-toggler, .option {
         margin-top: 20px;
     }
 
@@ -2867,7 +2851,7 @@ form.newsletter input[type="submit"]:hover {
         font-size: 11px;
     }
 
-    .navbar-toggle, .option {
+    .navbar-toggler, .option {
         margin-top: 20px;
     }
 
@@ -3061,7 +3045,7 @@ form.newsletter input[type="submit"]:hover {
         top: 72%;
     }
 
-    .logo, .header_top, .option_nav {
+    .logo, .option_nav {
         float: none;
         width: 100%;
         text-align: center;

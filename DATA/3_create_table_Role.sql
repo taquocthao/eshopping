@@ -1,4 +1,4 @@
-create table "Eshopping".Role(
+create table Role(
 	RoleId BIGSERIAL PRIMARY KEY NOT NULL,
 	Code varchar(50) NOT NULL,
 	Name varchar(100) NOT NULL,
@@ -6,6 +6,6 @@ create table "Eshopping".Role(
 	ModifiedDate timestamp
 );
 
-INSERT INTO "Eshopping".role (code, name, createddate, modifieddate) VALUES ('ADMIN', 'Administrator', now(), now());
-INSERT INTO "Eshopping".role (code, name, createddate, modifieddate) VALUES ('SHOPPER', 'Retailer', now(), now());
-INSERT INTO "Eshopping".role (code, name, createddate, modifieddate) VALUES ('EMPLOYEE', 'Employee', now(), now());
+INSERT INTO role (code, name, createddate, modifieddate) VALUES ('ADMIN', 'Administrator', now(), now());
+INSERT INTO role (code, name, createddate, modifieddate) VALUES ('SHOPPER', 'Retailer', now(), now());
+INSERT INTO role (code, name, createddate, modifieddate) VALUES ('EMPLOYEE', 'Employee', now(), now());

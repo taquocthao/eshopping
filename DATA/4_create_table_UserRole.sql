@@ -1,4 +1,4 @@
-create table "Eshopping".UserRole(
+create table UserRole(
 	UserRoleId BIGSERIAL PRIMARY KEY NOT NULL,
 	UserId BIGINT NOT NULL,
 	RoleId BIGINT NOT NULL,
