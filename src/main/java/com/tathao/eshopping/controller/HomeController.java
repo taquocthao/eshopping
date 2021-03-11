@@ -1,6 +1,8 @@
 package com.tathao.eshopping.controller;
 
+import com.tathao.eshopping.model.command.ProductCommand;
 import com.tathao.eshopping.model.command.ProductSkuCommand;
+import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.service.ProductService;
 import com.tathao.eshopping.service.ProductSkuService;

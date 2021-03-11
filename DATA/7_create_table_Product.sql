@@ -1,4 +1,4 @@
-create table product(
+create table Product(
     ProductId BIGSERIAL primary key not null,
     Code varchar(12) not null,
     CatGroupId BIGINT not null,

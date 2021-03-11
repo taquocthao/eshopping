@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@ include file="../common/taglib.jsp"%>--%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false" %>
 
@@ -16,11 +17,13 @@
 								<div class="col-md-3 col-sm-6">
 									<div class="products">
 											<%--								<div class="offer">- %20</div>--%>
-										<div class="thumbnail">
-											<a href="#"><img src="${productSku.image}" alt="Product Name" class="image-fluid" /></a>
-										</div>
+										<a href="#">
+											<div class="thumbnail">
+												<img src="${productSku.image}" alt="Product Name" style="width: auto; height: 100%" />
+											</div>
+										</a>
 										<div class="productname">${productSku.title}</div>
-										<h4 class="price">${productSku.salePrice}</h4>
+										<h4 class="price"><fmt:formatNumber value="${productSku.salePrice}"/></h4>
 										<div class="button_group">
 											<button class="button add-cart" type="button">Add To Cart</button>
 											<button class="button compare" type="button"><i class="fa fa-exchange"></i></button>

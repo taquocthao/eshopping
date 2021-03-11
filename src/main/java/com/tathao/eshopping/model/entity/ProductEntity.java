@@ -20,6 +20,7 @@ public class ProductEntity {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private List<ProductSkuEntity> productSkus;
+    private ReferencePriceEntity referencePrice;
 
     @Id
     @Column(name = "ProductId")
@@ -130,5 +131,15 @@ public class ProductEntity {
 
     public void setProductSkus(List<ProductSkuEntity> productSkus) {
         this.productSkus = productSkus;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "ReferencePriceId", referencedColumnName = "ReferencePriceId")
+    public ReferencePriceEntity getReferencePrice() {
+        return referencePrice;
+    }
+
+    public void setReferencePrice(ReferencePriceEntity referencePrice) {
+        this.referencePrice = referencePrice;
     }
 }
