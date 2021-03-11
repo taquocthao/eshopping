@@ -1,10 +1,12 @@
-package com.tathao.eshopping.model.dto;
+package com.tathao.eshopping.model.entity;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ProductDTO implements Serializable {
+@Entity
+@Table(name = "Product")
+public class ProductEntity {
 
     private Long productId;
     private String code;
@@ -17,8 +19,11 @@ public class ProductDTO implements Serializable {
     private Integer top;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
-    private List<ProductSkuDTO> sku;
+    private List<ProductSkuEntity> productSkus;
 
+    @Id
+    @Column(name = "ProductId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getProductId() {
         return productId;
     }
@@ -27,6 +32,8 @@ public class ProductDTO implements Serializable {
         this.productId = productId;
     }
 
+    @Basic
+    @Column(name = "Code")
     public String getCode() {
         return code;
     }
@@ -35,6 +42,7 @@ public class ProductDTO implements Serializable {
         this.code = code;
     }
 
+    @Column(name = "CatGroupId")
     public Long getCatgroupId() {
         return catgroupId;
     }
@@ -43,6 +51,7 @@ public class ProductDTO implements Serializable {
         this.catgroupId = catgroupId;
     }
 
+    @Column(name = "BrandId")
     public Long getBrandId() {
         return brandId;
     }
@@ -51,6 +60,7 @@ public class ProductDTO implements Serializable {
         this.brandId = brandId;
     }
 
+    @Column(name = "Name")
     public String getName() {
         return name;
     }
@@ -59,6 +69,7 @@ public class ProductDTO implements Serializable {
         this.name = name;
     }
 
+    @Column(name = "Image")
     public String getImage() {
         return image;
     }
@@ -67,6 +78,7 @@ public class ProductDTO implements Serializable {
         this.image = image;
     }
 
+    @Column(name = "Description")
     public String getDescription() {
         return description;
     }
@@ -75,6 +87,7 @@ public class ProductDTO implements Serializable {
         this.description = description;
     }
 
+    @Column(name = "Status")
     public boolean isStatus() {
         return status;
     }
@@ -83,6 +96,7 @@ public class ProductDTO implements Serializable {
         this.status = status;
     }
 
+    @Column(name = "Top")
     public Integer getTop() {
         return top;
     }
@@ -91,6 +105,7 @@ public class ProductDTO implements Serializable {
         this.top = top;
     }
 
+    @Column(name = "CreatedDate")
     public Timestamp getCreatedDate() {
         return createdDate;
     }
@@ -99,6 +114,7 @@ public class ProductDTO implements Serializable {
         this.createdDate = createdDate;
     }
 
+    @Column(name = "ModifiedDate")
     public Timestamp getModifiedDate() {
         return modifiedDate;
     }
@@ -107,11 +123,12 @@ public class ProductDTO implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public List<ProductSkuDTO> getSku() {
-        return sku;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    public List<ProductSkuEntity> getProductSkus() {
+        return productSkus;
     }
 
-    public void setSku(List<ProductSkuDTO> sku) {
-        this.sku = sku;
+    public void setProductSkus(List<ProductSkuEntity> productSkus) {
+        this.productSkus = productSkus;
     }
 }

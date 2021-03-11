@@ -2,25 +2,28 @@ package com.tathao.eshopping.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
+import com.tathao.eshopping.ultils.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.loader.criteria.CriteriaLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import com.tathao.eshopping.dao.GenericDAO;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@EnableTransactionManagement
 public abstract class AbstractHibernateDAO <T, ID extends Serializable> implements GenericDAO<T, ID> {
 
 	protected Logger log = Logger.getLogger(getClass());
@@ -130,6 +133,49 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 
 	public void detach(T entity) {
 		
+	}
+
+	public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit, String whereClause) {
+		try {
+			Object[] nameQuery = HibernateUtil.buildNameQuery(this.getPersistentClass(), properties, (Map)null, sortExpression, sortDirection, true, false, whereClause, true);
+			String queryString = "select A " + nameQuery[0] + nameQuery[1];
+			Query query = getCurrentSession().createQuery(queryString);
+			if (nameQuery.length == 4) {
+				String[] params = (String[])((String[])nameQuery[2]);
+				Object[] values = (Object[])((Object[])nameQuery[3]);
+
+				for(int i = 0; i < params.length; ++i) {
+					query.setParameter(params[i], values[i]);
+				}
+			}
+
+			if (offset != null && offset >= 0) {
+				query.setFirstResult(offset);
+			}
+
+			if (limit != null && limit > 0) {
+				query.setMaxResults(limit);
+			}
+
+			List<T> res = query.getResultList();
+			Object totalItem = 0;
+			String queryTotal = "SELECT COUNT(*) " + nameQuery[0];
+			Query query2 = getCurrentSession().createQuery(queryTotal);
+			if (nameQuery.length == 4) {
+				String[] params = (String[])((String[])nameQuery[2]);
+				Object[] values = (Object[])((Object[])nameQuery[3]);
+
+				for(int i = 0; i < params.length; ++i) {
+					query2.setParameter(params[i], values[i]);
+				}
+			}
+
+			totalItem = query2.getSingleResult();
+			return new Object[]{totalItem, res};
+		} catch (RuntimeException var17) {
+			log.error("find all failed", var17);
+			return new Object[]{0, new ArrayList()};
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package com.tathao.eshopping.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.springframework.dao.DataAccessException;
@@ -40,4 +41,5 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     List<T> findProperty(final String property, final Object value, final String sortExpression, final String sortOrder);
 
+    Object[] findByProperties(final Map<String, Object> properties, final String sortExpression, final String sortDirection, final Integer offset, final Integer limit, final String whereClause);
 }

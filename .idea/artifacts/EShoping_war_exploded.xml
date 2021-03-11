@@ -68,6 +68,7 @@
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.14" />
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.13.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

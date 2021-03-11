@@ -1,4 +1,5 @@
 code - varchar(20)
 name - varchar(255)
 image - varchar(255)
+barcode- varchar(100)
 status - boolean
