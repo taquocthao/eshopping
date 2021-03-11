@@ -1,22 +1,17 @@
-package com.tathao.eshopping.model.entity;
+package com.tathao.eshopping.model.dto;
 
-import javax.persistence.*;
+
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "ReferencePrice")
-public class ReferencePriceEntity {
+public class ReferencePriceDTO {
 
     private Long referencePriceId;
     private Double lowestPrice;
     private Double highestPrice;
-    private ProductEntity product;
+    private ProductDTO product;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
-    @Id
-    @Column(name = "ReferencePriceId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getReferencePriceId() {
         return referencePriceId;
     }
@@ -24,7 +19,6 @@ public class ReferencePriceEntity {
     public void setReferencePriceId(Long referencePriceId) {
         this.referencePriceId = referencePriceId;
     }
-
 
     public Double getLowestPrice() {
         return lowestPrice;
@@ -42,12 +36,11 @@ public class ReferencePriceEntity {
         this.highestPrice = highestPrice;
     }
 
-    @OneToOne(mappedBy = "referencePrice")
-    public ProductEntity getProduct() {
+    public ProductDTO getProduct() {
         return product;
     }
 
-    public void setProduct(ProductEntity product) {
+    public void setProduct(ProductDTO product) {
         this.product = product;
     }
 

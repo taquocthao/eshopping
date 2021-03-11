@@ -18,6 +18,9 @@ public class ProductBeanUtils {
         entity.setModifiedDate(dto.getModifiedDate());
         entity.setProductId(dto.getProductId());
         entity.setTop(dto.getTop());
+        if(dto.getReferencePrice() != null) {
+            entity.setReferencePrice(ReferencePriceBeanUtils.dto2Entity(dto.getReferencePrice()));
+        }
         return entity;
     }
 
@@ -34,6 +37,9 @@ public class ProductBeanUtils {
         dto.setModifiedDate(entity.getModifiedDate());
         dto.setProductId(entity.getProductId());
         dto.setTop(entity.getTop());
+        if(entity.getReferencePrice() != null) {
+            dto.setReferencePrice(ReferencePriceBeanUtils.entity2DTO(entity.getReferencePrice()));
+        }
         return dto;
     }
 

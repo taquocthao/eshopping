@@ -18,6 +18,7 @@ public class ProductDTO implements Serializable {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private List<ProductSkuDTO> sku;
+    private ReferencePriceDTO referencePrice;
 
     public Long getProductId() {
         return productId;
@@ -113,5 +114,13 @@ public class ProductDTO implements Serializable {
 
     public void setSku(List<ProductSkuDTO> sku) {
         this.sku = sku;
+    }
+
+    public ReferencePriceDTO getReferencePrice() {
+        return referencePrice;
+    }
+
+    public void setReferencePrice(ReferencePriceDTO referencePrice) {
+        this.referencePrice = referencePrice;
     }
 }

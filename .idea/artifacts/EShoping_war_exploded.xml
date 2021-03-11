@@ -69,6 +69,8 @@
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.14" />
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.13.1" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:5.2.5.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">
