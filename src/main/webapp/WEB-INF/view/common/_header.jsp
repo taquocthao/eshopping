@@ -23,8 +23,13 @@
 						<!--user information-->
 						<div class="col-md-5">
 							<ul class="usermenu">
-								<li><a href="checkout.html" class="log">Login</a></li>
-								<li><a href="checkout2.html" class="reg">Register</a></li>
+								<security:authorize access="isAuthenticated()">
+									<li><a href="#" class="log"><security:authentication property="username"/></a></li>
+								</security:authorize>
+								<security:authorize access="!isAuthenticated()">
+									<li><a href="<c:url value="/login.html"/>" class="log">Login</a></li>
+									<li><a href="checkout2.html" class="reg">Register</a></li>
+								</security:authorize>
 							</ul>
 						</div>
 					</div>

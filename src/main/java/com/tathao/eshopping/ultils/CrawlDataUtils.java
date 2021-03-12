@@ -1,24 +1,18 @@
 package com.tathao.eshopping.ultils;
 
-import com.tathao.eshopping.config.ApplicationContextConfig;
 import com.tathao.eshopping.config.DataSourceInitializer;
-import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.entity.ProductEntity;
 import com.tathao.eshopping.model.entity.ProductSkuEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.transaction.TransactionManager;
 
 import java.io.IOException;
 import java.sql.Timestamp;

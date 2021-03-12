@@ -26,6 +26,12 @@ public class LoginController extends ApplicationObjectSupport {
 		return mav;
 	}
 
+	@RequestMapping(value = "/login.html")
+	public ModelAndView shopperLogin() {
+		ModelAndView mav = new ModelAndView("/shopper/login");
+		return mav;
+	}
+
 	private void referenceData(ModelAndView mav) {
 		List<UserGroupEntity> userGroups = userGroupService.findAll();
 		mav.addObject("userGroups", userGroups);

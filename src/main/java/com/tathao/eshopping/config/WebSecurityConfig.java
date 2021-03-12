@@ -12,7 +12,6 @@ import com.tathao.eshopping.service.impl.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-@Transactional
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -34,16 +33,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll();
 		
 		// admin
-		http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
+		http.authorizeRequests()
+				.antMatchers("/").access("hasRole('SHOPPER')")
+				.antMatchers("/admin").access("hasRole('ADMIN')");
 		
 		// 403
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403.html");
 		
 		// form login config
 		http.authorizeRequests().and().formLogin()
-		.loginPage("/admin/login.html")
-		.defaultSuccessUrl("/admin/index.html")
-		.failureUrl("/admin/login.html?error=true")
+		.loginPage("/login.html")
+		.loginProcessingUrl("/perform_login")
+		.defaultSuccessUrl("/index.html")
+		.failureUrl("/login.html?error=true")
 		.usernameParameter("username")
 		.passwordParameter("password")
 		.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");

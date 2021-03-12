@@ -15,7 +15,7 @@ public class UserDAOImpl extends AbstractHibernateDAO<UserEntity, Long> implemen
 	public UserEntity findByUserName(String username) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("FROM UserEntity u ");
-		sql.append("WHERE u.userName = :username");
+		sql.append("WHERE u.username = :username");
 		
 		Query query = getCurrentSession().createQuery(sql.toString());
 		query.setParameter("username", username);
