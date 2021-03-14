@@ -13,13 +13,6 @@
        <put-attribute name="body" value="" />  
        <put-attribute name="footer" value="/WEB-INF/view/common/_footer.jsp" />  
    </definition>
- 
-   <!--============================= Admin ============================= -->
-   <!-- Home Page -->
-   <definition name="homePageAdmin" extends="base.definition">
-       <put-attribute name="title" value="Home Page" />  
-       <put-attribute name="body" value="/WEB-INF/view/admin/index.jsp" />  
-   </definition>
    
    <!--============================= Shopper ============================= -->
     <!-- Home Page -->

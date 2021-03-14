@@ -7,12 +7,16 @@ import com.tathao.eshopping.service.ProductSkuService;
 import com.tathao.eshopping.ultils.CoreConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +32,12 @@ public class HomeController extends ApplicationObjectSupport {
 
 	@RequestMapping(value = {"/admin.html", "/admin/home.html"})
 	public ModelAndView homePageAdmin() {
-		ModelAndView mav = new ModelAndView("homePageAdmin");
+		ModelAndView mav = new ModelAndView("/admin/index");
 		return mav;
 	}
 
 	@RequestMapping(value = {"/home.html"})
-	public ModelAndView homePageShopper(@ModelAttribute(name = "item") ProductSkuCommand command) {
+	public ModelAndView homePageShopper(@ModelAttribute(name = "item") ProductSkuCommand command, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("homePageShopper");
 		try {
 			Map<String, Object> properties = buidProperties4Search(command);

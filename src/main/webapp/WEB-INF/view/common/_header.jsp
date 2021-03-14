@@ -24,7 +24,7 @@
 						<div class="col-md-5">
 							<ul class="usermenu">
 								<security:authorize access="isAuthenticated()">
-									<li><a href="#" class="log"><security:authentication property="username"/></a></li>
+									<li><a href="#" class="log"><security:authentication property="name"/></a></li>
 								</security:authorize>
 								<security:authorize access="!isAuthenticated()">
 									<li><a href="<c:url value="/login.html"/>" class="log">Login</a></li>

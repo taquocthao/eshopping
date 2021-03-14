@@ -1,20 +1,16 @@
 package com.tathao.eshopping.model.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Role")
 public class RoleEntity {
 
 	private Long roleId;
+	private List<UserEntity> user;
 	private String code;
 	private String name;
 	private Timestamp createdDate;
@@ -30,7 +26,16 @@ public class RoleEntity {
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
-	
+
+	@ManyToMany(mappedBy = "roles")
+	public List<UserEntity> getUser() {
+		return user;
+	}
+
+	public void setUser(List<UserEntity> user) {
+		this.user = user;
+	}
+
 	@Basic
 	@Column(name = "Code")
 	public String getCode() {

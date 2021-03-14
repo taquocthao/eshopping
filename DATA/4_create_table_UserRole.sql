@@ -5,4 +5,4 @@ create table UserRole(
 	CreatedDate timestamp NOT NULL,
 	ModifiedDate timestamp,
 	UNIQUE(UserId, RoleId)
-)
+);

@@ -3,6 +3,8 @@ package com.tathao.eshopping.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tathao.eshopping.dao.UserRoleDAO;
+import com.tathao.eshopping.model.entity.UserRoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,27 +24,25 @@ import com.tathao.eshopping.model.entity.UserEntity;
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	UserDAO userDAO;
-	
+	private UserDAO userDAO;
+
 	@Autowired
-	RoleDAO roleDAO;
-	
+    private UserRoleDAO userRoleDAO;
+
+	@Override
 	public UserDetails loadUserByUsername(String username) {
 		UserEntity user = userDAO.findByUserName(username);
 		if(user == null) {
 			throw new UsernameNotFoundException("User " + username + " was not found in the database.");
 		}
 		
-		List<RoleEntity> roles = roleDAO.findByUserId(user.getUserId());
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		if(roles != null) {
-			for(RoleEntity role : roles) {
-				GrantedAuthority authority = new SimpleGrantedAuthority(role.getCode());
-				authorities.add(authority);
-				
-			}
-		}
-		
+		List<UserRoleEntity> userRoles = userRoleDAO.findByUserId(user.getUserId());
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		userRoles.forEach(userRole -> {
+			GrantedAuthority authority = new SimpleGrantedAuthority(userRole.getRole().getCode());
+			authorities.add(authority);
+		});
+
 		UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
 		return userDetails;
 	}

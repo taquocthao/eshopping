@@ -1,16 +1,9 @@
 package com.tathao.eshopping.model.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Users")
@@ -26,10 +19,10 @@ public class UserEntity {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private Integer status;
+    private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
-    
+    private List<RoleEntity> roles;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -133,11 +126,11 @@ public class UserEntity {
 	
 	@Column(name = "Status")
 	@Basic
-	public Integer getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 	
-	public void setStatus(Integer status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 	
@@ -160,7 +153,17 @@ public class UserEntity {
 	public void setModifiedDate(Timestamp modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
-    
-	
-	
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "UserRole",
+			joinColumns = {@JoinColumn(name = "UserId")},
+			inverseJoinColumns ={@JoinColumn(name = "RoleId")})
+	public List<RoleEntity> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<RoleEntity> roles) {
+		this.roles = roles;
+	}
 }

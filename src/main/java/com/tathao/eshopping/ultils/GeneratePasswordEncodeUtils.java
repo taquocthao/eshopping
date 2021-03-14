@@ -9,9 +9,9 @@ public class GeneratePasswordEncodeUtils {
 		return encode;
 	}
 	
-//	public static void main(String...strings) {
-//		String passwordEncode = encode("123456");
-//		System.out.println("###Password generated: " + passwordEncode);
-//	}
+	public static void main(String...strings) {
+		String passwordEncode = encode("123456");
+		System.out.println("###Password generated: " + passwordEncode);
+	}
 	
 }
