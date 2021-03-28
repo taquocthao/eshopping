@@ -8,7 +8,7 @@ public class ProductDTO implements Serializable {
 
     private Long productId;
     private String code;
-    private Long catgroupId;
+    private CatGroupDTO catGroup;
     private Long brandId;
     private String name;
     private String image;
@@ -36,12 +36,12 @@ public class ProductDTO implements Serializable {
         this.code = code;
     }
 
-    public Long getCatgroupId() {
-        return catgroupId;
+    public CatGroupDTO getCatGroup() {
+        return catGroup;
     }
 
-    public void setCatgroupId(Long catgroupId) {
-        this.catgroupId = catgroupId;
+    public void setCatGroup(CatGroupDTO catGroup) {
+        this.catGroup = catGroup;
     }
 
     public Long getBrandId() {

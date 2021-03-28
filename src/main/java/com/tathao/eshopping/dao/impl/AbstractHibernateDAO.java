@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.tathao.eshopping.ultils.HibernateUtil;
 import org.apache.log4j.Logger;
@@ -18,12 +20,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import com.tathao.eshopping.dao.GenericDAO;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableTransactionManagement
 public abstract class AbstractHibernateDAO <T, ID extends Serializable> implements GenericDAO<T, ID> {
 
 	protected Logger log = Logger.getLogger(getClass());
@@ -32,8 +31,7 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 	
 	@Autowired
     private SessionFactory sessionFactory;
-    private HibernateTemplate hibernateTemplate;
-    
+
     public AbstractHibernateDAO() {
     	this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
@@ -69,10 +67,13 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 
 	@SuppressWarnings("unchecked")
 	public T findEqualUnique(String property, Object value) {
-		CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
-		Criteria criteria = (Criteria) criteriaBuilder.createQuery(getPersistentClass());
-		criteria.add(Restrictions.eq(property, value));
-		return (T) criteria.uniqueResult();
+    	CriteriaBuilder criteriaBuilder = this.getCurrentSession().getCriteriaBuilder();
+    	CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.getPersistentClass());
+		Root<T> root = criteriaQuery.from(this.getPersistentClass());
+		criteriaQuery.select(root);
+		criteriaQuery.where(criteriaBuilder.equal(root.get(property), value));
+		Query query = this.getCurrentSession().createQuery(criteriaQuery);
+		return (T)query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")

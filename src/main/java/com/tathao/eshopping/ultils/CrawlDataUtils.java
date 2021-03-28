@@ -36,7 +36,7 @@ public class CrawlDataUtils {
             product.setName(productName);
             product.setImage(image);
             product.setBrandId(Long.valueOf(1));
-            product.setCatgroupId(Long.valueOf(1));
+//            product.setCatGroup(Long.valueOf(1));
             product.setCode(CommonUtils.generateCode());
             product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
             product.setStatus(true);

@@ -7,17 +7,20 @@ import com.tathao.eshopping.service.ProductService;
 import com.tathao.eshopping.ultils.ProductBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDAO productDAO;
 
+    @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems) {
         Object[] result = productDAO.findByProperties(properties, sortExpression, sortDirection, firstItem, maxPageItems, "1 = 1");
         List<ProductDTO> products = new ArrayList<ProductDTO>();
@@ -26,5 +29,11 @@ public class ProductServiceImpl implements ProductService {
         }
         result[1] = products;
         return result;
+    }
+
+    @Override
+    public ProductDTO findByCode(String code) {
+        ProductEntity productEntity = productDAO.findEqualUnique("code", code);
+        return ProductBeanUtils.entity2DTO(productEntity);
     }
 }

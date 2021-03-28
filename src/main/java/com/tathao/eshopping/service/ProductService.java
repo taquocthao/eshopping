@@ -9,4 +9,6 @@ public interface ProductService {
 
     Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems);
 
+    ProductDTO findByCode(String code);
+
 }

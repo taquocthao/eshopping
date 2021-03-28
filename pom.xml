@@ -15,6 +15,8 @@
   	<hibernate.version>5.4.17.Final</hibernate.version>
   	<jstl.version>1.2</jstl.version>
   	<log4j.version>1.2.17</log4j.version>
+  	<spring.data.redis.version>2.3.7.RELEASE</spring.data.redis.version>
+  	<jdedis.version>3.1.0</jdedis.version>
   </properties>
   
   <dependencies>
@@ -153,6 +155,20 @@
 		  <groupId>org.springframework.security</groupId>
 		  <artifactId>spring-security-taglibs</artifactId>
 		  <version>${spring.security.version}</version>
+	  </dependency>
+
+	  <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+	  <dependency>
+		  <groupId>org.springframework.data</groupId>
+		  <artifactId>spring-data-redis</artifactId>
+		  <version>${spring.data.redis.version}</version>
+	  </dependency>
+
+	  <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+	  <dependency>
+		  <groupId>redis.clients</groupId>
+		  <artifactId>jedis</artifactId>
+		  <version>${jdedis.version}</version>
 	  </dependency>
 
 

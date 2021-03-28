@@ -1,5 +1,6 @@
 package com.tathao.eshopping.ultils;
 
+import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.model.entity.ProductSkuEntity;
 
@@ -25,7 +26,11 @@ public class ProductSkuBeanUtils {
         dto.setBarCode(entity.getBarCode());
         dto.setImage(entity.getImage());
         dto.setOriginalPrice(entity.getOriginalPrice());
-        dto.setProduct(ProductBeanUtils.entity2DTO(entity.getProduct()));
+        if(entity.getProduct() != null) {
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setProductId(entity.getProduct().getProductId());
+            dto.setProduct(productDTO);
+        }
         dto.setProductSkuId(entity.getProductSkuId());
         dto.setSalePrice(entity.getSalePrice());
         dto.setSkuCode(entity.getSkuCode());

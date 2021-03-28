@@ -12,18 +12,18 @@
 				<c:choose>
 					<c:when test="${item.listResult.size() > 0}">
 						<div class="row">
-						<c:forEach var="productSku" items="${item.listResult}">
+						<c:forEach var="product" items="${item.listResult}">
 
 								<div class="col-md-3 col-sm-6">
 									<div class="products">
 											<%--								<div class="offer">- %20</div>--%>
-										<a href="#">
+										<a href="<c:url value="/product/${product.catGroup.name}/${product.code}/detail.html"/>">
 											<div class="thumbnail">
-												<img src="${productSku.image}" alt="Product Name" style="width: auto; height: 100%" />
+												<img src="${product.image}" alt="Product Name" style="width: auto; height: 100%" />
 											</div>
 										</a>
-										<div class="productname">${productSku.title}</div>
-										<h4 class="price"><fmt:formatNumber value="${productSku.salePrice}"/></h4>
+										<div class="productname">${product.name}</div>
+										<h4 class="price"><fmt:formatNumber value="${0}"/></h4>
 										<div class="button_group">
 											<button class="button add-cart" type="button">Add To Cart</button>
 											<button class="button compare" type="button"><i class="fa fa-exchange"></i></button>

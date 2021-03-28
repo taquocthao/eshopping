@@ -1,6 +1,6 @@
 create table Product(
     ProductId BIGSERIAL primary key not null,
-    Code varchar(12) not null,
+    Code varchar(20) not null,
     CatGroupId BIGINT not null,
     BrandId BIGINT,
     Name varchar(255) not null,

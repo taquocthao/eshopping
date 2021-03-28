@@ -28,6 +28,7 @@
                 <div class="form-group">
                     <input class="form-control" type="password" name="password" id="inputPassword" placeholder="Mật khẩu"/>
                 </div>
+                <input type="hidden" name="remember-me" value="true">
                 <button type="submit" class="btn btn-primary">Đăng nhập</button>
                 <label><input type="checkbox"><a href="#">Quên mật khẩu?</a></label>
             </div>

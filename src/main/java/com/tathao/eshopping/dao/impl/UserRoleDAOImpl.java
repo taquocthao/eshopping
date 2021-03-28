@@ -9,7 +9,6 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-@Transactional
 public class UserRoleDAOImpl extends AbstractHibernateDAO<UserRoleEntity, Long> implements UserRoleDAO {
 
     @Override

@@ -11,7 +11,6 @@ import com.tathao.eshopping.model.entity.RoleEntity;
 import javax.persistence.Query;
 
 @Repository
-@Transactional
 public class RoleDAOImpl extends AbstractHibernateDAO<RoleEntity, Long> implements RoleDAO{
 
 	public List<RoleEntity> findByUserId(Long userId) {

@@ -10,7 +10,7 @@ public class ProductEntity {
 
     private Long productId;
     private String code;
-    private Long catgroupId;
+    private CatGroupEntity catGroup;
     private Long brandId;
     private String name;
     private String image;
@@ -43,13 +43,14 @@ public class ProductEntity {
         this.code = code;
     }
 
-    @Column(name = "CatGroupId")
-    public Long getCatgroupId() {
-        return catgroupId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "catGroupId", referencedColumnName = "catGroupId")
+    public CatGroupEntity getCatGroup() {
+        return catGroup;
     }
 
-    public void setCatgroupId(Long catgroupId) {
-        this.catgroupId = catgroupId;
+    public void setCatGroup(CatGroupEntity catGroup) {
+        this.catGroup = catGroup;
     }
 
     @Column(name = "BrandId")
@@ -133,7 +134,7 @@ public class ProductEntity {
         this.productSkus = productSkus;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ReferencePriceId", referencedColumnName = "ReferencePriceId")
     public ReferencePriceEntity getReferencePrice() {
         return referencePrice;

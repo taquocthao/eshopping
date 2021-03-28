@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tathao.eshopping.service.impl.MyUserDetailsService;
 
@@ -36,8 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// No login required	
 		http.authorizeRequests()
-			.antMatchers( "/home.html","/login.html", "/logout.html", "/")
-			.permitAll();
+			.antMatchers( "/home.html","/login.html", "/logout.html", "/").permitAll();
 		
 		// admin
 		http.authorizeRequests()
@@ -47,14 +45,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403.html");
 		
 		// form login config
-		http.authorizeRequests().and().formLogin()
-		.loginPage("/login.html")
-		.loginProcessingUrl("/perform_login")
-		.defaultSuccessUrl("/")
-		.failureUrl("/login.html?error=true")
-		.usernameParameter("username")
-		.passwordParameter("password")
-		.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+		http.authorizeRequests()
+				.and()
+				.formLogin()
+				.loginPage("/login.html")
+				.loginProcessingUrl("/perform_login")
+				.defaultSuccessUrl("/")
+				.failureUrl("/login.html?error=true")
+				.usernameParameter("username")
+				.passwordParameter("password")
+				.and().logout()
+				.logoutUrl("/logout.html")
+				.deleteCookies("JSESSIONID")
+				.logoutSuccessUrl("/")
+				.and().rememberMe().key("uniqueAndSecret");
 		
 	}
 	

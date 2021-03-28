@@ -9,10 +9,8 @@ import com.tathao.eshopping.dao.UserDAO;
 import com.tathao.eshopping.model.entity.UserEntity;
 
 @Repository
-@Transactional
 public class UserDAOImpl extends AbstractHibernateDAO<UserEntity, Long> implements UserDAO {
 
-	@Transactional
 	public UserEntity findByUserName(String username) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("FROM UserEntity u ");

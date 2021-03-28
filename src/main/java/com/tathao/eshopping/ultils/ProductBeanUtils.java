@@ -1,14 +1,21 @@
 package com.tathao.eshopping.ultils;
 
 import com.tathao.eshopping.model.dto.ProductDTO;
+import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.model.entity.ProductEntity;
+import com.tathao.eshopping.model.entity.ProductSkuEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductBeanUtils {
 
     public static ProductEntity dto2Entity(ProductDTO dto) {
         ProductEntity entity = new ProductEntity();
         entity.setBrandId(dto.getBrandId());
-        entity.setCatgroupId(dto.getCatgroupId());
+        if(dto.getCatGroup() != null) {
+            entity.setCatGroup(CatGroupBeanUtils.dto2Entity(dto.getCatGroup()));
+        }
         entity.setCode(dto.getCode());
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setImage(dto.getImage());
@@ -21,13 +28,18 @@ public class ProductBeanUtils {
         if(dto.getReferencePrice() != null) {
             entity.setReferencePrice(ReferencePriceBeanUtils.dto2Entity(dto.getReferencePrice()));
         }
+        List<ProductSkuEntity> skuEntities = new ArrayList<>();
+        for(ProductSkuDTO skuDTO : dto.getSku()) {
+            skuEntities.add(ProductSkuBeanUtils.dto2Entity(skuDTO));
+        }
+        entity.setProductSkus(skuEntities);
         return entity;
     }
 
     public static ProductDTO entity2DTO(ProductEntity entity) {
         ProductDTO dto = new ProductDTO();
         dto.setBrandId(entity.getBrandId());
-        dto.setCatgroupId(entity.getCatgroupId());
+        dto.setCatGroup(CatGroupBeanUtils.entity2DTO(entity.getCatGroup()));
         dto.setCode(entity.getCode());
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setImage(entity.getImage());
@@ -40,6 +52,11 @@ public class ProductBeanUtils {
         if(entity.getReferencePrice() != null) {
             dto.setReferencePrice(ReferencePriceBeanUtils.entity2DTO(entity.getReferencePrice()));
         }
+        List<ProductSkuDTO> skuDTOS = new ArrayList<>();
+        for(ProductSkuEntity skuEntity : entity.getProductSkus()){
+            skuDTOS.add(ProductSkuBeanUtils.entity2DTO(skuEntity));
+        }
+        dto.setSku(skuDTOS);
         return dto;
     }
 

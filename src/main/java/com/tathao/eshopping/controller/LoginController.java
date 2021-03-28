@@ -13,7 +13,6 @@ import java.util.List;
 
 
 @Controller
-@Transactional
 public class LoginController extends ApplicationObjectSupport {
 
 	@Autowired
