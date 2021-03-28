@@ -3,7 +3,6 @@ package com.tathao.eshopping.dao.impl;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.tathao.eshopping.dao.UserDAO;
 import com.tathao.eshopping.model.entity.UserEntity;
