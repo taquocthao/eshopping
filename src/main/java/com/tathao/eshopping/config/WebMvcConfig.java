@@ -20,24 +20,28 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 public class WebMvcConfig implements WebMvcConfigurer{
 	
 	private static final Charset UTF8 = Charset.forName("UTF-8");
-	
+
+	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
 		stringConverter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "plain", UTF8)));
 		converters.add(stringConverter);
 	
 	}
-	
+
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/asset/css/");
 		registry.addResourceHandler("/img/**").addResourceLocations("/asset/images/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/asset/js/");
 	}
-	
+
+	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
-	
+
+	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("lang");

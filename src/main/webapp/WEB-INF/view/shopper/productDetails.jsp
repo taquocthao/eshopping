@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../common/taglib.jsp"%>
+<%@ page isELIgnored="false"%>
 
 <div class="wrapper">
     <div class="container_fullwidth">
