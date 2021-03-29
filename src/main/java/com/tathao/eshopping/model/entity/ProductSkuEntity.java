@@ -22,6 +22,13 @@ public class ProductSkuEntity {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
+    public ProductSkuEntity() {
+    }
+    public ProductSkuEntity(Long productSkuId) {
+        this.productSkuId = productSkuId;
+    }
+
+
     @Id
     @Column(name = "ProductSkuId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

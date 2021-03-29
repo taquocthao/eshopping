@@ -15,9 +15,12 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private Integer status;
+    private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
+
+    public UserDTO() {
+    }
 
     public UserDTO(Long userId) {
         this.userId = userId;
@@ -103,11 +106,11 @@ public class UserDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

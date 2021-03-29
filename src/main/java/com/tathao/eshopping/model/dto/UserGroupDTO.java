@@ -9,6 +9,9 @@ public class UserGroupDTO {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
+    public UserGroupDTO() {
+    }
+
     public UserGroupDTO(Long userGroupId) {
         this.userGroupId = userGroupId;
     }
