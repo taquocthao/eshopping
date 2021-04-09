@@ -1008,7 +1008,6 @@ body .header {
 /*products */
 .products {
     border: 1px solid #e1e1e1;
-    min-height: 400px;
     position: relative;
     overflow: hidden;
     -webkit-border-radius: 10px;
