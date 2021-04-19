@@ -14,4 +14,4 @@ create table Product(
 
 alter table product add constraint fk_product_brandId foreign key (BrandId) references brand(brandid);
 alter table product add constraint fk_product_catgroupId foreign key (CatGroupId) references catgroup(catgroupid);
-alter table product add column ReferencePriceId bigint;
+alter table product add column ReferencePriceId bigint not null ;

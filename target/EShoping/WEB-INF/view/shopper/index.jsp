@@ -24,11 +24,6 @@
 										</a>
 										<div class="productname">${product.name}</div>
 										<h4 class="price"><fmt:formatNumber value="${0}"/></h4>
-										<div class="button_group">
-											<button class="button add-cart" type="button">Add To Cart</button>
-											<button class="button compare" type="button"><i class="fa fa-exchange"></i></button>
-											<button class="button wishlist" type="button"><i class="fa fa-heart-o"></i></button>
-										</div>
 									</div>
 								</div>
 
