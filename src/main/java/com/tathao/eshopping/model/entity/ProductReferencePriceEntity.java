@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "ReferencePrice")
-public class ReferencePriceEntity {
+@Table(name = "ProductReferencePrice")
+public class ProductReferencePriceEntity {
 
     private Long referencePriceId;
     private Double lowestPrice;
@@ -15,7 +15,7 @@ public class ReferencePriceEntity {
     private Timestamp modifiedDate;
 
     @Id
-    @Column(name = "ReferencePriceId")
+    @Column(name = "ProductReferencePriceId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getReferencePriceId() {
         return referencePriceId;
@@ -42,7 +42,8 @@ public class ReferencePriceEntity {
         this.highestPrice = highestPrice;
     }
 
-    @OneToOne(mappedBy = "referencePrice")
+    @OneToOne
+    @JoinColumn(name = "productid", referencedColumnName = "productId")
     public ProductEntity getProduct() {
         return product;
     }

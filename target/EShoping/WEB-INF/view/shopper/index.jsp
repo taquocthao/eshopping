@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<%@ include file="../common/taglib.jsp"%>--%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -23,7 +22,18 @@
 											</div>
 										</a>
 										<div class="productname">${product.name}</div>
-										<h4 class="price"><fmt:formatNumber value="${0}"/></h4>
+										<c:choose>
+											<c:when test="${product.referencePrice.highestPrice != null}">
+												<h4 class="price">
+													<fmt:formatNumber value="${product.referencePrice.lowestPrice}"/>
+													<span> ~ </span>
+													<fmt:formatNumber value="${product.referencePrice.highestPrice}"/>
+												</h4>
+											</c:when>
+											<c:otherwise>
+												<h4 class="price"><fmt:formatNumber value="${product.referencePrice.lowestPrice}"/></h4>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</div>
 

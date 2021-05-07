@@ -1,5 +1,6 @@
 package com.tathao.eshopping.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -64,6 +65,11 @@ public class ApplicationContextConfig extends ApplicationObjectSupport{
 		resolver.setCookieDomain("myAppLocaleCookie");
 		resolver.setCookieMaxAge(60*60);
 		return resolver;
+	}
+
+	@Bean
+	public ModelMapper getModelMapper() {
+		return new ModelMapper();
 	}
 	
 }

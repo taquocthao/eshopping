@@ -26,7 +26,7 @@ public class ProductBeanUtils {
         entity.setProductId(dto.getProductId());
         entity.setTop(dto.getTop());
         if(dto.getReferencePrice() != null) {
-            entity.setReferencePrice(ReferencePriceBeanUtils.dto2Entity(dto.getReferencePrice()));
+            entity.setReferencePrice(ProductReferencePriceBeanUtils.dto2Entity(dto.getReferencePrice()));
         }
         List<ProductSkuEntity> skuEntities = new ArrayList<>();
         for(ProductSkuDTO skuDTO : dto.getSku()) {
@@ -50,7 +50,7 @@ public class ProductBeanUtils {
         dto.setProductId(entity.getProductId());
         dto.setTop(entity.getTop());
         if(entity.getReferencePrice() != null) {
-            dto.setReferencePrice(ReferencePriceBeanUtils.entity2DTO(entity.getReferencePrice()));
+            dto.setReferencePrice(ProductReferencePriceBeanUtils.entity2DTO(entity.getReferencePrice()));
         }
         List<ProductSkuDTO> skuDTOS = new ArrayList<>();
         for(ProductSkuEntity skuEntity : entity.getProductSkus()){

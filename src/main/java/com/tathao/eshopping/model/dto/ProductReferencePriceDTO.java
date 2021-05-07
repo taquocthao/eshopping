@@ -3,7 +3,7 @@ package com.tathao.eshopping.model.dto;
 
 import java.sql.Timestamp;
 
-public class ReferencePriceDTO {
+public class ProductReferencePriceDTO {
 
     private Long referencePriceId;
     private Double lowestPrice;

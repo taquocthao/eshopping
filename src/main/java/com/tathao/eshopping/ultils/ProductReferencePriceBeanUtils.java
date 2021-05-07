@@ -1,14 +1,14 @@
 package com.tathao.eshopping.ultils;
 
 import com.tathao.eshopping.model.dto.ProductDTO;
-import com.tathao.eshopping.model.dto.ReferencePriceDTO;
+import com.tathao.eshopping.model.dto.ProductReferencePriceDTO;
 import com.tathao.eshopping.model.entity.ProductEntity;
-import com.tathao.eshopping.model.entity.ReferencePriceEntity;
+import com.tathao.eshopping.model.entity.ProductReferencePriceEntity;
 
-public class ReferencePriceBeanUtils {
+public class ProductReferencePriceBeanUtils {
 
-    public static ReferencePriceEntity dto2Entity(ReferencePriceDTO dto) {
-        ReferencePriceEntity entity = new ReferencePriceEntity();
+    public static ProductReferencePriceEntity dto2Entity(ProductReferencePriceDTO dto) {
+        ProductReferencePriceEntity entity = new ProductReferencePriceEntity();
         entity.setHighestPrice(dto.getHighestPrice());
         entity.setLowestPrice(dto.getLowestPrice());
         entity.setReferencePriceId(dto.getReferencePriceId());
@@ -18,8 +18,8 @@ public class ReferencePriceBeanUtils {
         return entity;
     }
 
-    public static ReferencePriceDTO entity2DTO(ReferencePriceEntity entity) {
-        ReferencePriceDTO dto = new ReferencePriceDTO();
+    public static ProductReferencePriceDTO entity2DTO(ProductReferencePriceEntity entity) {
+        ProductReferencePriceDTO dto = new ProductReferencePriceDTO();
         dto.setHighestPrice(entity.getHighestPrice());
         dto.setLowestPrice(entity.getLowestPrice());
         dto.setReferencePriceId(entity.getReferencePriceId());

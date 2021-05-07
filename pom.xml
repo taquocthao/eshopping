@@ -18,6 +18,7 @@
   	<spring.data.redis.version>2.3.7.RELEASE</spring.data.redis.version>
   	<jdedis.version>3.1.0</jdedis.version>
 	  <io.jwt.version>0.9.1</io.jwt.version>
+	  <model.mapper.version>2.4.2</model.mapper.version>
   </properties>
   
   <dependencies>
@@ -177,6 +178,14 @@
 		  <groupId>io.jsonwebtoken</groupId>
 		  <artifactId>jjwt</artifactId>
 		  <version>${io.jwt.version}</version>
+	  </dependency>
+
+	  <!--Model mapper-->
+	  <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+	  <dependency>
+		  <groupId>org.modelmapper</groupId>
+		  <artifactId>modelmapper</artifactId>
+		  <version>${model.mapper.version}</version>
 	  </dependency>
 
   </dependencies>

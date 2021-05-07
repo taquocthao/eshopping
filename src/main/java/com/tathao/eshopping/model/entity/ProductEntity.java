@@ -20,7 +20,7 @@ public class ProductEntity {
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private List<ProductSkuEntity> productSkus;
-    private ReferencePriceEntity referencePrice;
+    private ProductReferencePriceEntity referencePrice;
 
     @Id
     @Column(name = "ProductId")
@@ -134,13 +134,13 @@ public class ProductEntity {
         this.productSkus = productSkus;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ReferencePriceId", referencedColumnName = "ReferencePriceId")
-    public ReferencePriceEntity getReferencePrice() {
+    @OneToOne
+    @JoinColumn(name = "ReferencePriceId", referencedColumnName = "ProductReferencePriceId")
+    public ProductReferencePriceEntity getReferencePrice() {
         return referencePrice;
     }
 
-    public void setReferencePrice(ReferencePriceEntity referencePrice) {
+    public void setReferencePrice(ProductReferencePriceEntity referencePrice) {
         this.referencePrice = referencePrice;
     }
 }

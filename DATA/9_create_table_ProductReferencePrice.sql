@@ -6,3 +6,5 @@ create table ProductReferencePrice (
     CreatedDate timestamptz not null,
     ModifiedDate timestamptz
 );
+
+alter table productreferenceprice add column ProductId bigint not null references product(productid);

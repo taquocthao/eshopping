@@ -1,7 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../common/taglib.jsp"%>
-<%@ page isELIgnored="false"%>
 
 <div class="wrapper">
     <div class="container_fullwidth">
@@ -10,19 +8,15 @@
                 <div class="products-details">
                     <div class="preview_image">
                         <div class="preview-small">
-                            <img src="${product.image}" alt="product image">
+                            <img src="${product.image}" alt="product image" onerror="this.onerror=null;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
                         </div>
                         <div class="thum-image">
-                            <ul id="gallery_01" class="prev-thum">
-
-                            </ul>
+                            <ul id="gallery_01" class="prev-thum"></ul>
                             <a class="control-left" id="thum-prev" href="javascript:void(0);">
-                                <i class="fa fa-chevron-left">
-                                </i>
+                                <i class="fa fa-chevron-left"></i>
                             </a>
                             <a class="control-right" id="thum-next" href="javascript:void(0);">
-                                <i class="fa fa-chevron-right">
-                                </i>
+                                <i class="fa fa-chevron-right"></i>
                             </a>
                         </div>
                     </div>
@@ -31,26 +25,22 @@
                         <h5 class="name">
                             ${product.name}
                         </h5>
+
                         <%-- Review --%>
-                        <p>
-                            <img alt="" src="images/star.png">
-                            <a class="review_num" href="#"> 02 Review(s)</a>
-                        </p>
+                        <p><img alt="" src="images/star.png">
+                            <a class="review_num" href="#"> 02 Review(s)</a></p>
                         <hr class="border">
+
                         <%-- New Price --%>
                         <div class="price">
-                            Price :
-                            <span class="new_price"> 450.00 <sup>$</sup></span>
-                            <span class="old_price"> 450.00 <sup> $ </sup></span>
+                            <fmt:message key="label.price" /> :
+                            <span class="new_price"><fmt:formatNumber value="${product.referencePrice.lowestPrice}"/></span>
                         </div>
                         <hr class="border">
-
-                        <div class="wided">
-
-                        </div>
+                        <div class="wided"></div>
 
                         <div class="qty">
-                            Qty &nbsp;&nbsp;:<input type="number" class="form-control" min="1" />
+                           <fmt:message key="label.quantity" />: <input type="number" class="form-control" min="1" />
                         </div>
                         <div class="button_group">
                             <button class="button" > Thêm vào giỏ hàng </button>
@@ -62,8 +52,9 @@
                         <img src="images/share.png" alt="" class="pull-right">
                     </div>
                 </div>
-                <div class="clearfix">
-                </div>
+
+                <div class="clearfix"></div>
+
                 <div class="tab-box">
                     <div id="tabnav">
                         <ul>
@@ -286,8 +277,10 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="clearfix">
                 </div>
+
                 <div id="productsDetails" class="hot-products">
                     <h3 class="title">
                         <strong>
@@ -570,8 +563,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="clearfix">
-                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
