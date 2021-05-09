@@ -11,4 +11,6 @@ public interface ProductService {
 
     ProductDTO findByCode(String code);
 
+    ProductDTO findByCodeAndFetchRelatedProducts(String code);
+
 }

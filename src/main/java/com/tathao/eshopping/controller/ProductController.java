@@ -23,13 +23,12 @@ public class ProductController {
     @RequestMapping(value = "/{catGroup}/{productCode}/detail.html")
     public ModelAndView viewDetail(@PathVariable("catGroup") String catGroup, @PathVariable("productCode") String productCode) {
         ModelAndView mav = new ModelAndView("productDetailShopper");
-        ProductDTO dto = new ProductDTO();
         try {
-            dto = productService.findByCode(productCode);
+            ProductDTO dto = productService.findByCodeAndFetchRelatedProducts(productCode);
+            mav.addObject("product", dto);
         } catch (Exception e) {
              logger.error(e.getMessage());
         }
-        mav.addObject("product", dto);
         return mav;
     }
 

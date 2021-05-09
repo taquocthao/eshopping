@@ -13,3 +13,5 @@ create table ProductSku
     CreatedDate   timestamptz           not null default current_timestamp,
     ModifiedDate  timestamptz
 );
+
+alter table ProductSku add column Description text;

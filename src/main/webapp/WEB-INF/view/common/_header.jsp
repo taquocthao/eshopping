@@ -1,20 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./taglib.jsp" %>
+<!-- Footer -->
 <div class="header">
 	<div class="container">
 		<div class="row">
+			<%--logo--%>
 			<div class="col-md-2 col-sm-2">
-				<div class="logo"><a href="<c:url value="/home.html"/>"><img src="<c:url value="/img/logo.png"/>" alt="Ú clothing"></a></div>
+				<div class="logo">
+					<a href="<c:url value="/home.html"/>">
+						<img src="<c:url value="/img/logo.png"/>" alt="Ú clothing">
+					</a>
+				</div>
 			</div>
+			<%--right menu--%>
 			<div class="col-md-10 col-sm-10">
 				<div class="header_top">
 					<div class="row mt-2">
 						<!--search product-->
 						<div class="col-md-7">
 							<div class="input-group">
-								<input class="form-control" placeholder="Enter your search term..." type="search" name="search">
+								<input class="form-control" placeholder="<fmt:message key="label.search"/>" type="search" name="searchProduct">
 								<div class="input-group-append">
-									<a href="#" class="btn btn-search-home"><i class="fa fa-search"></i></a>
+									<a href="javascript:void(0)" class="btn btn-search-home">
+										<i class="fa fa-search" style="line-height: inherit"></i>
+									</a>
 								</div>
 							</div>
 
@@ -28,7 +37,7 @@
 								</security:authorize>
 								<security:authorize access="!isAuthenticated()">
 									<li><a href="<c:url value="/login.html"/>" class="log">Login</a></li>
-									<li><a href="checkout2.html" class="reg">Register</a></li>
+									<li><a href="<c:url value="/register.html"/>" class="reg">Register</a></li>
 								</security:authorize>
 							</ul>
 						</div>
@@ -80,57 +89,37 @@
 						</button>
 						<div class="navbar-collapse collapse">
 							<ul class="nav navbar-nav">
-								<li class="nav-item active dropdown">
-									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Home</a>
+								<li class="nav-item active"><a class="nav-link" href="javascript:void(0)">Tất cả sản phẩm</a></li>
+								<li class="nav-item dropdown">
+									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Thời trang nam</a>
 									<div class="dropdown-menu">
 										<ul class="mega-menu-links">
-											<li><a href="index.html">home</a></li>
-											<li><a href="home2.html">home2</a></li>
-											<li><a href="home3.html">home3</a></li>
-											<li><a href="productlitst.html">Productlitst</a></li>
-											<li><a href="productgird.html">Productgird</a></li>
-											<li><a href="details.html">Details</a></li>
-											<li><a href="cart.html">Cart</a></li>
-											<li><a href="checkout.html">CheckOut</a></li>
-											<li><a href="checkout2.html">CheckOut2</a></li>
-											<li><a href="contact.html">contact</a></li>
+											<li><a href="javascript:void(0)">Tất cả sản phẩm nam</a></li>
+											<li><a href="javascript:void(0)">Áo nam</a></li>
+											<li><a href="javascript:void(0)">Quần nam</a></li>
 										</ul>
 									</div>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="productgird.html">men</a></li>
-								<li class="nav-item"><a class="nav-link" href="productlitst.html">women</a></li>
 								<li class="nav-item dropdown">
-									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Fashion</a>
+									<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Thời trang nữ</a>
 									<div class="dropdown-menu mega-menu">
 										<div class="row">
 											<div class="col-md-6 col-sm-6">
 												<ul class="mega-menu-links">
-													<li><a href="productgird.html">New Collection</a></li>
-													<li><a href="productgird.html">Shirts & tops</a></li>
-													<li><a href="productgird.html">Laptop & Brie</a></li>
-													<li><a href="productgird.html">Dresses</a></li>
-													<li><a href="productgird.html">Blazers & Jackets</a></li>
-													<li><a href="productgird.html">Shoulder Bags</a></li>
-												</ul>
-											</div>
-											<div class="col-md-6 col-sm-6">
-												<ul class="mega-menu-links">
-													<li><a href="productgird.html">New Collection</a></li>
-													<li><a href="productgird.html">Shirts & tops</a></li>
-													<li><a href="productgird.html">Laptop & Brie</a></li>
-													<li><a href="productgird.html">Dresses</a></li>
-													<li><a href="productgird.html">Blazers & Jackets</a></li>
-													<li><a href="productgird.html">Shoulder Bags</a></li>
+													<li><a href="javascript:void(0)">Tất cả sản phẩm nữ</a></li>
+													<li><a href="javascript:void(0)">Áo nữ</a></li>
+													<li><a href="javascript:void(0)">Váy nữ</a></li>
 												</ul>
 											</div>
 										</div>
 									</div>
 								</li>
-						</ul>
+								<li class="nav-item"><a class="nav-link" href="javascript:void(0)">Feedback</a></li>
+							</ul>
 						</div>
 					</nav>
 				</div>
-			</div>
+			</div> <%--end right menu--%>
 		</div>
 	</div>
 </div>

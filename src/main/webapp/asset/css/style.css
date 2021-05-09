@@ -257,7 +257,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus,
     outline: none;
 }
 
-.button:hover, button:hover {
+.button:hover {
     border: 1px solid #fe5252;
     color: #fe5252 !important;
 }
@@ -309,7 +309,7 @@ body .header {
 .logo {
     float: left;
     position: relative;
-    padding: 20px 0;
+    padding: 30px 0;
 }
 
 .header_bottom {
@@ -439,6 +439,10 @@ body .header {
 }
 
 /* NAV style */
+nav.navbar {
+    padding: 0 !important;
+}
+
 .navbar-collapse {
     float: left;
     position: relative;
@@ -450,7 +454,7 @@ body .header {
     float: left;
     display: inline-block;
     position: relative;
-    padding-bottom: 5px;
+    padding: 0 5px 0 0;
 }
 
 .nav li a {
@@ -1811,10 +1815,15 @@ form.newsletter input[type="submit"]:hover {
     display: block;
 }
 
+.preview_image .preview-small img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
 .preview-small {
     display: block;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 0;
     position: relative;
 }
 
@@ -1883,7 +1892,7 @@ form.newsletter input[type="submit"]:hover {
     border: 1px solid #E1E1E1;
     border-radius: 10px;
     display: block;
-    margin: 15px 0 15px 360px;
+    margin: 0 0 15px 360px;
     padding: 20px;
     position: relative;
     overflow: hidden;
@@ -1941,11 +1950,15 @@ form.newsletter input[type="submit"]:hover {
     vertical-align: middle;
 }
 
-.products-description .qty select {
+.products-description .qty .quantity-group {
     margin-left: 30px;
 }
 
-.products-description .button_group {
+.products-description .qty span {
+    line-height: 35px;
+}
+
+.products-description .qty .quantity-group {
     float: right;
 }
 
@@ -2501,6 +2514,58 @@ form.newsletter input[type="submit"]:hover {
     width: 100%;
     margin-bottom: 22px;
 }
+
+/*quantity group*/
+
+div.quantity-group {
+}
+
+button.quantity-minus, button.quantity-plus {
+    padding: 8px 12px;
+    border: 1px solid #cccccc;
+    font-size: 14px;
+    font-weight: 300;
+    border-radius: unset;
+    width: 35px;
+    height: 35px;
+}
+
+button.quantity-minus {
+    border-right: 0;
+}
+
+button.quantity-plus {
+    border-left: 0;
+}
+
+button.quantity-minus, button.quantity-plus i {
+    color: #bfbfbf !important;
+}
+
+button.quantity-minus:hover, button.quantity-plus:hover {
+    background-color: #fff !important;
+    border-color: #cccccc !important;
+}
+
+button.quantity-minus:active, button.quantity-plus:active {
+    border-color: #cccccc !important;
+}
+
+button.quantity-minus:hover, button.quantity-plus:hover i {
+    color: #bfbfbf !important;
+}
+
+input.quantity-input {
+    max-width: 55px;
+    border-radius: unset;
+    margin: 0;
+    text-align: center;
+}
+
+input.quantity-input:focus {
+    border-color: #cccccc !important;
+}
+
 
 /*! responsive style !*//* box resize*/
 @media (min-width: 768px) {

@@ -136,6 +136,49 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 		
 	}
 
+	public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+		try {
+			Object[] nameQuery = HibernateUtil.buildNameQuery(this.getPersistentClass(), properties, (Map)null, sortExpression, sortDirection, true, false, (String)null, true);
+			String queryString = "select A " + nameQuery[0] + nameQuery[1];
+			Query query = this.getCurrentSession().createQuery(queryString);
+			if (nameQuery.length == 4) {
+				String[] params = (String[])((String[])nameQuery[2]);
+				Object[] values = (Object[])((Object[])nameQuery[3]);
+
+				for(int i = 0; i < params.length; ++i) {
+					query.setParameter(params[i], values[i]);
+				}
+			}
+
+			if (offset != null && offset >= 0) {
+				query.setFirstResult(offset);
+			}
+
+			if (limit != null && limit > 0) {
+				query.setMaxResults(limit);
+			}
+
+			List<T> res = query.getResultList();
+			Object totalItem = 0;
+			String queryTotal = "SELECT COUNT(*) " + nameQuery[0];
+			Query query2 = this.getCurrentSession().createQuery(queryTotal);
+			if (nameQuery.length == 4) {
+				String[] params = (String[])((String[])nameQuery[2]);
+				Object[] values = (Object[])((Object[])nameQuery[3]);
+
+				for(int i = 0; i < params.length; ++i) {
+					query2.setParameter(params[i], values[i]);
+				}
+			}
+
+			totalItem = query2.getSingleResult();
+			return new Object[]{totalItem, res};
+		} catch (RuntimeException var16) {
+			return new Object[]{0, new ArrayList()};
+		}
+	}
+
+
 	public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit, String whereClause) {
 		try {
 			Object[] nameQuery = HibernateUtil.buildNameQuery(this.getPersistentClass(), properties, (Map)null, sortExpression, sortDirection, true, false, whereClause, true);

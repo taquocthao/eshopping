@@ -1,6 +1,7 @@
 package com.tathao.eshopping.model.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ProductSkuDTO implements Serializable {
     private Long productSkuId;
@@ -13,6 +14,7 @@ public class ProductSkuDTO implements Serializable {
     private String unit;
     private String barCode;
     private Boolean status;
+    private String description;
 
     public Long getProductSkuId() {
         return productSkuId;
@@ -92,5 +94,13 @@ public class ProductSkuDTO implements Serializable {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

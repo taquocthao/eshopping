@@ -41,5 +41,7 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     List<T> findProperty(final String property, final Object value, final String sortExpression, final String sortOrder);
 
+    Object[] findByProperties(final Map<String, Object> properties, final String sortExpression, final String sortDirection, final Integer offset, final Integer limit);
+
     Object[] findByProperties(final Map<String, Object> properties, final String sortExpression, final String sortDirection, final Integer offset, final Integer limit, final String whereClause);
 }

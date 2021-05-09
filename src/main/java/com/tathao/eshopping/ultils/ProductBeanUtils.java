@@ -60,4 +60,13 @@ public class ProductBeanUtils {
         return dto;
     }
 
+    public static ProductDTO entity2DTOAndFetchRelatedProducts(ProductEntity entity, List<ProductEntity> relatedProducts) {
+        ProductDTO dto = entity2DTO(entity);
+        List<ProductDTO> relatedProductsDTO = new ArrayList<>();
+        for(ProductEntity relatedProduct : relatedProducts) {
+            relatedProductsDTO.add(entity2DTO(relatedProduct));
+        }
+        dto.setRelatedProducts(relatedProductsDTO);
+        return dto;
+    }
 }

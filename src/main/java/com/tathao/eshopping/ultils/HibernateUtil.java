@@ -160,10 +160,11 @@ public class HibernateUtil {
                 Object temp;
                 String property;
                 while(i$.hasNext()) {
-                    property = (String)i$.next();
-                    temp = propertyNameValues.get(property);
+                    String property2 = (String)i$.next();
+                    property = property2;
+                    temp = propertyNameValues.get(property2);
                     if (temp instanceof ArrayList) {
-                        propertyNameValuesEx.put(property, temp);
+                        propertyNameValuesEx.put(property2, temp);
                     } else {
                         if (temp instanceof Object[]) {
                             value = (Object[])((Object[])temp);
@@ -179,9 +180,9 @@ public class HibernateUtil {
                             }
                         }
 
-                        property = getNameCriteria(property, value, additionalTypeInfo, exactMatch, ignoreCase);
-                        buffer.append(property);
-                        if (property.indexOf(":") > 0) {
+                        property2 = getNameCriteria(property2, value, additionalTypeInfo, exactMatch, ignoreCase);
+                        buffer.append(property2);
+                        if (property2.indexOf(":") > 0) {
                             if (i > 0) {
                                 paramNames.append(",");
                             }
@@ -195,11 +196,11 @@ public class HibernateUtil {
                     }
                 }
 
-                i$ = propertyNameValuesEx.keySet().iterator();
+                Iterator i2$ = propertyNameValuesEx.keySet().iterator();
 
                 while(true) {
                     do {
-                        if (!i$.hasNext()) {
+                        if (!i2$.hasNext()) {
                             if (orderBy != null && !"".equals(orderBy)) {
                                 orderByBuffer.append(" order by A.");
                                 orderByBuffer.append(orderBy);
@@ -215,7 +216,7 @@ public class HibernateUtil {
                             return new Object[]{buffer.toString(), orderByBuffer.toString()};
                         }
 
-                        property = (String)i$.next();
+                        property = (String)i2$.next();
                         temp = propertyNameValuesEx.get(property);
                     } while(!(temp instanceof ArrayList));
 

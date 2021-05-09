@@ -19,6 +19,7 @@ public class ProductDTO implements Serializable {
     private Timestamp modifiedDate;
     private List<ProductSkuDTO> sku;
     private ProductReferencePriceDTO referencePrice;
+    private List<ProductDTO> relatedProducts;
 
     public Long getProductId() {
         return productId;
@@ -122,5 +123,13 @@ public class ProductDTO implements Serializable {
 
     public void setReferencePrice(ProductReferencePriceDTO referencePrice) {
         this.referencePrice = referencePrice;
+    }
+
+    public List<ProductDTO> getRelatedProducts() {
+        return relatedProducts;
+    }
+
+    public void setRelatedProducts(List<ProductDTO> relatedProducts) {
+        this.relatedProducts = relatedProducts;
     }
 }

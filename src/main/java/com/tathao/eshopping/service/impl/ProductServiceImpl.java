@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +36,15 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO findByCode(String code) {
         ProductEntity productEntity = productDAO.findEqualUnique("code", code);
         return ProductBeanUtils.entity2DTO(productEntity);
+    }
+
+    @Override
+    public ProductDTO findByCodeAndFetchRelatedProducts(String code) {
+        ProductEntity productEntity = productDAO.findEqualUnique("code", code);
+        // Get related products
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("catGroup.catGroupId", productEntity.getCatGroup().getCatGroupId());
+        Object[] relatedProducts = productDAO.findByProperties(properties, "createdDate", "1", null, 5);
+        return ProductBeanUtils.entity2DTOAndFetchRelatedProducts(productEntity, (List<ProductEntity>) relatedProducts[1]);
     }
 }

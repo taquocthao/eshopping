@@ -18,6 +18,7 @@ public class ProductSkuBeanUtils {
         entity.setStatus(dto.getStatus());
         entity.setTitle(dto.getTitle());
         entity.setUnit(dto.getUnit());
+        entity.setDescription(dto.getDescription());
         return entity;
     }
 
@@ -37,6 +38,7 @@ public class ProductSkuBeanUtils {
         dto.setStatus(entity.getStatus());
         dto.setTitle(entity.getTitle());
         dto.setUnit(entity.getUnit());
+        dto.setDescription(entity.getDescription());
         return dto;
     }
 }

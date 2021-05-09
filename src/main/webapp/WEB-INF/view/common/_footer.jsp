@@ -1,19 +1,16 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- Footer -->
 <div class="footer">
     <div class="footer-info">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="footer-logo"><a href="#"><img src="images/logo.png" alt=""></a></div>
-                </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <h4 class="title">Contact <strong>Info</strong></h4>
-                    <p>No. 08, Nguyen Trai, Hanoi , Vietnam</p>
-                    <p>Call Us : (084) 1900 1008</p>
-                    <p>Email : michael@leebros.us</p>
+                    <p>Huỳnh Tấn Phát, Quận 7, Hồ Chí Minh , Việt Nam</p>
+                    <p>Call Us : 0938322737</p>
+                    <p>Email : taquocthao@gmail.com</p>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <h4 class="title">Customer<strong> Support</strong></h4>
                     <ul class="support">
                         <li><a href="#">FAQ</a></li>
@@ -22,11 +19,11 @@
                         <li><a href="#">Infomation</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4 class="title">Get Our <strong>Newsletter </strong></h4>
-                    <p>Lorem ipsum dolor ipsum dolor.</p>
+                    <p>Nhận thông báo qua email khi chúng tôi cập nhật sản phẩm mới.</p>
                     <form class="newsletter">
-                        <input type="text" name="" placeholder="Type your email....">
+                        <input type="text" name="" placeholder="Email">
                         <input type="submit" value="SignUp" class="button">
                     </form>
                 </div>
@@ -36,16 +33,8 @@
     <div class="copyright-info">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <p>Copyright © 2012. Designed by <a href="#">Michael Lee</a>. All rights reseved</p>
-                </div>
-                <div class="col-md-6">
-                    <ul class="social-icon">
-                        <li><a href="#" class="linkedin"></a></li>
-                        <li><a href="#" class="google-plus"></a></li>
-                        <li><a href="#" class="twitter"></a></li>
-                        <li><a href="#" class="facebook"></a></li>
-                    </ul>
+                <div class="text-center w-100">
+                    <p>Designed by <a href="https://www.linkedin.com/in/taquocthao">Tạ Thảo</a></p>
                 </div>
             </div>
         </div>

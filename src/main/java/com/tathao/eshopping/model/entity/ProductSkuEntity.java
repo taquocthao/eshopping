@@ -21,6 +21,7 @@ public class ProductSkuEntity {
     private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
+    private String description;
 
     public ProductSkuEntity() {
     }
@@ -128,5 +129,13 @@ public class ProductSkuEntity {
 
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
