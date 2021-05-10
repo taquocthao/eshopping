@@ -7,7 +7,7 @@ import com.tathao.eshopping.model.entity.CustomerEntity;
 import com.tathao.eshopping.model.entity.ProductSkuEntity;
 import com.tathao.eshopping.model.entity.ShoppingCartEntity;
 import com.tathao.eshopping.service.ShoppingCartService;
-import com.tathao.eshopping.ultils.ShoppingCartBeanUtils;
+import com.tathao.eshopping.ultils.mapper.handle.ShoppingCartBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

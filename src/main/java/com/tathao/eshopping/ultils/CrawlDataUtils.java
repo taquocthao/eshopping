@@ -44,10 +44,10 @@ public class CrawlDataUtils {
             List<ProductSkuEntity> skuEntites = new ArrayList<ProductSkuEntity>();
             for(int i = 28; i <= 39; i++) {
                 ProductSkuEntity sku = new ProductSkuEntity();
-                sku.setBarCode(CommonUtils.generateCode());
+//                sku.setBarCode(CommonUtils.generateCode());
                 sku.setImage(product.getImage());
-                sku.setOriginalPrice(Double.parseDouble(priceString));
-                sku.setSalePrice(Double.parseDouble(priceString));
+//                sku.setOriginalPrice(Double.parseDouble(priceString));
+//                sku.setSalePrice(Double.parseDouble(priceString));
                 sku.setProduct(product);
                 sku.setSkuCode(CommonUtils.generateCode());
                 sku.setStatus(true);

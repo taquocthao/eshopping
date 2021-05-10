@@ -9,12 +9,10 @@ public class ProductSkuDTO implements Serializable {
     private String skuCode;
     private String title;
     private String image;
-    private Double originalPrice;
-    private Double salePrice;
     private String unit;
-    private String barCode;
     private Boolean status;
     private String description;
+    private List<ProductSkuDimensionDTO> skuDimensionDTOs;
 
     public Long getProductSkuId() {
         return productSkuId;
@@ -56,36 +54,12 @@ public class ProductSkuDTO implements Serializable {
         this.image = image;
     }
 
-    public Double getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(Double originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
-    public Double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(Double salePrice) {
-        this.salePrice = salePrice;
-    }
-
     public String getUnit() {
         return unit;
     }
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public String getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     public Boolean getStatus() {
@@ -102,5 +76,13 @@ public class ProductSkuDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<ProductSkuDimensionDTO> getSkuDimensionDTOs() {
+        return skuDimensionDTOs;
+    }
+
+    public void setSkuDimensionDTOs(List<ProductSkuDimensionDTO> skuDimensionDTOs) {
+        this.skuDimensionDTOs = skuDimensionDTOs;
     }
 }

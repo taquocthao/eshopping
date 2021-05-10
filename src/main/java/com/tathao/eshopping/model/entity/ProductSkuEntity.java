@@ -4,6 +4,7 @@ import com.tathao.eshopping.model.dto.ProductDTO;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "ProductSku")
@@ -14,14 +15,12 @@ public class ProductSkuEntity {
     private String skuCode;
     private String title;
     private String image;
-    private Double originalPrice;
-    private Double salePrice;
     private String unit;
-    private String barCode;
     private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private String description;
+    private List<ProductSkuDimensionEntity> skuDimensions;
 
     public ProductSkuEntity() {
     }
@@ -75,36 +74,12 @@ public class ProductSkuEntity {
         this.image = image;
     }
 
-    public Double getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(Double originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
-    public Double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(Double salePrice) {
-        this.salePrice = salePrice;
-    }
-
     public String getUnit() {
         return unit;
     }
 
     public void setUnit(String unit) {
         this.unit = unit;
-    }
-
-    public String getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(String barCode) {
-        this.barCode = barCode;
     }
 
     public Boolean getStatus() {
@@ -137,5 +112,14 @@ public class ProductSkuEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(mappedBy = "sku")
+    public List<ProductSkuDimensionEntity> getSkuDimensions() {
+        return skuDimensions;
+    }
+
+    public void setSkuDimensions(List<ProductSkuDimensionEntity> skuDimensions) {
+        this.skuDimensions = skuDimensions;
     }
 }

@@ -1,4 +1,4 @@
-package com.tathao.eshopping.ultils;
+package com.tathao.eshopping.ultils.mapper.handle;
 
 import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;

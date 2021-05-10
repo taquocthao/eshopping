@@ -15,3 +15,5 @@ create table ProductSku
 );
 
 alter table ProductSku add column Description text;
+
+alter table productsku drop originalprice, DROP saleprice, drop barcode;

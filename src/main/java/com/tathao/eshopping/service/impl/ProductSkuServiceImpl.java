@@ -4,7 +4,7 @@ import com.tathao.eshopping.dao.ProductSkuDAO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.model.entity.ProductSkuEntity;
 import com.tathao.eshopping.service.ProductSkuService;
-import com.tathao.eshopping.ultils.ProductSkuBeanUtils;
+import com.tathao.eshopping.ultils.mapper.handle.ProductSkuBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
