@@ -1903,7 +1903,7 @@ form.newsletter input[type="submit"]:hover {
     margin-bottom: 15px;
 }
 
-.border {
+.my-border {
     border-color: #e1e1e1;
 }
 
@@ -3297,5 +3297,9 @@ input.quantity-input:focus {
 
     .subtotal span, .grandtotal span {
         margin-bottom: 20px;
+    }
+
+    .star-checked {
+        color: orange;
     }
 }

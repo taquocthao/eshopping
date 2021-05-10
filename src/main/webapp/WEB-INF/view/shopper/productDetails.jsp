@@ -40,17 +40,38 @@
 
                         <%-- Review --%>
                         <p>
-                            <img alt="" src="<c:url value="/img/star.png"/>">
+                            <span class="fa fa-star star-checked"></span>
+                            <span class="fa fa-star star-checked"></span>
+                            <span class="fa fa-star star-checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
                             <a class="review_num" href="#">02 Review(s)</a>
                         </p>
-                        <hr class="border">
+                        <%--Avaiable--%>
+                        <p>
+                            <fmt:message key="label.availability"/>:
+                            <span class=" light-red">
+                                In Stock
+                            </span>
+                        </p>
+                        <hr class="my-border">
 
                         <%-- Price --%>
                         <div class="price">
                             <span><fmt:message key="label.price"/></span>
                             <span class="new_price"><fmt:formatNumber value="${product.referencePrice.lowestPrice}"/></span>
                         </div>
-                        <hr class="border">
+                        <hr class="my-border">
+
+<%--                        <div class="">--%>
+<%--                            <span><fmt:message key="label.color"/></span>--%>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${product.}"></c:when>--%>
+<%--                                <c:otherwise>--%>
+<%--                                    <span><fmt:message key="label.color.default"/></span>--%>
+<%--                                </c:otherwise>--%>
+<%--                            </c:choose>--%>
+<%--                        </div>--%>
 
                         <%--Quantity--%>
                         <div class="qty">
