@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class ShoppingCartDTO {
 
     private Long shoppingCartId;
-    private ProductSkuDTO sku;
+    private ProductSkuDimensionDTO skuDimension;
     private Integer quantity;
     private CustomerDTO customer;
     private Timestamp createdDate;
@@ -20,12 +20,12 @@ public class ShoppingCartDTO {
         this.shoppingCartId = shoppingCartId;
     }
 
-    public ProductSkuDTO getSku() {
-        return sku;
+    public ProductSkuDimensionDTO getSkuDimension() {
+        return skuDimension;
     }
 
-    public void setSku(ProductSkuDTO sku) {
-        this.sku = sku;
+    public void setSkuDimension(ProductSkuDimensionDTO skuDimension) {
+        this.skuDimension = skuDimension;
     }
 
     public Integer getQuantity() {

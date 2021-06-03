@@ -7,6 +7,7 @@ import java.util.List;
 public class CustomerDTO implements Serializable {
 
     private Long customerId;
+    private String code;
     private UserDTO user;
     private boolean active;
     private Timestamp birthday;
@@ -21,6 +22,14 @@ public class CustomerDTO implements Serializable {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public UserDTO getUser() {

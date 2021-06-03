@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class ShoppingCartEntity {
 
     private Long shoppingCartId;
-    private ProductSkuEntity sku;
+    private ProductSkuDimensionEntity skuDimension;
     private Integer quantity;
     private CustomerEntity customer;
     private Timestamp createdDate;
@@ -26,14 +26,14 @@ public class ShoppingCartEntity {
         this.shoppingCartId = shoppingCartId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "skuId", referencedColumnName = "productSkuId")
-    public ProductSkuEntity getSku() {
-        return sku;
+    @ManyToOne
+    @JoinColumn(name = "skuDimensionId", referencedColumnName = "ProductSkuDimensionId")
+    public ProductSkuDimensionEntity getSkuDimension() {
+        return skuDimension;
     }
 
-    public void setSku(ProductSkuEntity sku) {
-        this.sku = sku;
+    public void setSkuDimension(ProductSkuDimensionEntity skuDimension) {
+        this.skuDimension = skuDimension;
     }
 
     public Integer getQuantity() {

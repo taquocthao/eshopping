@@ -2,24 +2,24 @@ package com.tathao.eshopping.model.dto;
 
 public class ShoppingCartRequestDTO {
 
-    private Long skuId;
-    private Long customerId;
+    private String skuDimensionCode;
+    private String customerCode;
     private Integer quantity;
 
-    public Long getSkuId() {
-        return skuId;
+    public String getSkuDimensionCode() {
+        return skuDimensionCode;
     }
 
-    public void setSkuId(Long skuId) {
-        this.skuId = skuId;
+    public void setSkuDimensionCode(String skuDimensionCode) {
+        this.skuDimensionCode = skuDimensionCode;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public String getCustomerCode() {
+        return customerCode;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
     }
 
     public Integer getQuantity() {

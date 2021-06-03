@@ -1,10 +1,12 @@
 package com.tathao.eshopping.service.impl;
 
+import com.tathao.eshopping.dao.CustomerDAO;
+import com.tathao.eshopping.dao.ProductSkuDimensionDAO;
 import com.tathao.eshopping.dao.ShoppingCartDAO;
 import com.tathao.eshopping.model.dto.ShoppingCartDTO;
 import com.tathao.eshopping.model.dto.ShoppingCartRequestDTO;
 import com.tathao.eshopping.model.entity.CustomerEntity;
-import com.tathao.eshopping.model.entity.ProductSkuEntity;
+import com.tathao.eshopping.model.entity.ProductSkuDimensionEntity;
 import com.tathao.eshopping.model.entity.ShoppingCartEntity;
 import com.tathao.eshopping.service.ShoppingCartService;
 import com.tathao.eshopping.ultils.mapper.handle.ShoppingCartBeanUtils;
@@ -18,12 +20,16 @@ public class ShoppingCartRequestServiceImpl implements ShoppingCartService {
 
     @Autowired
     private ShoppingCartDAO shoppingCartDAO;
+    @Autowired
+    private CustomerDAO customerDAO;
+    @Autowired
+    private ProductSkuDimensionDAO productSkuDimensionDAO;
 
     @Override
     public ShoppingCartDTO addToCart(ShoppingCartRequestDTO requestDTO) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        ShoppingCartEntity shoppingCartEntity = shoppingCartDAO.findByCustomerAndSku(requestDTO.getCustomerId(), requestDTO.getSkuId());
+        ShoppingCartEntity shoppingCartEntity = shoppingCartDAO.findByCustomerAndSkuDimension(requestDTO.getCustomerCode(), requestDTO.getSkuDimensionCode());
 
         if(shoppingCartEntity != null) {
             shoppingCartEntity.setQuantity(shoppingCartEntity.getQuantity() + requestDTO.getQuantity());
@@ -34,8 +40,10 @@ public class ShoppingCartRequestServiceImpl implements ShoppingCartService {
             shoppingCartEntity.setCreatedDate(now);
             shoppingCartEntity.setModifiedDate(now);
             shoppingCartEntity.setQuantity(requestDTO.getQuantity());
-            shoppingCartEntity.setCustomer(new CustomerEntity(requestDTO.getCustomerId()));
-            shoppingCartEntity.setSku(new ProductSkuEntity(requestDTO.getSkuId()));
+            CustomerEntity customer = customerDAO.findEqualUnique("code", requestDTO.getCustomerCode());
+            shoppingCartEntity.setCustomer(customer);
+            ProductSkuDimensionEntity productSkuDimension = productSkuDimensionDAO.findEqualUnique("code", requestDTO.getSkuDimensionCode());
+            shoppingCartEntity.setSkuDimension(productSkuDimension);
             shoppingCartEntity = shoppingCartDAO.save(shoppingCartEntity);
         }
 

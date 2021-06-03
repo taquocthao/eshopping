@@ -623,7 +623,7 @@ nav.navbar {
     position: absolute;
     top: 35px;
     right: 24px;
-    width: 258px;
+    width: 350px;
     border: 1px solid #f7544a;
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -689,7 +689,7 @@ nav.navbar {
 
 .cart-item .right {
     float: right;
-    text-align: center;
+    /*text-align: center;*/
     width: auto;
     padding: 5px;
 }
@@ -1914,11 +1914,10 @@ form.newsletter input[type="submit"]:hover {
     vertical-align: middle;
 }
 
-.products-description .price .new_price {
+.products-description .new_price {
     font-size: 30px;
     color: #ff3636;
     font-weight: 500;
-    margin-left: 30px;
 }
 
 .products-description .new_price sup {
@@ -3303,3 +3302,88 @@ input.quantity-input:focus {
         color: orange;
     }
 }
+
+/*Spinner*/
+#preloader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #9370DB;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #BA55D3;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #FF00FF;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+/*product detail*/
+
+.btn-product-color, .btn-product-size {
+    border: 0.5px solid #E1E1E1;
+}
+
+.btn-product-color-choosen, .btn-product-size-choosen {
+    border: 0.5px solid #FE980F !important;
+}
+

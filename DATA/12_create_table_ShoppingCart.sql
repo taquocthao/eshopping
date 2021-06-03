@@ -7,3 +7,6 @@ create table ShoppingCart(
     ModifiedDate timestamptz not null,
     referenceBy Bigint not null references users(userid)
 );
+
+alter table ShoppingCart drop constraint shoppingcart_skuid_fkey;
+alter table ShoppingCart add column skuDimensionId bigint not null references productskudimension(productskudimensionid);

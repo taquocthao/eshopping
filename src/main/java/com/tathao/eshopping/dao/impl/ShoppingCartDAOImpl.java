@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ShoppingCartDAOImpl extends AbstractHibernateDAO<ShoppingCartEntity, Long>  implements ShoppingCartDAO {
+
     @Override
-    public ShoppingCartEntity findByCustomerAndSku(Long customerId, Long skuId) {
+    public ShoppingCartEntity findByCustomerAndSkuDimension(String customerCode, String skuDimensionCode) {
         return null;
     }
 }

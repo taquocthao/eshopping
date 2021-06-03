@@ -15,7 +15,7 @@ public class ShoppingCartBeanUtils {
         dto.setModifiedDate(entity.getModifiedDate());
         dto.setQuantity(entity.getQuantity());
         dto.setCustomer(CustomerBeanUtils.entity2DTO(entity.getCustomer()));
-        dto.setSku(ProductSkuBeanUtils.entity2DTO(entity.getSku()));
+        dto.setSkuDimension(ProductSkuDimensionBeanUtils.entity2DTO(entity.getSkuDimension()));
         return dto;
     }
 

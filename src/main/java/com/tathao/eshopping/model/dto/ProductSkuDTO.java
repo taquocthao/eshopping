@@ -14,6 +14,12 @@ public class ProductSkuDTO implements Serializable {
     private String description;
     private List<ProductSkuDimensionDTO> skuDimensionDTOs;
 
+    public ProductSkuDTO(){}
+
+    public ProductSkuDTO(Long productSkuId) {
+        this.productSkuId = productSkuId;
+    }
+
     public Long getProductSkuId() {
         return productSkuId;
     }
