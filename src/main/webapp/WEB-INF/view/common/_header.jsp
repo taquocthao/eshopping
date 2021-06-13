@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="./taglib.jsp" %>
+<%@ include file="taglib.jsp" %>
+
+<c:url var="searchProductUrl" value="/ajax/product/search.json"/>
 <!-- Footer -->
 <div class="header">
 	<div class="container">
@@ -19,7 +21,7 @@
 						<!--search product-->
 						<div class="col-md-7">
 							<div class="input-group">
-								<input class="form-control" placeholder="<fmt:message key="label.search"/>" type="search" name="searchProduct">
+								<input class="form-control" id="searchProduct" placeholder="<fmt:message key="label.search"/>" type="search" name="searchProduct">
 								<div class="input-group-append">
 									<a href="javascript:void(0)" class="btn btn-search-home">
 										<i class="fa fa-search" style="line-height: inherit"></i>
@@ -102,6 +104,7 @@
 </div>
 <script>
 	$(document).ready(function () {
+		console.log("hit");
 		$("ul.cart a.cart-icon").on("click", function (e) {
 			e.preventDefault();
 			let totalItem = $("span.cart_no").text();
@@ -111,5 +114,82 @@
 			}
 			window.location.href = $("#pathRequestShoppingCart").val();
 		});
+
+		eventSearchProduct();
 	});
+	function eventSearchProduct() {
+		$("#searchProduct").autocomplete({
+			minLength: 1,
+			maxShowItems: 5,
+			autofocus: true,
+			source: function (request, response) {
+				searchProducts(request.term.trim(), response);
+			},
+			open: function() {
+				$("ul.ui-menu").width($(this).innerWidth())
+			},
+			focus: function (event, ui) {
+				event.preventDefault();
+			},
+			select: function (event, ui) {
+				event.preventDefault();
+				showSpinner();
+				window.location.href = "/EShoping/product/"+ ui.item.catGroupName +"/"+ ui.item.code +"/detail.html";
+			},
+			close: function () {
+				$(this).select();
+			}
+		}).data("ui-autocomplete")._renderItem = function (ul, item) {
+			let row = '';
+			if(item.isExist) {
+				row = "<div class='item-product d-flex flex-wrap'> " +
+						   "<div class='item-left mr-3'>" +
+								"<div class='image-item'>" +
+								   "<img src='"+ item.image +"' class='img-fluid' width='50px' height='50px'/>" +
+							   "</div>" +
+						   "</div>" +
+						   "<div class='item-right'>" +
+							  "<div class='mb-2'><span class='title-item'> " + item.productName + "</span></div>" +
+						      "<div><span class='label-price'>" +
+						          formatNumber(item.referencePrice) +
+						      "</span></div>" +
+						   "</div>" +
+						"</div>";
+			} else {
+				row = "<div class='d-flex justify-content-center align-items-center'><div class='p-2'>" + item.label+ "</div></div>";
+			}
+			return $("<li class='item-product'>").append(row).appendTo(ul);
+		}
+	}
+
+
+	 function searchProducts(inputQuery, callback) {
+		$.ajax({
+			url: '${searchProductUrl}',
+			data: {
+				query: inputQuery,
+			},
+			method: "get",
+			contentType: "application/json"
+		}).done(function (response) {
+			console.log("response", response);
+			if(response.result) {
+				callback($.map(response.products, function (item) {
+					let price = item.referencePrice.highestPrice != null ?
+							item.referencePrice.lowestPrice + " - " + item.referencePrice.highestPrice : item.referencePrice.lowestPrice + "";
+					return {
+						productName : item.name,
+						image: item.image,
+						referencePrice: price,
+                        catGroupName: item.catGroup.name,
+                        code: item.code,
+						isExist : true
+					}
+				}));
+			} else {
+				callback([[{label: 'Không tìm thấy sản phẩm', isExist: false}]]);
+			}
+		});
+	}
+
 </script>

@@ -3387,3 +3387,57 @@ input.quantity-input:focus {
     border: 0.5px solid #FE980F !important;
 }
 
+/*auto complete*/
+ul.ui-autocomplete {
+    border-radius: 5px;
+    padding: 10px 0;
+    background-color: #ffffff;
+    z-index: 9999999 !important;
+}
+
+li.ui-menu-item {
+    overflow: hidden;
+    margin: 0;
+    padding: 10px 20px;
+    background-color: #fff;
+}
+
+.ui-state-active {
+    background: none !important;
+    background-color: #f1f2f2 !important;
+    border: none !important;
+    color: #333 !important;
+}
+
+.item-product .title-item {
+    font-size: 16px;
+}
+
+li.ui-menu-item {
+    padding: 0 !important;
+}
+
+.label-price {
+    font-size: 14px;
+    color: red;
+}
+
+/*----------------------------scroll bar----------------------------*/
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    padding: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    width: 8px;
+    border-radius: 4px;
+    background-color: #c1c1c1;
+    border: 1px solid #fff;
+}

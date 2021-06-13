@@ -2,17 +2,16 @@ package com.tathao.eshopping.config;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
@@ -23,10 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
-		stringConverter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "plain", UTF8)));
-		converters.add(stringConverter);
-	
+		converters.add(new MappingJackson2HttpMessageConverter());
 	}
 
 	@Override
@@ -47,5 +43,16 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		localeChangeInterceptor.setParamName("lang");
 		
 		registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*");
+	}
+
+	@Override
+	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+		configurer
+				.favorPathExtension(true)
+				.favorParameter(true)
+				.defaultContentType(MediaType.TEXT_HTML)
+				.mediaType("html", MediaType.TEXT_HTML)
+				.mediaType("xml", MediaType.APPLICATION_XML)
+				.mediaType("json", MediaType.APPLICATION_JSON);
 	}
 }

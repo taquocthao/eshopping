@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// No login required	
 		http.authorizeRequests()
-			.antMatchers( "/home.html","/login.html", "/logout.html", "/").permitAll();
+			.antMatchers( "/home.html","/login.html", "/logout.html", "/", "/ajax/*").permitAll();
 		
 		// admin
 		http.authorizeRequests()

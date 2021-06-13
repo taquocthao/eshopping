@@ -63,7 +63,7 @@ public class CatGroupDTO implements Serializable {
         this.description = description;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 

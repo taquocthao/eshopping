@@ -9,9 +9,9 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-  	<spring.version>5.2.5.RELEASE</spring.version>
+  	<spring.version>5.2.0.RELEASE</spring.version>
   	<spring.tiles.version>3.0.8</spring.tiles.version>
-  	<spring.security.version>5.2.5.RELEASE</spring.security.version>
+  	<spring.security.version>5.2.0.RELEASE</spring.security.version>
   	<hibernate.version>5.4.17.Final</hibernate.version>
   	<jstl.version>1.2</jstl.version>
   	<log4j.version>1.2.17</log4j.version>
@@ -19,6 +19,8 @@
   	<jdedis.version>3.1.0</jdedis.version>
 	  <io.jwt.version>0.9.1</io.jwt.version>
 	  <model.mapper.version>2.4.2</model.mapper.version>
+	  <jackson.version>2.12.3</jackson.version>
+	  <elasticsearch.version>4.0.9.RELEASE</elasticsearch.version>
   </properties>
   
   <dependencies>
@@ -80,12 +82,7 @@
         <artifactId>tiles-servlet</artifactId>
         <version>${spring.tiles.version}</version>
     </dependency>
-    <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-jsp</artifactId>
-        <version>${spring.tiles.version}</version>
-    </dependency>
-    
+
     <!-- Hibernate -->
 	<dependency>
 	    <groupId>org.hibernate</groupId>
@@ -145,35 +142,30 @@
 	</dependency>
 
 
-	<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 	<dependency>
 	  <groupId>org.jsoup</groupId>
 	  <artifactId>jsoup</artifactId>
 	  <version>1.13.1</version>
 	</dependency>
 
-	  <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
 	  <dependency>
 		  <groupId>org.springframework.security</groupId>
 		  <artifactId>spring-security-taglibs</artifactId>
 		  <version>${spring.security.version}</version>
 	  </dependency>
 
-	  <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
 	  <dependency>
 		  <groupId>org.springframework.data</groupId>
 		  <artifactId>spring-data-redis</artifactId>
 		  <version>${spring.data.redis.version}</version>
 	  </dependency>
 
-	  <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
 	  <dependency>
 		  <groupId>redis.clients</groupId>
 		  <artifactId>jedis</artifactId>
 		  <version>${jdedis.version}</version>
 	  </dependency>
 
-	  <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
 	  <dependency>
 		  <groupId>io.jsonwebtoken</groupId>
 		  <artifactId>jjwt</artifactId>
@@ -181,16 +173,56 @@
 	  </dependency>
 
 	  <!--Model mapper-->
-	  <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
 	  <dependency>
 		  <groupId>org.modelmapper</groupId>
 		  <artifactId>modelmapper</artifactId>
 		  <version>${model.mapper.version}</version>
 	  </dependency>
 
+	  <dependency>
+		  <groupId>com.fasterxml.jackson.core</groupId>
+		  <artifactId>jackson-core</artifactId>
+		  <version>${jackson.version}</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>com.fasterxml.jackson.core</groupId>
+		  <artifactId>jackson-databind</artifactId>
+		  <version>${jackson.version}</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.6.2</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>opensymphony</groupId>
+		  <artifactId>sitemesh</artifactId>
+		  <version>2.4.2</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.springframework.data</groupId>
+		  <artifactId>spring-data-elasticsearch</artifactId>
+		  <version>${elasticsearch.version}</version>
+	  </dependency>
+
+
   </dependencies>
-  
-  <build>
-    <finalName>EShoping</finalName>
-  </build>
+	<build>
+		<finalName>EShoping</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

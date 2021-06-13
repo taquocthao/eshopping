@@ -7,48 +7,27 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesView;
+import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @ComponentScan("com.tathao.eshopping.*")
 public class ApplicationContextConfig extends ApplicationObjectSupport{
 	
 	@Bean(name = "viewResolver")
-	public  UrlBasedViewResolver getViewResolver() {
-		UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
-		
-		viewResolver.setViewClass(TilesView.class);
-		viewResolver.setOrder(0);
-		
-		return viewResolver;
-	}
-	
-	@Bean(name = "viewResolver2")
-	public InternalResourceViewResolver getViewResolver2() {
+	public InternalResourceViewResolver getViewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		
+
+		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/view");
 		viewResolver.setSuffix(".jsp");
-		viewResolver.setOrder(2);
+		viewResolver.setOrder(1);
 		
 		return viewResolver;
 	}
 
-	@Bean(name = "tilesConfigurer")
-    public TilesConfigurer getTilesConfigurer() {
-        TilesConfigurer tilesConfigurer = new TilesConfigurer();
- 
-        tilesConfigurer.setDefinitions("/WEB-INF/tiles.xml");
- 
-        return tilesConfigurer;
-    }
-	
 	@Bean(name="messageSource")
 	public MessageSource getMessageResource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -71,5 +50,7 @@ public class ApplicationContextConfig extends ApplicationObjectSupport{
 	public ModelMapper getModelMapper() {
 		return new ModelMapper();
 	}
+
+
 	
 }

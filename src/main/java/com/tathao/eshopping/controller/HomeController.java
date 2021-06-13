@@ -34,7 +34,7 @@ public class HomeController extends ApplicationObjectSupport {
 
 	@RequestMapping(value = {"/home.html"})
 	public ModelAndView homePageShopper(@ModelAttribute(name = "item") ProductCommand command, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("homePageShopper");
+		ModelAndView mav = new ModelAndView("/shopper/index");
 		try {
 			Map<String, Object> properties = buidProperties4Search(command);
 			Object[] result = productService.findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), CoreConstants.MAX_PAGE_ITEMS);

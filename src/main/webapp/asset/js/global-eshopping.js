@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    $.fn.openIndexedDB(function (result) {
+    $.fn.openIndexedDB().then(result => {
         if(result) {
             renderCartItems();
             generateProductItems();
         }
-    });
+    })
 });
 
 
@@ -107,7 +107,7 @@ function formatNumber(number) {
 
 function generateProductItems(cartItems) {
     var table = $("div.table-product-items");
-    if(table) {
+    if(table && cartItems) {
         cartItems.forEach(function (item) {
             let row = renderRowItem(item);
             table.append(row);

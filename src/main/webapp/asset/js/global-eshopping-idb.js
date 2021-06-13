@@ -3,23 +3,29 @@
     const DB_NAME = 'eshopping';
     var myDB;
 
-    $.fn.openIndexedDB = function (callback) {
-        console.log("open db...");
-        let request = indexedDB.open(DB_NAME, DB_VERSION);
+    $.fn.openIndexedDB = function () {
+        return new Promise((resolve, reject) => {
+            console.log("open db...");
+            let request = indexedDB.open(DB_NAME, DB_VERSION);
 
-        request.onsuccess = function (event) {
-            myDB = event.target.result;
-            console.log("open db success");
-            callback(true);
-        }
+            request.onsuccess = function (event) {
+                myDB = event.target.result;
+                console.log("open db success");
+                resolve(true);
+            }
 
-        request.onupgradeneeded = function (event) {
-            myDB = event.target.result;
-            console.log("need to upgrade db...");
-            clearDataTable(function () {
-                createTables();
-            });
-        }
+            request.onupgradeneeded = function (event) {
+                myDB = event.target.result;
+                console.log("need to upgrade db...");
+                clearDataTable(function () {
+                    createTables();
+                });
+            }
+
+            request.onerror = function () {
+                reject(new Error('Open db fail'));
+            }
+        });
     }
     
     function createTables() {
