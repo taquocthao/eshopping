@@ -23,7 +23,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems) {
-        Object[] result = productDAO.findByProperties(properties, sortExpression, sortDirection, firstItem, maxPageItems, "1 = 1");
+        return this.findByProperties(properties, sortExpression, sortDirection, firstItem, maxPageItems, "1 = 1");
+    }
+
+    @Override
+    public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems, String whereClause) {
+        Object[] result = productDAO.findByProperties(properties, sortExpression, sortDirection, firstItem, maxPageItems, whereClause);
         List<ProductDTO> products = new ArrayList<ProductDTO>();
         for(ProductEntity entity : (List<ProductEntity>)result[1]) {
             products.add(ProductBeanUtils.entity2DTO(entity));

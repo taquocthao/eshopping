@@ -19,7 +19,8 @@ public class AbstractCommand<E> implements Serializable {
     private String tableId = "tableList";
     private int page = 1;
     protected E pojo;
-    
+    protected Integer maxPageItems;
+
 	public int getFirstItem() {
 		return firstItem;
 	}
@@ -115,5 +116,12 @@ public class AbstractCommand<E> implements Serializable {
 	public void setPojo(E pojo) {
 		this.pojo = pojo;
 	}
-	
+
+	public Integer getMaxPageItems() {
+		return maxPageItems;
+	}
+
+	public void setMaxPageItems(Integer maxPageItems) {
+		this.maxPageItems = maxPageItems;
+	}
 }

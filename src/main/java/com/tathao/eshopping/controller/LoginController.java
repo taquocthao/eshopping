@@ -18,16 +18,9 @@ public class LoginController extends ApplicationObjectSupport {
 	@Autowired
 	private UserGroupService userGroupService;
 
-	@RequestMapping(value = "/admin/login.html")
-	public ModelAndView login() {
-		ModelAndView mav = new ModelAndView("/login");
-		referenceData(mav);
-		return mav;
-	}
-
 	@RequestMapping(value = "/login.html")
 	public ModelAndView shopperLogin() {
-		ModelAndView mav = new ModelAndView("/shopper/login");
+		ModelAndView mav = new ModelAndView("/login");
 		return mav;
 	}
 

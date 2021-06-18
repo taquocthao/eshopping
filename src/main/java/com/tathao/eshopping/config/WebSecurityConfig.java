@@ -9,14 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.tathao.eshopping.service.impl.MyUserDetailsService;
+import com.tathao.eshopping.service.impl.MyUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private MyUserDetailsService userDetailsService;
+	private MyUserDetailsServiceImpl myUserDetailsServiceImpl;
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		auth.userDetailsService(myUserDetailsServiceImpl);
 	}
 	
 	@Override

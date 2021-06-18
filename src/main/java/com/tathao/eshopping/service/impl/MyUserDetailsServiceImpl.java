@@ -18,7 +18,7 @@ import com.tathao.eshopping.dao.UserDAO;
 import com.tathao.eshopping.model.entity.UserEntity;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UserDAO userDAO;

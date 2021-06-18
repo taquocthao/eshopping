@@ -6,8 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import com.tathao.eshopping.dao.UserDAO;
 import com.tathao.eshopping.model.entity.UserEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class UserDAOImpl extends AbstractHibernateDAO<UserEntity, Long> implements UserDAO {
 
 	public UserEntity findByUserName(String username) {

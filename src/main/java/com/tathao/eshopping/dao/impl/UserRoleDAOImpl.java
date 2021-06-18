@@ -3,11 +3,13 @@ package com.tathao.eshopping.dao.impl;
 import com.tathao.eshopping.dao.UserRoleDAO;
 import com.tathao.eshopping.model.entity.UserRoleEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserRoleDAOImpl extends AbstractHibernateDAO<UserRoleEntity, Long> implements UserRoleDAO {
 
     @Override

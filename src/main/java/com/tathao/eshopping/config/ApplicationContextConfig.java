@@ -12,6 +12,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.Locale;
+
 @Configuration
 @ComponentScan("com.tathao.eshopping.*")
 public class ApplicationContextConfig extends ApplicationObjectSupport{
@@ -41,6 +43,7 @@ public class ApplicationContextConfig extends ApplicationObjectSupport{
 	@Bean(name="localeResolver")
 	public LocaleResolver getLocalResolver() {
 		CookieLocaleResolver resolver = new CookieLocaleResolver();
+		resolver.setDefaultLocale(new Locale("vi"));
 		resolver.setCookieDomain("myAppLocaleCookie");
 		resolver.setCookieMaxAge(60*60);
 		return resolver;

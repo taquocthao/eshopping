@@ -286,24 +286,9 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus,
     padding-bottom: 30px;
 }
 
-/* HEADER STYLE */
-body {
-    background: url(../img/bg.jpg) center top no-repeat;
-    background-size: cover;
-    -webkit-background-size: cover;
-    background-attachment: fixed;
-}
-
-body .header {
-    background: url(../img/black_transparent50.png) left top repeat;
-    position: relative;
-    z-index: 100;
-    top: 0;
-}
-
 .header {
     position: relative;
-    background: #333333;
+    background: #242424;
 }
 
 .logo {
@@ -715,6 +700,10 @@ nav.navbar {
 
 .option-cart-item .checkout {
     float: right;
+}
+
+.page-title-box {
+    padding: 22px 0;
 }
 
 /*~~~~~~~~~~~ HOME PAGE SLIDER ~~~~~~~~~*/
@@ -3440,4 +3429,46 @@ li.ui-menu-item {
     border-radius: 4px;
     background-color: #c1c1c1;
     border: 1px solid #fff;
+}
+
+/*admin header*/
+.shop-address {
+    color: whitesmoke;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+ul.usermenu li.user-menu {
+    font-size: 20px;
+    color: #fff;
+}
+/*zoom image*/
+
+.zoom {
+    padding: 0px;
+    transition: transform .2s; /* Animation */
+    margin: -6px auto;
+}
+
+.zoom:hover {
+    transform: scale(3.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+/* override _table.css line 14*/
+.table > tbody > tr > td, .table > tfoot > tr > td, .table > thead > tr > td{
+    padding: 8px 4px !important;
+}
+
+.zoom > img{
+    max-width:40px;
+    max-height: 40px;
+    border: solid 1px #ebebeb;
+    padding: 1px;
+}
+
+.status-active {
+    font-size: 30px;
+    margin: 0 2px 0 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 10px;
 }
