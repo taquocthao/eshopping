@@ -11,3 +11,8 @@ create table CatGroup(
      CreatedBy BIGINT not null,
      ModifiedDate timestamptz not null
 );
+
+create unique index concurrently catgroup_code on catgroup(code);
+
+alter table catgroup add constraint unique_code unique using index catgroup_code;
+

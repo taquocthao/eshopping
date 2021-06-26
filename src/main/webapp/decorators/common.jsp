@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/view/common/taglib.jsp" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
+<!doctype html>
 <html lang="vi">
 <head>
 	<title><decorator:title/></title>
@@ -14,7 +15,10 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/fc-3.3.3/fh-3.1.9/r-2.2.9/sc-2.0.4/datatables.min.css"/>
-
+	<!-- bootstrap-select -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+	<%--rich text editor - tinyMCE--%>
+	<script src="https://cdn.tiny.cloud/1/bcb0up0h9ehszn1e1zqnj5brm7kak6w0rzwll8e1khsltegs/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
 <body>
@@ -36,6 +40,8 @@
 	<script src="<c:url value="/js/jquery.ui.autocomplete.scroll.min.js"/>"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/fc-3.3.3/fh-3.1.9/r-2.2.9/sc-2.0.4/datatables.min.js"></script>
+	<!-- bootstrap-select -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 </body>
 </html>

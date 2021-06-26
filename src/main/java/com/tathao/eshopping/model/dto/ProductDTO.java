@@ -13,7 +13,7 @@ public class ProductDTO implements Serializable {
     private String name;
     private String image;
     private String description;
-    private boolean status;
+    private Boolean status;
     private Integer top;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
@@ -77,11 +77,11 @@ public class ProductDTO implements Serializable {
         this.description = description;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

@@ -13,7 +13,7 @@ public interface GenericDAO<T, ID extends Serializable> {
 	
 	public Class<T> getPersistentClass();
 	
-    public T findById(ID id, boolean lock);
+    public T findById(ID id);
 
     public T findEqualUnique(final String property, final Object value);
 

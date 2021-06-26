@@ -11,7 +11,7 @@ public class CatGroupDTO implements Serializable {
     private String name;
     private String image;
     private String description;
-    private boolean status;
+    private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
@@ -63,11 +63,11 @@ public class CatGroupDTO implements Serializable {
         this.description = description;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

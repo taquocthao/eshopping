@@ -5,7 +5,7 @@
 
 <div class="wrapper">
     <div class="container_fullwidth">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <%--Product details--%>
                 <div class="products-details">

@@ -1,17 +1,19 @@
 package com.tathao.eshopping.model.dto;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class ProductSkuDTO implements Serializable {
     private Long productSkuId;
     private ProductDTO product;
     private String skuCode;
-    private String title;
+    private String title; // color
     private String image;
     private String unit;
     private Boolean status;
     private String description;
+    private Timestamp createdDate;
     private List<ProductSkuDimensionDTO> skuDimensionDTOs;
 
     public ProductSkuDTO(){}
@@ -82,6 +84,14 @@ public class ProductSkuDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
     public List<ProductSkuDimensionDTO> getSkuDimensionDTOs() {

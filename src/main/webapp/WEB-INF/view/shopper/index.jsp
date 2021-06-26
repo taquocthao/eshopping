@@ -5,7 +5,7 @@
 <%@ page isELIgnored="false" %>
 
 <div class="container_fullwidth">
-	<div class="container">
+	<div class="container-fluid">
 		<form:form action="#" modelAttribute="item" >
 			<div class="hot-products">
 				<c:choose>

@@ -20,7 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:datasource-cfg.properties")
-@ComponentScan(basePackages = {"com.tathao.eshopping.service.impl", "com.tathao.eshopping.config"})
+@ComponentScan(basePackages = {"com.tathao.eshopping"})
 public class DataSourceInitializer {
 
 

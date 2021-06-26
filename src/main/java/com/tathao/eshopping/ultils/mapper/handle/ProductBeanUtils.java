@@ -20,7 +20,7 @@ public class ProductBeanUtils {
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setImage(dto.getImage());
         entity.setName(dto.getName());
-        entity.setStatus(dto.isStatus());
+        entity.setStatus(dto.getStatus());
         entity.setDescription(dto.getDescription());
         entity.setModifiedDate(dto.getModifiedDate());
         entity.setProductId(dto.getProductId());
@@ -44,7 +44,7 @@ public class ProductBeanUtils {
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setImage(entity.getImage());
         dto.setName(entity.getName());
-        dto.setStatus(entity.isStatus());
+        dto.setStatus(entity.getStatus());
         dto.setDescription(entity.getDescription());
         dto.setModifiedDate(entity.getModifiedDate());
         dto.setProductId(entity.getProductId());

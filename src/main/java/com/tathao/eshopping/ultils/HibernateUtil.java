@@ -135,6 +135,7 @@ public class HibernateUtil {
                 if (orderDirection != null && !"".equals(orderDirection)) {
                     orderByBuffer.append(orderDirection.equals("2") ? " asc" : " desc");
                 }
+                orderByBuffer.append(" nulls last ");
             }
 
             return new Object[]{buffer.toString(), orderByBuffer.toString()};
@@ -207,6 +208,7 @@ public class HibernateUtil {
                                 if (orderDirection != null && !"".equals(orderDirection)) {
                                     orderByBuffer.append(" " + (orderDirection.equals("2") ? "asc" : "desc"));
                                 }
+                                orderByBuffer.append(" nulls last ");
                             }
 
                             if (values.size() > 0) {

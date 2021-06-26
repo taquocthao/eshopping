@@ -19,6 +19,7 @@ public class ProductSkuBeanUtils {
         entity.setTitle(dto.getTitle());
         entity.setUnit(dto.getUnit());
         entity.setDescription(dto.getDescription());
+        entity.setCreatedDate(dto.getCreatedDate());
         entity.setSkuDimensions(dto.getSkuDimensionDTOs()
                 .stream()
                 .map(ProductSkuDimensionBeanUtils::dto2Entity)
@@ -40,6 +41,7 @@ public class ProductSkuBeanUtils {
         dto.setTitle(entity.getTitle());
         dto.setUnit(entity.getUnit());
         dto.setDescription(entity.getDescription());
+        dto.setCreatedDate(entity.getCreatedDate());
 
         dto.setSkuDimensionDTOs(entity.getSkuDimensions()
                 .stream()

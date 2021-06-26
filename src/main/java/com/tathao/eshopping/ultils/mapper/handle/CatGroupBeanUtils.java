@@ -12,7 +12,7 @@ public class CatGroupBeanUtils {
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setDescription(dto.getDescription());
         entity.setImage(dto.getImage());
-        entity.setStatus(dto.isStatus());
+        entity.setStatus(dto.getStatus());
         if(dto.getCatGroupId() != null) {
             CatGroupEntity parent = new CatGroupEntity();
             parent.setCatGroupId(dto.getCatGroupId());
@@ -24,6 +24,9 @@ public class CatGroupBeanUtils {
     }
 
     public static CatGroupDTO entity2DTO(CatGroupEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         CatGroupDTO dto = new CatGroupDTO();
         dto.setCatGroupId(entity.getCatGroupId());
         dto.setCode(entity.getCode());

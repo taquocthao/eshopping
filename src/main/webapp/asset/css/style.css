@@ -3472,3 +3472,19 @@ ul.usermenu li.user-menu {
     vertical-align: middle;
     line-height: 10px;
 }
+
+img.imageSizeThumb{
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.form-group.required .col-form-label:after {
+    content: "*";
+    color: red;
+    position: absolute;
+    margin-left: 4px;
+}
+
+.error {
+    color: #ff0000;
+}

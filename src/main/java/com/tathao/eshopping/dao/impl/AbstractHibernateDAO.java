@@ -59,21 +59,24 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 		return persistentClass;
 	}
 
-	public T findById(ID id, boolean lock) {
-		T entity = null;
-		getCurrentSession().get(persistentClass, id);
-		return entity;
+	public T findById(ID id) {
+		return getCurrentSession().get(persistentClass, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public T findEqualUnique(String property, Object value) {
-    	CriteriaBuilder criteriaBuilder = this.getCurrentSession().getCriteriaBuilder();
-    	CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.getPersistentClass());
-		Root<T> root = criteriaQuery.from(this.getPersistentClass());
-		criteriaQuery.select(root);
-		criteriaQuery.where(criteriaBuilder.equal(root.get(property), value));
-		Query query = this.getCurrentSession().createQuery(criteriaQuery);
-		return (T)query.getSingleResult();
+    	try {
+			CriteriaBuilder criteriaBuilder = this.getCurrentSession().getCriteriaBuilder();
+			CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.getPersistentClass());
+			Root<T> root = criteriaQuery.from(this.getPersistentClass());
+			criteriaQuery.select(root);
+			criteriaQuery.where(criteriaBuilder.equal(root.get(property), value));
+			Query query = this.getCurrentSession().createQuery(criteriaQuery);
+			return (T) query.getSingleResult();
+		} catch (Exception e) {
+    		e.printStackTrace();
+		}
+    	return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,28 +111,41 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 	}
 
 	public List<T> findProperty(String property, Object value) {
-		return null;
+		Query query = this.getCurrentSession().createQuery("SELECT u FROM " + getPersistentClass().getSimpleName() + " u WHERE u." + property + " = :property");
+		query.setParameter("property", value);
+		return query.getResultList();
 	}
 
 	public List<T> findProperty(String property, Object value, String sortExpression, String sortOrder) {
-		// TODO Auto-generated method stub
-		return null;
+    	StringBuilder sql = new StringBuilder();
+    	sql.append("FROM ").append(this.getPersistentClass().getSimpleName()).append(" u ");
+    	sql.append("WHERE u.").append(property).append(" = :property ");
+    	sql.append("ORDER BY u.").append(sortExpression).append(" ").append(sortOrder);
+
+    	Query query = this.getCurrentSession().createQuery(sql.toString());
+    	query.setParameter("property", value);
+
+		return query.getResultList();
 	}
 	
 	public T save(T entity) throws DataAccessException {
-		return null;
+    	this.getCurrentSession().persist(entity);
+    	return entity;
 	}
 
 	public T update(T entity) throws DataAccessException {
-		return null;
+		this.getCurrentSession().merge(entity);
+		return entity;
 	}
 
 	public T saveOrUpdate(T entity) throws DataAccessException {
-		return null;
+		this.getCurrentSession().saveOrUpdate(entity);
+		return entity;
 	}
 
 	public void delete(T entity) throws DataAccessException {
-		
+		this.getCurrentSession().delete(entity);
+		this.getCurrentSession().flush();
 	}
 
 	public void detach(T entity) {

@@ -132,6 +132,7 @@
 													<li><a href="<c:url value="/admin/order.html"/>">Quản lý đơn hàng</a></li>
 													<li><a href="javascript:void(0)">Quản lý khuyến mãi</a></li>
 													<li><a href="<c:url value="/admin/product.html"/>">Quản lý sản phẩm</a></li>
+													<li><a href="<c:url value="/admin/catgroup/list.html"/>">Quản lý danh mục sản phẩm</a></li>
 													<li><a href="javascript:void(0)">Quản lý khách hàng</a></li>
 													<li><a href="javascript:void(0)">Quản lý quà tặng</a></li>
 												</ul>

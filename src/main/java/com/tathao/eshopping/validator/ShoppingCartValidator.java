@@ -1,5 +1,6 @@
 package com.tathao.eshopping.validator;
 
+import com.tathao.eshopping.model.command.CatGroupCommand;
 import com.tathao.eshopping.model.dto.ShoppingCartRequestDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -10,7 +11,7 @@ public class ShoppingCartValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return CatGroupCommand.class.isAssignableFrom(aClass);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.tathao.eshopping.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.tathao.eshopping.model.command.ProductCommand;
+import com.tathao.eshopping.model.dto.CatGroupDTO;
 import com.tathao.eshopping.model.dto.ProductDTO;
+import com.tathao.eshopping.service.CatGroupService;
 import com.tathao.eshopping.service.ProductService;
 import com.tathao.eshopping.ultils.CoreConstants;
 import com.tathao.eshopping.ultils.RequestUtils;
@@ -25,6 +26,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CatGroupService catGroupService;
 
 
     @RequestMapping(value = "/product/{catGroup}/{productCode}/detail.html")
@@ -62,11 +65,36 @@ public class ProductController {
         ModelAndView mav = new ModelAndView("/admin/product/list");
         try {
             Map<String, Object> buildProperties = buildProperties4AdminSearch(request, command);
-            Object[] result = productService.findByProperties(buildProperties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getTotalItems());
+            StringBuilder whereClause = new StringBuilder("1 = 1");
+            if(command.getPojo() != null && command.getPojo().getStatus() != null) {
+                whereClause.append("AND A.status = ").append(command.getPojo().getStatus());
+            }
+            Object[] result = productService.findByProperties(buildProperties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getTotalItems(), whereClause.toString());
             command.setListResult((List<ProductDTO>) result[1]);
             command.setTotalItems(Integer.parseInt(result[0].toString()));
+            referenceData4Admin(mav);
         } catch (Exception e) {
             logger.error(e.getCause());
+        }
+        return mav;
+    }
+
+    @RequestMapping(value = "/admin/product/edit.html")
+    public ModelAndView edit(@ModelAttribute(value = CoreConstants.FORM_MODEL_KEY) ProductCommand command) {
+        ModelAndView mav = new ModelAndView("/admin/product/edit");
+        try {
+            ProductDTO pojo = command.getPojo();
+            String crudaction = command.getCrudaction();
+            if(!StringUtils.isEmpty(crudaction) && CoreConstants.FORM_ACTION_EDIT.equals(crudaction)) {
+
+            }
+            if(pojo != null && !StringUtils.isEmpty(pojo.getCode())) {
+                pojo = productService.findByCode(pojo.getCode());
+                command.setPojo(pojo);
+            }
+            referenceData4Admin(mav);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
         return mav;
     }
@@ -80,12 +108,17 @@ public class ProductController {
                 properties.put("code", dto.getCode().trim());
             }
             if (!StringUtils.isEmpty(dto.getName())) {
-                properties.put("name", dto.getName());
+                properties.put("name", dto.getName().trim());
             }
             if (dto.getCatGroup() != null && !StringUtils.isEmpty(dto.getCatGroup().getCode())) {
-                properties.put("catGroup.code", dto.getCatGroup().getCode());
+                properties.put("catGroup.code", dto.getCatGroup().getCode().trim());
             }
         }
         return properties;
+    }
+
+    private void referenceData4Admin(ModelAndView mav) {
+        List<CatGroupDTO> catGroups = catGroupService.findAll4Admin();
+        mav.addObject("catGroups", catGroups);
     }
 }
