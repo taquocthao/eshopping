@@ -7,4 +7,6 @@ import java.util.List;
 public interface CatGroupDAO extends GenericDAO<CatGroupEntity, Long> {
 
     List<CatGroupEntity> findParents();
+
+    Boolean updateStatus(List<Long> ids, Boolean status);
 }

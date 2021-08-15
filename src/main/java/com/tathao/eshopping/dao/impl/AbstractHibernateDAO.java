@@ -129,21 +129,25 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 	}
 	
 	public T save(T entity) throws DataAccessException {
+    	log.info("save " + getPersistentClass().getSimpleName() );
     	this.getCurrentSession().persist(entity);
     	return entity;
 	}
 
 	public T update(T entity) throws DataAccessException {
+		log.info("update " + getPersistentClass().getSimpleName() );
 		this.getCurrentSession().merge(entity);
 		return entity;
 	}
 
 	public T saveOrUpdate(T entity) throws DataAccessException {
+		log.info("save or update " + getPersistentClass().getSimpleName() );
 		this.getCurrentSession().saveOrUpdate(entity);
 		return entity;
 	}
 
 	public void delete(T entity) throws DataAccessException {
+		log.info("delete " + getPersistentClass().getSimpleName() );
 		this.getCurrentSession().delete(entity);
 		this.getCurrentSession().flush();
 	}

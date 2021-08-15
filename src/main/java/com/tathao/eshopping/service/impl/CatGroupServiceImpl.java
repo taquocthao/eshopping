@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -85,5 +86,14 @@ public class CatGroupServiceImpl implements CatGroupService {
             catGroupEntity= catGroupDAO.save(catGroupEntity);
         }
         return CatGroupBeanUtils.entity2DTO(catGroupEntity);
+    }
+
+    @Override
+    public Boolean updateStatus(List<Long> ids, Boolean status) {
+        Boolean result = false;
+        if(ids != null && ids.size() > 0) {
+            return catGroupDAO.updateStatus(ids, status);
+        }
+        return result;
     }
 }

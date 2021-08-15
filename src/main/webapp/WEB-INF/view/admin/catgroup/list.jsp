@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="../../common/taglib.jsp"%>
+<%@ page trimDirectiveWhitespaces="true" %>
 
 <c:url var="formListUrl" value="/admin/catgroup/list.html"/>
 <c:url var="catGroupEditUrl" value="/admin/catgroup/edit.html"/>
+<c:url var="ajaxActiveCatGroupUrl" value="/ajax/admin/catgroup/active.html"/>
+<c:url var="ajaxExportCatGroupUrl" value="/ajax/admin/catgroup/export.html"/>
 
 <div class="container-fluid">
     <!-- Page-Title -->
@@ -36,6 +39,7 @@
                     </c:if>
 
                     <form:form modelAttribute="items" action="${formListUrl}" id="listForm">
+                        <form:hidden path="crudaction" id="crudaction"/>
                         <%--search--%>
                         <div class="search-filter">
                             <div class="form-group row">
@@ -80,17 +84,17 @@
                                     &nbsp;<fmt:message key="label.button.import.catgroup"/>
                                 </button>&nbsp;
                                 <!--Export catgroup-->
-                                <button class="btn btn-sm btn-primary waves-effect waves-light">
+                                <button class="btn btn-sm btn-primary waves-effect waves-light" id="btnExport">
                                     <i class="fa fa-file"></i>
                                     &nbsp;<fmt:message key="label.button.export.catgroup"/>
                                 </button>&nbsp;
-                                <!--Active product-->
-                                <button class="btn btn-sm btn-success waves-effect waves-light">
+                                <!--Active catgroup-->
+                                <button class="btn btn-sm btn-success waves-effect waves-light" id="btnActive">
                                     <i class="fa fa-check"></i>
                                     &nbsp;<fmt:message key="label.button.active"/>
                                 </button>&nbsp;
-                                <!--Deactive product-->
-                                <button class="btn btn-sm btn-danger waves-effect waves-light">
+                                <!--Deactive catgroup-->
+                                <button class="btn btn-sm btn-danger waves-effect waves-light" id="btnDeActive">
                                     <i class="fa fa-ban"></i>
                                     &nbsp;<fmt:message key="label.button.deactive"/>
                                 </button>
@@ -106,13 +110,18 @@
                                                    id="tableList" excludedParams="checkList"
                                                    pagesize="${items.maxPageItems}" export="false"
                                                    class="table table-striped table-bordered dataTable no-footer">
-                                        <display:column title="" class="text-center table_menu_items"
-                                                        headerClass="white_text text-center" style="width:2%" >
-                                            <fieldset class='custom-control text-center'>
-                                                <input type="checkbox" name="checkList" id="checkbox${tableList_rowNum}">
-                                                <label for="checkbox${tableList_rowNum}" class="">&nbsp;</label>
+
+                                        <display:column title="<fieldset class='custom-control custom-checkbox'>
+                                                <input type='checkbox' id='checkAll' class='custom-control-input'>
+                                                <label for='checkAll' class='custom-control-label'>&nbsp;</label>
+                                            </fieldset>" class="text-center table_menu_items" headerClass="white_text " style="width:2%">
+                                            <fieldset class='custom-control custom-checkbox'>
+                                                <input type="checkbox" name="checkList" id="checkbox${tableList_rowNum}"
+                                                       value="${tableList.catGroupId}" class="checkbox_user custom-control-input">
+                                                <label for="checkbox${tableList_rowNum}" class="custom-control-label">&nbsp;</label>
                                             </fieldset>
                                         </display:column>
+
                                         <%--code--%>
                                         <display:column headerClass="sorting" class="text-center"
                                                         property="code"
@@ -175,9 +184,62 @@
 </div>
 <script>
     $(document).ready(function () {
+        // reset crudaction
+        $("#crudaction").val('');
+
+        // event search
         $("#btnSearch").click(function (e) {
             e.preventDefault();
             $("#listForm").submit();
-        })
+        });
+
+        // event active
+        $("#btnActive").click(function (e) {
+            e.preventDefault();
+            let checkedBox = $("input[name='checkList']:checked");
+            if(checkedBox.length <= 0) {
+                bootbox.alert("<fmt:message key="message.warning.choose.catgroup"/>");
+                return;
+            }
+            bootbox.confirm('<fmt:message key="message.confirm.active"/>', function (ok) {
+                if(ok) {
+                    $("#crudaction").val("active");
+                    $("#listForm").submit();
+                }
+            });
+
+        });
+
+        // event deActive
+        $("#btnDeActive").click(function (e) {
+            e.preventDefault();
+            let checkedBox = $("input[name='checkList']:checked");
+            if(checkedBox.length <= 0) {
+                bootbox.alert("<fmt:message key="message.warning.choose.catgroup"/>");
+                return;
+            }
+            bootbox.confirm('<fmt:message key="message.confirm.deactive"/>', function (ok) {
+                if(ok) {
+                    $("#crudaction").val("deactive");
+                    $("#listForm").submit();
+                }
+            });
+
+        });
+
+        $('#btnExport').click(function (e) {
+            e.preventDefault();
+            showSpinner()
+            $.ajax({
+                url: '${ajaxExportCatGroupUrl}',
+                method: 'POST',
+                data: $('#listForm').serialize(),
+            }).done(function (result) {
+                hideSpinner();
+                console.log(result);
+                window.location.replace = result;
+            })
+        });
+
     })
 </script>

@@ -16,4 +16,15 @@ public class CatGroupDAOImpl extends AbstractHibernateDAO<CatGroupEntity, Long> 
         Query query = getCurrentSession().createQuery(sql.toString());
         return query.getResultList();
     }
+
+    @Override
+    public Boolean updateStatus(List<Long> ids, Boolean status) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("update {h-schema}catgroup set status = :status ");
+        sql.append("where catgroupid in (:ids)");
+        Query query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter("ids", ids);
+        query.setParameter("status", status);
+        return query.executeUpdate() > 0;
+    }
 }

@@ -11,6 +11,8 @@ public class CoreConstants {
 	public static final String FORM_ACTION_ADD = "add";
 	public static final String FORM_ACTION_EDIT = "edit";
 	public static final String FORM_ACTION_DELETE = "delete";
+	public static final String FORM_ACTION_ACTIVE = "active";
+	public static final String FORM_ACTION_DEACTIVE = "deactive";
 	public static final String ALTER = "alert";
 	public static final String TYPE_SUCCESS = "success";
 	public static final String TYPE_DANGER = "danger";

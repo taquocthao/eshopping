@@ -22,6 +22,7 @@
 	  <jackson.version>2.12.3</jackson.version>
 	  <elasticsearch.version>4.0.9.RELEASE</elasticsearch.version>
 	  <displaytag.version>1.2</displaytag.version>
+	  <poi.version>4.1.2</poi.version>
   </properties>
   
   <dependencies>
@@ -215,6 +216,19 @@
 		  <artifactId>displaytag</artifactId>
 		  <version>${displaytag.version}</version>
 	  </dependency>
+
+	  <!--apache poi-->
+	  <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi</artifactId>
+		  <version>${poi.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-ooxml</artifactId>
+		  <version>${poi.version}</version>
+	  </dependency>
+
 
 
   </dependencies>

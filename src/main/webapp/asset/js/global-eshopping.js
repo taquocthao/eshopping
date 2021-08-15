@@ -4,7 +4,9 @@ $(document).ready(function () {
             renderCartItems();
             generateProductItems();
         }
-    })
+    });
+    bindEvent2CheckAllAndCheckBoxRelate2CheckAll("checkAll");
+    initCheckBoxCheckAll("checkAll");
 });
 
 
@@ -134,4 +136,46 @@ function renderRowItem(item) {
         "<div class='col-1'><span>"+ $("#labelDelete").val() +"</span></div>" +
         "</div>" +
         "</div>"
+}
+
+function initCheckBoxCheckAll(id){
+    if($("#" + id).closest('table').find('tbody input[type="checkbox"]:checked').length > 0){
+        if($("#" + id).closest('table').find('tbody input[type="checkbox"]:checked').length
+            == $("#" + id).closest('table').find('tbody input[type="checkbox"]').length) {
+            $("#" + id).prop('checked', true);
+        } else {
+            $("#" + id).prop('checked', false);
+        }
+    }else{
+        $("#" + id).prop('checked', false);
+    }
+}
+
+function bindEvent2CheckAllAndCheckBoxRelate2CheckAll(id){
+    bindEventCheckAllCheckBox(id);
+    bindEventEnableOrDisableCheckBoxAll(id);
+}
+
+
+function bindEventEnableOrDisableCheckBoxAll(id){
+    $("#" + id).closest("table").find("tbody input[type=checkbox]").each(function(){
+        var tableObj =  $("#" + id).closest("table");
+        $(this).on('change', function () {
+            if($(tableObj).find("tbody input[type=checkbox]:checked").length == $(tableObj).find("tbody input[type=checkbox]").length){
+                $('#' + id).prop('checked', true);
+            }else{
+                $('#' + id).prop('checked', false);
+            }
+        });
+    });
+}
+
+function bindEventCheckAllCheckBox(id){
+    $("#" + id).change(function() {
+        if(this.checked) {
+            $(this).closest("table").find("input[type=checkbox]").prop('checked', true);
+        }else{
+            $(this).closest("table").find("input[type=checkbox]").prop('checked', false);
+        }
+    });
 }

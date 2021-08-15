@@ -16,4 +16,6 @@ public interface CatGroupService {
     List<CatGroupDTO> findParentCatGroups();
 
     CatGroupDTO saveOrUpdate(CatGroupDTO catGroup);
+
+    Boolean updateStatus(List<Long> ids, Boolean status);
 }

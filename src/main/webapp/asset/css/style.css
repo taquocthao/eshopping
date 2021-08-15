@@ -3488,3 +3488,10 @@ img.imageSizeThumb{
 .error {
     color: #ff0000;
 }
+
+table thead {
+    text-align: center;
+}
+.red-text {
+    color: #ff0000;
+}

@@ -21,11 +21,6 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 
 	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new MappingJackson2HttpMessageConverter());
-	}
-
-	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/asset/css/");
 		registry.addResourceHandler("/img/**").addResourceLocations("/asset/images/");
@@ -45,14 +40,14 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*");
 	}
 
-	@Override
-	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		configurer
-				.favorPathExtension(true)
-				.favorParameter(true)
-				.defaultContentType(MediaType.TEXT_HTML)
-				.mediaType("html", MediaType.TEXT_HTML)
-				.mediaType("xml", MediaType.APPLICATION_XML)
-				.mediaType("json", MediaType.APPLICATION_JSON);
-	}
+//	@Override
+//	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+//		configurer
+//				.favorPathExtension(true)
+//				.favorParameter(true)
+//				.defaultContentType(MediaType.TEXT_HTML)
+//				.mediaType("html", MediaType.TEXT_HTML)
+//				.mediaType("xml", MediaType.APPLICATION_XML)
+//				.mediaType("json", MediaType.APPLICATION_JSON);
+//	}
 }
