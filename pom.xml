@@ -23,6 +23,7 @@
 	  <elasticsearch.version>4.0.9.RELEASE</elasticsearch.version>
 	  <displaytag.version>1.2</displaytag.version>
 	  <poi.version>4.1.2</poi.version>
+	  <socket.version>5.2.16.RELEASE</socket.version>
   </properties>
   
   <dependencies>
@@ -228,6 +229,21 @@
 		  <artifactId>poi-ooxml</artifactId>
 		  <version>${poi.version}</version>
 	  </dependency>
+
+	  <!--websocket-->
+	  <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-websocket</artifactId>
+		  <version>${socket.version}</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-messaging</artifactId>
+		  <version>${socket.version}</version>
+	  </dependency>
+
+
 
 
 

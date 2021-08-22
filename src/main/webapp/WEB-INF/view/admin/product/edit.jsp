@@ -76,7 +76,7 @@
                             <label class="col-sm-2 col-form-label"><fmt:message key="label.status"/></label>
                             <div class="col-sm-10 col-form-label">
                                 <label>
-                                    <input type="radio" name="pojo.status" value="true" <c:if test="${item.pojo.status == true}">checked</c:if>>
+                                    <input type="radio" name="pojo.status" value="true" <c:if test="${item.pojo.status == true || item.pojo.status == null}">checked</c:if>>
                                     &nbsp;<fmt:message key="label.active"/>
                                 </label>&nbsp;&nbsp;&nbsp;
                                 <label>
@@ -126,11 +126,11 @@
                                 <table class="table text-center" id="tableProductSku">
                                     <thead>
                                         <tr>
-                                            <td><fmt:message key="label.image"/></td>
-                                            <td><fmt:message key="label.sku.name"/></td>
-                                            <td><fmt:message key="label.sku.code"/></td>
-                                            <td><fmt:message key="label.status"/> </td>
-                                            <td><fmt:message key="label.action"/> </td>
+                                            <td style="width: 20%"><fmt:message key="label.image"/></td>
+                                            <td style="width: 30%"><fmt:message key="label.sku.name"/></td>
+                                            <td style="width: 20%"><fmt:message key="label.sku.code"/></td>
+                                            <td style="width: 20%"><fmt:message key="label.status"/> </td>
+                                            <td style="width: 10%"><fmt:message key="label.action"/></td>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -141,18 +141,18 @@
                                             <table class="table text-center">
                                                 <tbody>
                                                     <tr>
-                                                        <td>
+                                                        <td style="width: 20%">
                                                             <div>
                                                                 <img src="${sku.image}" class="img-fluid imageSizeThumb" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
                                                             </div>
                                                         </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" value="${sku.title}">
+                                                        <td style="width: 30%">
+                                                            <input class="form-control" type="text" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
                                                         </td>
-                                                        <td>
-                                                            <input class="form-control" type="text" value="${sku.skuCode}">
+                                                        <td style="width: 20%">
+                                                            <input class="form-control" type="text" value="${sku.skuCode}" readonly>
                                                         </td>
-                                                        <td>
+                                                        <td style="width: 20%">
                                                             <label>
                                                                 <input type="radio" name="pojo.sku[${stt.index}].status" value="true" <c:if test="${item.pojo.sku[stt.index].status == true}">checked</c:if>>
                                                                 &nbsp;<fmt:message key="label.active"/>
@@ -164,79 +164,74 @@
                                                         </td>
                                                         <td>
                                                             <%-- delete --%>
-                                                            <a href="javascript:void(0)" class="red-text" data-toggle="tooltip"
+                                                            <a href="javascript:void(0)" class="red-text btnDeleteSku" data-toggle="tooltip"
                                                                data-placement="top" title="<fmt:message key="label.delete"/>">
                                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                             </a>&nbsp;
                                                             <i class="separator"></i>&nbsp;
                                                             <%-- add --%>
-                                                            <a href="javascript:void(0)" id="btnAddSkuDimension" class="text-primary"
-                                                               data-toggle="tooltip" data-placement="top" title="<fmt:message key="label.add"/>">
+                                                            <a href="javascript:void(0)"  class="text-primary btnAddSkuDimension"
+                                                               data-toggle="tooltip" data-placement="top" title="<fmt:message key="label.add.product-dimension"/>">
                                                                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                                             </a>
                                                         </td>
+
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table class="table table-bordered text-center">
-                                            <thead>
-                                                <tr>
-                                                    <td style="width: 5%">STT</td>
-                                                    <td style="width: 15%"><fmt:message key="label.product.dimension.code"/></td>
-                                                    <td style="width: 10%"><fmt:message key="label.size"/></td>
-                                                    <td style="width: 10%"><fmt:message key="label.width"/></td>
-                                                    <td style="width: 10%"><fmt:message key="label.height"/></td>
-                                                    <td style="width: 15%" class="text-right"><fmt:message key="label.original-price"/></td>
-                                                    <td style="width: 15%" class="text-right"><fmt:message key="label.sale-price"/></td>
-                                                    <td style="width: 10%"><fmt:message key="label.action"/></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="${sku.skuDimensionDTOs}" var="skuDimension" varStatus="stt2">
+                                            <table class="table table-bordered text-center table-sku-dimension">
+                                                <thead>
                                                     <tr>
-                                                        <td>${stt2.index + 1}</td>
-                                                            <%-- Dimension code --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="${skuDimension.code}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].code" readonly>
-                                                        </td>
-                                                            <%-- Size --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="${skuDimension.size}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size">
-                                                        </td>
-                                                            <%-- width --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="${skuDimension.width}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].width">
-                                                        </td>
-                                                            <%-- height --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="${skuDimension.height}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].height">
-                                                        </td>
-                                                            <%-- original price --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
-                                                        </td>
-                                                            <%-- sale price --%>
-                                                        <td>
-                                                            <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
-                                                        </td>
-                                                            <%-- action --%>
-                                                        <td>
-                                                                <%-- delete --%>
-                                                            <a href="javascript:void(0)" class="red-text" data-toggle="tooltip"
-                                                               data-placement="top" title="<fmt:message key="label.delete"/>">
-                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                            </a>&nbsp;
-                                                            <i class="separator"></i>&nbsp;
-                                                                <%-- add --%>
-                                                            <a href="javascript:void(0)" id="btnAddSkuDimension" class="text-primary"
-                                                               data-toggle="tooltip" data-placement="top" title="<fmt:message key="label.add"/>">
-                                                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-                                                            </a>
-                                                        </td>
+                                                        <td style="width: 5%">STT</td>
+                                                        <td style="width: 15%"><fmt:message key="label.product.dimension.code"/></td>
+                                                        <td style="width: 10%"><fmt:message key="label.size"/></td>
+                                                        <td style="width: 10%"><fmt:message key="label.width"/></td>
+                                                        <td style="width: 10%"><fmt:message key="label.height"/></td>
+                                                        <td style="width: 15%" class="text-right"><fmt:message key="label.original-price"/></td>
+                                                        <td style="width: 15%" class="text-right"><fmt:message key="label.sale-price"/></td>
+                                                        <td style="width: 10%"><fmt:message key="label.action"/></td>
                                                     </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="${sku.skuDimensionDTOs}" var="skuDimension" varStatus="stt2">
+                                                        <tr>
+                                                            <td>${stt2.index + 1}</td>
+                                                                <%-- Dimension code --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="${skuDimension.code}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].code" readonly>
+                                                            </td>
+                                                                <%-- Size --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="${skuDimension.size}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size">
+                                                            </td>
+                                                                <%-- width --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="${skuDimension.width}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].width">
+                                                            </td>
+                                                                <%-- height --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="${skuDimension.height}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].height">
+                                                            </td>
+                                                                <%-- original price --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
+                                                            </td>
+                                                                <%-- sale price --%>
+                                                            <td>
+                                                                <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
+                                                            </td>
+                                                                <%-- action --%>
+                                                            <td>
+                                                                <%-- delete --%>
+                                                                <a href="javascript:void(0)" class="red-text" data-toggle="tooltip"
+                                                                   data-placement="top" title="<fmt:message key="label.delete"/>">
+                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                </a>&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -280,6 +275,15 @@
     </form:form>
 </div>
 
+<div>
+    <input type="hidden" id="labelActive" value="<fmt:message key="label.active"/>"/>
+    <input type="hidden" id="labelDeactive" value="<fmt:message key="label.deactive"/>"/>
+    <input type="hidden" id="labelDelete" value="<fmt:message key="label.delete"/>"/>
+    <input type="hidden" id="labelAddDimension" value="<fmt:message key="label.add.product-dimension"/>"/>
+    <input type="hidden" id="labelInputColorProduct" value="<fmt:message key="label.product.sku.input.place-holder"/>"/>
+    <input type="hidden" id="defaultImage" value="<c:url value="/img/default-placeholder.png"/>"/>
+</div>
+
 <script>
     $(document).ready(function () {
         initRichTextEditor();
@@ -311,7 +315,7 @@
     function bindEventButtons() {
         $("#buttonUploadImage").on("click", function (e) {
             $("#buttonUploadHidden").click();
-        })
+        });
 
         $("#buttonUploadHidden").on("change", function (ev) {
             ev.stopPropagation();
@@ -326,42 +330,131 @@
                 }
                 reader.readAsDataURL(fileElements[0]);
             }
-        })
+        });
+        bindEventDeleteSku();
+        bindEventAddSkuDimension();
     }
 
     function addSku() {
+        var countSku = $(".table-sku").length;
+        if(!countSku) {
+            countSku = 0;
+        }
         let item = " <div class='table-sku'>" +
             "           <table class='table text-center'>" +
             "               <tr>" +
-            "                   <td>" +
+            "                   <td style='width: 20%;'>" +
             "                       <div>" +
-            "                           <img src='/asset/images/default-placeholder.png' class='img-fluid imageSizeThumb' />" +
+            "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb' />" +
             "                       </div>" +
             "                   </td>" +
-            "                   <td>" +
-            "                       <input class='form-control' type='text'>" +
+            "                   <td style='width: 30%;'>" +
+            "                       <input class='form-control' type='text' placeholder='"+ $("#labelInputColorProduct").val() +"'>" +
             "                   </td>" +
-            "                   <td>" +
-            "                       <input class='form-control' type='text'" +
+            "                   <td style='width: 20%;'>" +
+            "                       <input class='form-control' type='text' readonly>" +
             "                   </td>" +
-            "                   <td>" +
+            "                   <td style='width: 20%;'>" +
             "                   <label>" +
-            "                      <input type='radio' value='true' checked>&nbsp;Active"  +
+            "                      <input type='radio' value='true' name='pojo.sku["+ countSku +"].status' checked>&nbsp;"  + $("#labelActive").val() +
             "                    </label>&nbsp;&nbsp;&nbsp;" +
             "                    <label>" +
-            "                       <input type='radio' value='false'>&nbsp;Deactive" +
-            "                      " +
+            "                       <input type='radio' value='false' name='pojo.sku["+ countSku +"].status'>&nbsp;" + $("#labelDeactive").val() +
             "                     </label>&nbsp;&nbsp;&nbsp;" +
+            "                   </td>" +
+            "                   <td style='width: 10%;'>" +
+            "                       <a href='javascript:void(0)' class='red-text btnDeleteSku' data-toggle='tooltip'" +
+            "                           data-placement='top' title='"+ $("#labelDelete").val() +"'>" +
+            "                               <i class='fa fa-trash-o' aria-hidden='true'></i>" +
+            "                       </a>&nbsp;" +
+            "                       <i class='separator'></i>&nbsp;" +
+            "                       <a href='javascript:void(0)' class='text-primary btnAddSkuDimension' data-toggle='tooltip'" +
+            "                           data-placement='top' title='"+ $("#labelAddDimension").val() +"'>" +
+            "                           <i class='fa fa-plus' aria-hidden='true'></i>" +
+            "                     </a>&nbsp;" +
             "                   </td>" +
             "               </tr>" +
             "           </table>" +
             "       </div>";
 
         $(".sku-item").append(item);
+        bindEventDeleteSku();
+        bindEventAddSkuDimension();
     }
 
-    function addSkuDimension() {
+    function bindEventAddSkuDimension() {
+        $(".btnAddSkuDimension").click(function (e) {
+            addSkuDimension(e);
+        })
+    }
 
+    function bindEventDeleteSku() {
+        $(".btnDeleteSku").unbind("click").on("click", function (e) {
+            e.preventDefault();
+            deleteSku(e);
+        })
+    }
+
+    function deleteSku(e) {
+        bootbox.confirm("<fmt:message key="label.confirm.delete"/>", function (yes) {
+            if(yes) {
+                console.log(e);
+                e.target.closest(".table-sku").remove();
+            }
+        })
+    }
+
+    function addSkuDimension(e) {
+        console.log("hit");
+        let item = "<tr>" +
+            "           <td>" + 1 + "</td>" +
+            "           <td>" +
+            "                <input type='text' class='form-control' name='' readonly>" +
+            "           </td>" +
+            "           <td>" +
+            "                <input type='text' class='form-control' name=''" +
+            "           </td>" +
+            "           <td>" +
+            "                <input type='text' class='form-control' name=''" +
+            "           </td>" +
+            "           <td>" +
+            "               <input type='text' class='form-control' name=''" +
+            "           </td>" +
+            "           <td>" +
+            "               <input type='text' class='form-control' name=''" +
+            "           </td>" +
+            "           <td>" +
+            "               <input type='text' class='form-control' name=''" +
+            "           </td>" +
+            "           <td>" +
+            "               <a href='javascript:void(0)' class='red-text' data-toggle='tooltip'" +
+            "                  data-placement='top' title='"+ $("#labelDelete").val() +"'>" +
+            "                    <i class='fa fa-trash-o' aria-hidden='true'></i>" +
+            "               </a>&nbsp;" +
+            "           </td>" +
+            "       </tr>";
+        let table_sku = e.target.closest(".table-sku");
+        let table_sku_dimension = $(table_sku).find("div.table-sku-dimension");
+        if(!table_sku_dimension) {
+            let tableTemp = "<table class='table table-bordered text-center table-sku-dimension'>" +
+                "         <thead>" +
+                "               <tr>" +
+                "                   <td style='width: 5%'>STT</td>" +
+                "                   <td style='width: 15%'>code</td>" +
+                "                   <td style='width: 10%'>size</td>" +
+                "                   <td style='width: 10%'>width</td>" +
+                "                   <td style='width: 10%'>height</td>" +
+                "                   <td style='width: 15%' class='text-right'>original-price</td>" +
+                "                   <td style='width: 15%' class='text-right'>sale price</td>" +
+                "                   <td style='width: 10%'>action</td>" +
+                "                </tr>" +
+                "         </thead>" +
+                "         <tbody></tbody>" +
+                "</table>";
+
+            table_sku_dimension = $(table_sku).append(tableTemp);
+        }
+        $(table_sku_dimension).append(item);
     }
 
 </script>

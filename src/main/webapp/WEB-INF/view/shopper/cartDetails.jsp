@@ -78,6 +78,7 @@
             </div>
             <div class="hidden">
                 <input type="hidden" id="labelDelete" value="<fmt:message key='label.delete'/>">
+                <input type="hidden" id="defaultImage" value="<c:url value="/img/default-placeholder.png"/>"/>
             </div>
         </div>
     </div>

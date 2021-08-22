@@ -19,6 +19,8 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 	<%--rich text editor - tinyMCE--%>
 	<script src="https://cdn.tiny.cloud/1/bcb0up0h9ehszn1e1zqnj5brm7kak6w0rzwll8e1khsltegs/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+	<%--socket--%>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>

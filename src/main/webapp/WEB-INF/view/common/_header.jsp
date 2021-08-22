@@ -14,9 +14,19 @@
 			<%--logo--%>
 			<div class="col-md-2 col-sm-2">
 				<div class="logo">
-					<a href="<c:url value="/home.html"/>">
-						<img src="<c:url value="/img/logo.png"/>" alt="Ú clothing">
-					</a>
+				<c:choose>
+					<c:when test="${role eq 'SHOPPER'}">
+						<a href="<c:url value="/home.html"/>">
+							<img src="<c:url value="/img/logo.png"/>" alt="Ú clothing">
+						</a>
+					</c:when>
+					<c:when test="${role eq 'ADMIN'}">
+						<a href="<c:url value="/admin/home.html"/>">
+							<img src="<c:url value="/img/logo.png"/>" alt="Ú clothing">
+						</a>
+					</c:when>
+				</c:choose>
+
 				</div>
 			</div>
 			<%--right menu--%>

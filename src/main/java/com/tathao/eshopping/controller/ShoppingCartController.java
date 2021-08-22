@@ -46,7 +46,7 @@ public class ShoppingCartController {
 
     @RequestMapping(value = "/shopping-cart/details.html")
     public ModelAndView cartDetails() {
-        ModelAndView mav = new ModelAndView("shoppingCartDetails");
+        ModelAndView mav = new ModelAndView("/shopper/cartDetails");
         return mav;
     }
 

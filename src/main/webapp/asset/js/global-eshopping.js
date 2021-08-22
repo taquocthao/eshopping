@@ -119,22 +119,32 @@ function generateProductItems(cartItems) {
 
 function renderRowItem(item) {
     return "<div class='cart-item-content'>" +
-        "<div class='row'>" +
-        "<div class='col-1'><input type='checkbox' class='form-control'></div>" +
-        "<div class='col-10'>" +
-        "<div class='row'>" +
-        "<div class='col-7'>" +
-        "<div class='row'>" +
-        "<div class='col-2'><img src='"+ item.skuDimension.sku.image +"' alt='image'/></div>" +
-        "<div class='col-8'><span>"+ item.skuDimension.sku.product.name +"</span></div>" +
-        "<div class='col-2'><span>"+ item.skuDimension.size +"</span></div>" +
-        "</div>" +
-        "</div>" +
-        "<div class='col-5'></div>" +
-        "</div>" +
-        "</div>" +
-        "<div class='col-1'><span>"+ $("#labelDelete").val() +"</span></div>" +
-        "</div>" +
+        "       <div class='row'>" +
+        "           <div class='col-1'>" +
+        "               <input type='checkbox' class='form-control'>" +
+        "           </div>" +
+        "           <div class='col-10'>" +
+        "               <div class='row'>" +
+        "                   <div class='col-7'>" +
+        "                       <div class='row'>" +
+        "                           <div class='col-2'>" +
+        "                               <img src='"+ item.skuDimension.sku.image +"' alt='image' onerror='this.error=null;this.src="+ $("#defaultImage").val() +"'>" +
+        "                           </div>" +
+        "                           <div class='col-8'>" +
+        "                               <span>"+ item.skuDimension.sku.product.name +"</span>" +
+        "                           </div>" +
+        "                           <div class='col-2'>" +
+        "                               <span>"+ item.skuDimension.size +"</span>" +
+        "                           </div>" +
+        "                       </div>" +
+        "                       </div>" +
+                            "<div class='col-5'></div>" +
+        "               </div>" +
+        "           </div>" +
+        "           <div class='col-1'>" +
+        "               <span>"+ $("#labelDelete").val() +"</span>" +
+        "           </div>" +
+        "   </div>" +
         "</div>"
 }
 
