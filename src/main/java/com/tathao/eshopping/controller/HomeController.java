@@ -36,7 +36,7 @@ public class HomeController extends ApplicationObjectSupport {
 	public ModelAndView homePageShopper(@ModelAttribute(name = "item") ProductCommand command, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("/shopper/index");
 		try {
-			Map<String, Object> properties = buidProperties4Search(command);
+			Map<String, Object> properties = buildProperties4Search(command);
 			Object[] result = productService.findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), CoreConstants.MAX_PAGE_ITEMS);
 			command.setTotalItems(Integer.valueOf(result[0].toString()));
 			command.setListResult((List<ProductDTO>) result[1]);
@@ -46,7 +46,7 @@ public class HomeController extends ApplicationObjectSupport {
 		return mav;
 	}
 
-	private Map<String, Object> buidProperties4Search(ProductCommand command) {
+	private Map<String, Object> buildProperties4Search(ProductCommand command) {
 		Map<String, Object> props = new HashMap<String, Object>();
 
 		return props;

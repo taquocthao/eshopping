@@ -22,4 +22,9 @@ public class RoleDAOImpl extends AbstractHibernateDAO<RoleEntity, Long> implemen
 		return query.getResultList();
 	}
 
+	@Override
+	public RoleEntity findByCode(String code) {
+		return findEqualUnique("code", code);
+	}
+
 }

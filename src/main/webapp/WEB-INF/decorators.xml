@@ -4,6 +4,7 @@
         <pattern>/ajax/*</pattern>
         <pattern>/errors</pattern>
         <pattern>*/login.html*</pattern>
+        <pattern>*/signup.html*</pattern>
         <pattern>/js/*</pattern>
         <pattern>/css/*</pattern>
     </excludes>

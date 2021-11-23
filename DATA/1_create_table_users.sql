@@ -1,20 +1,20 @@
 
 Drop table If Exists Users;
 create table Users(
-	UserId BIGSERIAL PRIMARY KEY not null,
-	UserGroupId BIGINT not null,
-	Username varchar(255) not null,
-	Code varchar(50) not null,
-	Password varchar(255) not null,
-	FullName varchar(100) not null,
-	FirstName varchar(50),
-	LastName varchar(50),
-	Email varchar(100),
-	PhoneNumber varchar(10) not null,
-	Status Boolean default true,
-	CreatedDate timestamp not null,
-	ModifiedDate timestamp,
-	UNIQUE(UserGroupId, Username)
+      UserId varchar(255) PRIMARY KEY default uuid_generate_v4() not null,
+      UserGroupId BIGINT not null,
+      Username varchar(255) not null,
+      Code varchar(50) not null,
+      Password varchar(255) not null,
+      FullName varchar(100) not null,
+      FirstName varchar(50),
+      LastName varchar(50),
+      Email varchar(100),
+      PhoneNumber varchar(10) not null,
+      Status Boolean default true,
+      CreatedDate timestamp not null,
+      ModifiedDate timestamp,
+      UNIQUE(UserGroupId, Username)
 );
 
 alter table Users ADD constraint fk_user_usergroupid FOREIGN KEY(usergroupid) REFERENCES UserGroup(usergroupid);

@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.tathao.eshopping.service.impl.MyUserDetailsServiceImpl;
+import com.tathao.eshopping.service.impl.social.MyUserDetailsServiceImpl;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
@@ -61,8 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/")
 				.and().rememberMe().key("uniqueAndSecret");
 
-		http.apply(new SpringSocialConfigurer()).signupUrl("/signup");
-		
+		http.apply(new SpringSocialConfigurer().signupUrl("/signup"));
 	}
 	
 	

@@ -24,6 +24,14 @@ public class LoginController extends ApplicationObjectSupport {
 		return mav;
 	}
 
+	// User login via Social,
+	// but not allow access basic info.
+	// webapp will redirect to /signin.
+	@RequestMapping(value = "/signin")
+	public String signInPage() {
+		return "redirect:/login";
+	}
+
 	private void referenceData(ModelAndView mav) {
 		List<UserGroupEntity> userGroups = userGroupService.findAll();
 		mav.addObject("userGroups", userGroups);

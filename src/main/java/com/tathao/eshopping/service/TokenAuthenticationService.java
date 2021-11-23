@@ -1,6 +1,6 @@
 package com.tathao.eshopping.service;
 
-import com.tathao.eshopping.service.impl.AuthenticationTokenImpl;
+import com.tathao.eshopping.service.impl.social.AuthenticationTokenImpl;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;

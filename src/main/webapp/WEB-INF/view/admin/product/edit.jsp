@@ -5,9 +5,10 @@
 
 <c:url var="productEditUrl" value="/admin/product/edit.html"/>
 <c:url var="productListURL" value="/admin/product.html"/>
+<c:url var="uploadImageURL" value="/ajax/admin/product/upload/file.html"/>
 
 <div class="container-fluid">
-    <form:form action="${productEditUrl}" modelAttribute="item" enctype="multipart/form-data">
+    <form:form action="${productEditUrl}" modelAttribute="item" enctype="multipart/form-data" id="formProduct">
         <div class="col-sm-12">
             <!-- Page-Title -->
             <div class="page-title-box">
@@ -94,7 +95,9 @@
                                     <a type="button" class="btn btn-primary" id="buttonUploadImage">
                                         <fmt:message key="label.choose.image"/>
                                     </a>
-                                    <input style="opacity: 0; max-width: 0px;" type="file" id="buttonUploadHidden" class="hidden" accept="image/*"/>
+                                    <form id="formImage" enctype="multipart/form-data" action="#">
+                                        <input style="opacity: 0; max-width: 0;" type="file" name="imageProduct" id="buttonUploadHidden" accept="image/*"/>
+                                    </form>
                                     <form:hidden path="pojo.image"/>
 <%--                                    <div class="preview">--%>
 <%--                                        <c:if test="${empty item.pojo.image}">--%>
@@ -138,7 +141,7 @@
                                 <div class="sku-item">
                                     <c:forEach items="${item.pojo.sku}" var="sku" varStatus="stt">
                                         <div class="table-sku">
-                                            <table class="table text-center">
+                                            <table class="table text-center table-striped table-sku-item" id="table${stt.index}">
                                                 <tbody>
                                                     <tr>
                                                         <td style="width: 20%">
@@ -195,35 +198,35 @@
                                                 <tbody>
                                                     <c:forEach items="${sku.skuDimensionDTOs}" var="skuDimension" varStatus="stt2">
                                                         <tr>
-                                                            <td>${stt2.index + 1}</td>
+                                                            <td class="index-number">${stt2.index + 1}</td>
                                                                 <%-- Dimension code --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="${skuDimension.code}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].code" readonly>
+                                                                <input type="text"  class="form-control dimension-code" value="${skuDimension.code}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].code" readonly>
                                                             </td>
                                                                 <%-- Size --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="${skuDimension.size}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size">
+                                                                <input type="text" class="form-control dimension-size" value="${skuDimension.size}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size">
                                                             </td>
                                                                 <%-- width --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="${skuDimension.width}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].width">
+                                                                <input type="text" class="form-control dimension-width" value="${skuDimension.width}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].width">
                                                             </td>
                                                                 <%-- height --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="${skuDimension.height}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].height">
+                                                                <input type="text" class="form-control dimension-height" value="${skuDimension.height}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].height">
                                                             </td>
                                                                 <%-- original price --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
+                                                                <input type="text" class="form-control dimension-original-price" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
                                                             </td>
                                                                 <%-- sale price --%>
                                                             <td>
-                                                                <input type="text" class="form-control" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
+                                                                <input type="text" class="form-control dimension-sale-price" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
                                                             </td>
                                                                 <%-- action --%>
                                                             <td>
                                                                 <%-- delete --%>
-                                                                <a href="javascript:void(0)" class="red-text" data-toggle="tooltip"
+                                                                <a href="javascript:void(0)" class="red-text btn-delete-dimension" data-toggle="tooltip"
                                                                    data-placement="top" title="<fmt:message key="label.delete"/>">
                                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                                 </a>&nbsp;
@@ -282,6 +285,13 @@
     <input type="hidden" id="labelAddDimension" value="<fmt:message key="label.add.product-dimension"/>"/>
     <input type="hidden" id="labelInputColorProduct" value="<fmt:message key="label.product.sku.input.place-holder"/>"/>
     <input type="hidden" id="defaultImage" value="<c:url value="/img/default-placeholder.png"/>"/>
+    <input type="hidden" id="labelDimensionCode" value="<fmt:message key="label.product.dimension.code"/>">
+    <input type="hidden" id="labelSize" value="<fmt:message key="label.size"/>">
+    <input type="hidden" id="labelWidth" value="<fmt:message key="label.width"/>">
+    <input type="hidden" id="labelHeight" value="<fmt:message key="label.height"/>">
+    <input type="hidden" id="labelOriginalPrice" value="<fmt:message key="label.original-price"/>">
+    <input type="hidden" id="labelSalePrice" value="<fmt:message key="label.sale-price"/>">
+    <input type="hidden" id="labelAction" value="<fmt:message key="label.action"/>">
 </div>
 
 <script>
@@ -318,38 +328,49 @@
         });
 
         $("#buttonUploadHidden").on("change", function (ev) {
-            ev.stopPropagation();
-            ev.preventDefault();
-            var fileElements = ev.target.files;
-            if(fileElements && fileElements[0] && FileReader) {
-                var reader = new FileReader();
-                reader.onload = function (progressEvent) {
-                    $("#productImage").attr("src", progressEvent.target.result).css("display", "initial");
-                }
-                reader.onerror = function(errorEvent) {
-                }
-                reader.readAsDataURL(fileElements[0]);
-            }
+            let formData = new FormData($("#formImage")[0]);
+            formData.append('imageProduct', $(this)[0].files[0]);
+            $.ajax({
+                url: "${uploadImageURL}",
+                data: formData,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                dataType: 'html'
+            }).done(function (response) {
+                console.log("Response", response);
+                $("#productImage").attr("src", response);
+            });
         });
+
+
+        $("#btnSave").click(function (e) {
+            e.preventDefault();
+            $("#crudaction").val("insert-update");
+            $("#formProduct").submit();
+        });
+
         bindEventDeleteSku();
         bindEventAddSkuDimension();
+        bindEventDeleteSkuDimension();
     }
 
     function addSku() {
-        var countSku = $(".table-sku").length;
+        let countSku = $(".table-sku").length;
         if(!countSku) {
             countSku = 0;
         }
         let item = " <div class='table-sku'>" +
-            "           <table class='table text-center'>" +
+            "           <table class='table text-center table-striped table-sku-item'>" +
             "               <tr>" +
             "                   <td style='width: 20%;'>" +
             "                       <div>" +
-            "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb' />" +
+            "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb'/>" +
             "                       </div>" +
             "                   </td>" +
             "                   <td style='width: 30%;'>" +
-            "                       <input class='form-control' type='text' placeholder='"+ $("#labelInputColorProduct").val() +"'>" +
+            "                       <input class='form-control sku-title' type='text' placeholder='"+ $("#labelInputColorProduct").val() +"'" +
+            "                           name='pojo.sku["+ countSku +"].title'>" +
             "                   </td>" +
             "                   <td style='width: 20%;'>" +
             "                       <input class='form-control' type='text' readonly>" +
@@ -378,12 +399,25 @@
             "       </div>";
 
         $(".sku-item").append(item);
+        reIndexSkuPosition();
         bindEventDeleteSku();
         bindEventAddSkuDimension();
     }
 
+    function reIndexSkuPosition() {
+        $("div.table-sku").each(function (index) {
+            // sku title
+            $(this).find("input.sku-title").attr("name", "pojo.sku["+ index +"].title");
+            // status
+            $(this).find("input[type=radio]").attr("name", "pojo.sku["+ index +"].status")
+            // table id
+            $(this).find("table").attr("id", "table" + index);
+            reIndexSkuDimensionPosition($(this).find("table.table-sku-dimension"));
+        });
+    }
+
     function bindEventAddSkuDimension() {
-        $(".btnAddSkuDimension").click(function (e) {
+        $(".btnAddSkuDimension").unbind("click").on("click", function (e) {
             addSkuDimension(e);
         })
     }
@@ -398,63 +432,105 @@
     function deleteSku(e) {
         bootbox.confirm("<fmt:message key="label.confirm.delete"/>", function (yes) {
             if(yes) {
-                console.log(e);
                 e.target.closest(".table-sku").remove();
+                reIndexSkuPosition();
             }
         })
     }
 
     function addSkuDimension(e) {
-        console.log("hit");
-        let item = "<tr>" +
-            "           <td>" + 1 + "</td>" +
-            "           <td>" +
-            "                <input type='text' class='form-control' name='' readonly>" +
-            "           </td>" +
-            "           <td>" +
-            "                <input type='text' class='form-control' name=''" +
-            "           </td>" +
-            "           <td>" +
-            "                <input type='text' class='form-control' name=''" +
-            "           </td>" +
-            "           <td>" +
-            "               <input type='text' class='form-control' name=''" +
-            "           </td>" +
-            "           <td>" +
-            "               <input type='text' class='form-control' name=''" +
-            "           </td>" +
-            "           <td>" +
-            "               <input type='text' class='form-control' name=''" +
-            "           </td>" +
-            "           <td>" +
-            "               <a href='javascript:void(0)' class='red-text' data-toggle='tooltip'" +
-            "                  data-placement='top' title='"+ $("#labelDelete").val() +"'>" +
-            "                    <i class='fa fa-trash-o' aria-hidden='true'></i>" +
-            "               </a>&nbsp;" +
-            "           </td>" +
-            "       </tr>";
+
         let table_sku = e.target.closest(".table-sku");
-        let table_sku_dimension = $(table_sku).find("div.table-sku-dimension");
-        if(!table_sku_dimension) {
+        let table_sku_dimension = $(table_sku).find("table.table-sku-dimension");
+        if(!table_sku_dimension || table_sku_dimension.length === 0) {
             let tableTemp = "<table class='table table-bordered text-center table-sku-dimension'>" +
                 "         <thead>" +
                 "               <tr>" +
                 "                   <td style='width: 5%'>STT</td>" +
-                "                   <td style='width: 15%'>code</td>" +
-                "                   <td style='width: 10%'>size</td>" +
-                "                   <td style='width: 10%'>width</td>" +
-                "                   <td style='width: 10%'>height</td>" +
-                "                   <td style='width: 15%' class='text-right'>original-price</td>" +
-                "                   <td style='width: 15%' class='text-right'>sale price</td>" +
-                "                   <td style='width: 10%'>action</td>" +
+                "                   <td style='width: 15%'>"+ $("#labelDimensionCode").val() +"</td>" +
+                "                   <td style='width: 10%'>" + $("#labelSize").val() + "</td>" +
+                "                   <td style='width: 10%'>"+ $("#labelWidth").val() +"</td>" +
+                "                   <td style='width: 10%'>"+ $("#labelHeight").val() +"</td>" +
+                "                   <td style='width: 15%' class='text-right'>"+ $("#labelOriginalPrice").val() +"</td>" +
+                "                   <td style='width: 15%' class='text-right'>"+ $("#labelSalePrice").val() +"</td>" +
+                "                   <td style='width: 10%'>"+ $("#labelAction").val() +"</td>" +
                 "                </tr>" +
                 "         </thead>" +
                 "         <tbody></tbody>" +
                 "</table>";
 
-            table_sku_dimension = $(table_sku).append(tableTemp);
+            $(table_sku).append(tableTemp);
+            table_sku_dimension = $(table_sku).find("table.table-sku-dimension");
         }
+
+        let item = "<tr>" +
+            "           <td style='width: 5%' class='index-number'>" + 1 + "</td>" +
+            "           <td style='width: 15%'>" +
+            "                <input type='text' class='form-control dimension-code' name='' readonly>" +
+            "           </td>" +
+            "           <td style='width: 10%'>" +
+            "                <input type='text' class='form-control dimension-size' name=''" +
+            "           </td>" +
+            "           <td style='width: 10%'>" +
+            "                <input type='text' class='form-control dimension-width' name=''" +
+            "           </td>" +
+            "           <td style='width: 10%'>" +
+            "               <input type='text' class='form-control dimension-height' name=''" +
+            "           </td>" +
+            "           <td style='width: 15%'>" +
+            "               <input type='text' class='form-control dimension-original-price' name=''" +
+            "           </td>" +
+            "           <td style='width: 15%'>" +
+            "               <input type='text' class='form-control dimension-sale-price' name=''" +
+            "           </td>" +
+            "           <td style='width: 10%'>" +
+            "               <a href='javascript:void(0)' class='red-text btn-delete-dimension' data-toggle='tooltip'" +
+            "                  data-placement='top' title='"+ $("#labelDelete").val() +"'>" +
+            "                    <i class='fa fa-trash-o' aria-hidden='true'></i>" +
+            "               </a>&nbsp;" +
+            "           </td>" +
+            "       </tr>";
+
         $(table_sku_dimension).append(item);
+        reIndexSkuDimensionPosition(table_sku_dimension);
+        bindEventDeleteSkuDimension();
+    }
+
+    function reIndexSkuDimensionPosition(tableSkuDimension) {
+        let tableSkuIndex = 0;
+        $(tableSkuDimension).find("tbody tr").each(function (index) {
+            tableSkuIndex =  $(tableSkuDimension).closest("div.table-sku").find("table.table-sku-item").attr("id").replace("table", "");
+            // stt
+            $(this).find(".index-number").text(index + 1);
+            //code
+            $(this).find(".dimension-code").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].code");
+            // size
+            $(this).find(".dimension-size").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].size");
+            // width
+            $(this).find(".dimension-width").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].width");
+            // height
+            $(this).find(".dimension-height").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].height");
+            // original price
+            $(this).find(".dimension-original-price").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].originalPrice");
+            // sale Price
+            $(this).find(".dimension-sale-price").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].salePrice");
+        });
+    }
+
+    function bindEventDeleteSkuDimension() {
+        $(".btn-delete-dimension").unbind("click").on("click", function (e) {
+            bootbox.confirm("<fmt:message key="label.confirm.delete"/>", function (yes) {
+                if(yes) {
+                    let tableDimension = e.target.closest("table.table-sku-dimension");
+                    e.target.closest("tr").remove();
+
+                    if($(tableDimension).find("tr").length == 1) {
+                        (tableDimension).remove();
+                    }
+                    reIndexSkuDimensionPosition(tableDimension);
+                }
+            })
+        });
     }
 
 </script>

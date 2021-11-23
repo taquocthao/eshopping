@@ -18,4 +18,44 @@ public class CoreConstants {
 	public static final String TYPE_DANGER = "danger";
 	public static final String MESSAGE_RESPONSE = "messageResponse";
 
+	public enum UserGroup {
+		ADMIN("ADMIN"),
+		SHOPPER("SHOPPER"),
+		OUTLET("OUTLET"),
+		EMPLOYEE("EMPLOYEE");
+
+		private String value;
+
+		UserGroup(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+	}
+
+	public enum Role {
+		ADMIN("ADMIN"),
+		SHOPPER("SHOPPER"),
+		EMPLOYEE("EMPLOYEE");
+
+		private String value;
+		Role(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+	}
+
 }

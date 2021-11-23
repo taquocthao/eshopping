@@ -6,21 +6,31 @@ import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.service.CatGroupService;
 import com.tathao.eshopping.service.ProductService;
 import com.tathao.eshopping.ultils.CoreConstants;
+import com.tathao.eshopping.ultils.FileUtils;
 import com.tathao.eshopping.ultils.RequestUtils;
+import com.tathao.eshopping.ultils.WebConstants;
+import com.tathao.eshopping.validator.ProductValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ProductController {
+public class ProductController extends ApplicationObjectSupport {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -28,6 +38,8 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CatGroupService catGroupService;
+    @Autowired
+    private ProductValidator productValidator;
 
 
     @RequestMapping(value = "/product/{catGroup}/{productCode}/detail.html")
@@ -80,13 +92,26 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/admin/product/edit.html")
-    public ModelAndView edit(@ModelAttribute(value = CoreConstants.FORM_MODEL_KEY) ProductCommand command) {
+    public ModelAndView edit(@ModelAttribute(value = CoreConstants.FORM_MODEL_KEY) ProductCommand command, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView("/admin/product/edit");
         try {
             ProductDTO pojo = command.getPojo();
             String crudaction = command.getCrudaction();
-            if(!StringUtils.isEmpty(crudaction) && CoreConstants.FORM_ACTION_EDIT.equals(crudaction)) {
-
+            if(!StringUtils.isEmpty(crudaction) && WebConstants.INSERT_OR_UPDATE.equals(crudaction)) {
+                productValidator.validate(command, result);
+                if(!result.hasErrors()) {
+                    if(pojo.getProductId() != null) { // update product
+                        productService.update(pojo);
+                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+                                this.getMessageSourceAccessor().getMessage("label.product.edit.successful"));
+                    } else { // add new product
+                        productService.add(pojo);
+                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+                                this.getMessageSourceAccessor().getMessage("label.product.add.successful"));
+                    }
+                    redirectAttributes.addFlashAttribute(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
+                    return new ModelAndView("redirect:/admin/product.html");
+                }
             }
             if(pojo != null && !StringUtils.isEmpty(pojo.getCode())) {
                 pojo = productService.findByCode(pojo.getCode());
@@ -95,8 +120,25 @@ public class ProductController {
             referenceData4Admin(mav);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            mav.addObject(WebConstants.ALER, WebConstants.TYPE_DANGER);
+            mav.addObject(WebConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("label.error.occurred"));
         }
         return mav;
+    }
+
+    @RequestMapping(value = "/ajax/admin/product/upload/file.html", method = RequestMethod.POST)
+    @ResponseBody
+    public String uploadFile(@RequestParam("imageProduct") MultipartFile multipartFile) {
+        String pathFile = "";
+        try {
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+            SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyhhss");
+            String fileName = "product_" + sdf.format(now) + "_" + multipartFile.getOriginalFilename();
+            pathFile = FileUtils.uploadFile(WebConstants.ROOT_PRODUCT_UPLOAD_IMAGE, fileName, multipartFile);
+        } catch (Exception e) {
+            logger.error("error: " + e);
+        }
+        return pathFile;
     }
 
     private Map<String, Object> buildProperties4AdminSearch(HttpServletRequest request, ProductCommand command) {

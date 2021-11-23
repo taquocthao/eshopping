@@ -13,7 +13,7 @@ import java.util.List;
 public class UserRoleDAOImpl extends AbstractHibernateDAO<UserRoleEntity, Long> implements UserRoleDAO {
 
     @Override
-    public List<UserRoleEntity> findByUserId(Long userId) {
+    public List<UserRoleEntity> findByUserId(String userId) {
         StringBuilder sql = new StringBuilder();
         sql.append("from UserRoleEntity ur where ur.user.userId = :userId");
         Query query = getCurrentSession().createQuery(sql.toString());

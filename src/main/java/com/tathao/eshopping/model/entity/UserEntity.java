@@ -1,7 +1,10 @@
 package com.tathao.eshopping.model.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -9,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "Users")
 public class UserEntity {
 	
-	private Long userId;
+	private String userId;
 	private UserGroupEntity userGroup;
     private String username;
     private String code;
@@ -25,13 +28,14 @@ public class UserEntity {
     private List<RoleEntity> roles;
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "UserId")
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 	
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	

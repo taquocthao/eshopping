@@ -1,4 +1,4 @@
-package com.tathao.eshopping.service.impl;
+package com.tathao.eshopping.service.impl.social;
 
 import com.tathao.eshopping.service.TokenAuthenticationService;
 import io.jsonwebtoken.Claims;

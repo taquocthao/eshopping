@@ -72,7 +72,7 @@
 					</div>
 
 					<div class="flex-c-m">
-						<a href="#" class="login100-social-item bg1">
+						<a href="https://85ee-116-110-43-146.ngrok.io/auth/facebook" class="login100-social-item bg1">
 							<i class="fa fa-facebook"></i>
 						</a>
 
@@ -90,7 +90,7 @@
 							<fmt:message key="label.or"/>
 						</span>
 
-						<a href="#" class="txt2">
+						<a href="<c:url value="/signup.html"/>" class="txt2">
 							<fmt:message key="label.sign-up"/>
 						</a>
 					</div>

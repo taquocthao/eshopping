@@ -15,4 +15,7 @@ public interface ProductService {
 
     ProductDTO findByCodeAndFetchRelatedProducts(String code);
 
+    ProductDTO update(ProductDTO pojo);
+
+    ProductDTO add(ProductDTO pojo);
 }

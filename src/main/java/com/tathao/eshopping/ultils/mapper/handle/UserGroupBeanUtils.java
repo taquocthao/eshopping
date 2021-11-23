@@ -18,4 +18,17 @@ public class UserGroupBeanUtils {
         return dto;
     }
 
+    public static UserGroupEntity dto2Entity(UserGroupDTO dto) {
+        if(dto == null) {
+            return null;
+        }
+        UserGroupEntity entity = new UserGroupEntity();
+        entity.setCode(dto.getCode());
+        entity.setUserGroupId(dto.getUserGroupId());
+        entity.setName(dto.getName());
+        entity.setModifiedDate(dto.getModifiedDate());
+        entity.setCreatedDate(dto.getCreatedDate());
+        return entity;
+    }
+
 }

@@ -3,9 +3,10 @@ package com.tathao.eshopping.model.dto;
 import com.tathao.eshopping.model.entity.UserGroupEntity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class UserDTO {
-    private Long userId;
+    private String userId;
     private UserGroupDTO userGroup;
     private String username;
     private String code;
@@ -18,19 +19,20 @@ public class UserDTO {
     private Boolean status;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
+    private List<RoleDTO> roles;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long userId) {
+    public UserDTO(String userId) {
         this.userId = userId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -129,4 +131,13 @@ public class UserDTO {
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
+
+    public List<RoleDTO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleDTO> roles) {
+        this.roles = roles;
+    }
+
 }

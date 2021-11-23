@@ -28,7 +28,7 @@ public class CustomerEntity {
 
     @Id
     @Column(name = "customerId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getCustomerId() {
         return customerId;
     }

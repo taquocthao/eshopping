@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface UserRoleDAO extends GenericDAO<UserRoleEntity, Long> {
 
-    List<UserRoleEntity> findByUserId(Long userId);
+    List<UserRoleEntity> findByUserId(String userId);
 
 }
