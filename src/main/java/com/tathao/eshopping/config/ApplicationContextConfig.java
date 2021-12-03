@@ -59,7 +59,7 @@ public class ApplicationContextConfig extends ApplicationObjectSupport{
 	@Bean(name = "multipartResolver")
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		multipartResolver.setMaxUploadSize(100000);
+		multipartResolver.setMaxUploadSize(15 * 1024 * 1024); //5MB
 		return multipartResolver;
 	}
 

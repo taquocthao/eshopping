@@ -45,6 +45,8 @@
                 <div class="card mb-5">
                     <div class="card-body">
 
+                        <input type="hidden" name="pojo.productId" value="${item.pojo.productId}">
+
                         <div class="form-group row required">
                             <label for="productCode" class="col-sm-2 col-form-label"><fmt:message key="label.catgroup.name"/></label>
                             <div class="col-sm-10">
@@ -90,7 +92,7 @@
                             <%--image--%>
                         <div class="form-group row required">
                             <label class="col-sm-2 col-form-label"><fmt:message key="label.image"/></label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10 col-image-product">
                                 <div>
                                     <a type="button" class="btn btn-primary" id="buttonUploadImage">
                                         <fmt:message key="label.choose.image"/>
@@ -98,26 +100,19 @@
                                     <form id="formImage" enctype="multipart/form-data" action="#">
                                         <input style="opacity: 0; max-width: 0;" type="file" name="imageProduct" id="buttonUploadHidden" accept="image/*"/>
                                     </form>
-                                    <form:hidden path="pojo.image"/>
-<%--                                    <div class="preview">--%>
-<%--                                        <c:if test="${empty item.pojo.image}">--%>
-<%--                                            <br>--%>
-<%--                                            <img id="productImage" class="img-fluid imageSizeThumb" src="<c:url value="/img/default-placeholder.png"/>">--%>
-<%--                                        </c:if>--%>
-<%--                                    </div>--%>
                                 </div>
                                 <br>
                                 <c:choose>
                                     <c:when test="${item.pojo.image != null}">
                                         <a href="<c:url value="${item.pojo.image}"/>" target="_blank">
-                                            <img id="productImage" class="img-fluid imageSizeThumb" src="<c:url value="${item.pojo.image}"/>" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'">
+                                            <img id="productImage" name="pojo.image" class="img-fluid imageSizeThumb" src="<c:url value="${item.pojo.image}"/>" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'">
                                         </a>
-                                        <input type="hidden" name="pojo.image" value="${item.pojo.image}"/>
                                     </c:when>
                                     <c:otherwise>
-                                        <img id="productImage" class="img-fluid imageSizeThumb" src="<c:url value="/img/default-placeholder.png"/>">
+                                        <img id="productImage" name="pojo.image" class="img-fluid imageSizeThumb" src="<c:url value="/img/default-placeholder.png"/>">
                                     </c:otherwise>
                                 </c:choose>
+                                <input type="hidden" class="image-hidden" name="pojo.image" value="${item.pojo.image}">
                                 <form:errors path="pojo.image" cssClass="error"/>
                             </div>
                         </div>
@@ -145,15 +140,16 @@
                                                 <tbody>
                                                     <tr>
                                                         <td style="width: 20%">
-                                                            <div>
-                                                                <img src="${sku.image}" class="img-fluid imageSizeThumb" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
+                                                            <div class="col-image-product">
+                                                                <img src="${sku.image}" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
+                                                                <input type="hidden" class="image-hidden" name="pojo.sku[${stt.index}].image" value="${sku.image}">
                                                             </div>
                                                         </td>
                                                         <td style="width: 30%">
-                                                            <input class="form-control" type="text" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
+                                                            <input class="form-control" type="text" name="pojo.sku[${stt.index}].title" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
                                                         </td>
                                                         <td style="width: 20%">
-                                                            <input class="form-control" type="text" value="${sku.skuCode}" readonly>
+                                                            <input class="form-control" type="text" name="pojo.sku[${stt.index}].skuCode" value="${sku.skuCode}" readonly>
                                                         </td>
                                                         <td style="width: 20%">
                                                             <label>
@@ -324,25 +320,11 @@
 
     function bindEventButtons() {
         $("#buttonUploadImage").on("click", function (e) {
+            e.preventDefault();
+            $("#buttonUploadHidden").unbind("click");
+            bindEventButtonUploadHidden($("#productImage"));
             $("#buttonUploadHidden").click();
         });
-
-        $("#buttonUploadHidden").on("change", function (ev) {
-            let formData = new FormData($("#formImage")[0]);
-            formData.append('imageProduct', $(this)[0].files[0]);
-            $.ajax({
-                url: "${uploadImageURL}",
-                data: formData,
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                dataType: 'html'
-            }).done(function (response) {
-                console.log("Response", response);
-                $("#productImage").attr("src", response);
-            });
-        });
-
 
         $("#btnSave").click(function (e) {
             e.preventDefault();
@@ -353,6 +335,38 @@
         bindEventDeleteSku();
         bindEventAddSkuDimension();
         bindEventDeleteSkuDimension();
+        bindEventImageProductClick();
+    }
+
+    function bindEventImageProductClick() {
+        $(".image-product").unbind('click').click(function (e) {
+            e.preventDefault();
+            $("#buttonUploadHidden").unbind("click");
+            bindEventButtonUploadHidden($(this));
+            $("#buttonUploadHidden").click();
+        });
+    }
+
+    function bindEventButtonUploadHidden(imageElement) {
+        $("#buttonUploadHidden").unbind("change").on("change", function (ev) {
+            let formData = new FormData($("#formImage")[0]);
+            formData.append('imageProduct', $(this)[0].files[0]);
+            uploadImage("${uploadImageURL}", formData, imageElement);
+        });
+    }
+
+    function uploadImage(url, formData, targetElment) {
+        $.ajax({
+            url: url,
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            dataType: 'html'
+        }).done(function (response) {
+            targetElment.attr("src", "/EShoping" + response);
+            let nearElement = targetElment.closest("div.col-image-product").find("input.image-hidden").val(response);
+        });
     }
 
     function addSku() {
@@ -364,8 +378,9 @@
             "           <table class='table text-center table-striped table-sku-item'>" +
             "               <tr>" +
             "                   <td style='width: 20%;'>" +
-            "                       <div>" +
-            "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb'/>" +
+            "                       <div class='col-image-product'>" +
+            "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb image-product'/>" +
+            "                           <input type=\"hidden\" class=\"image-hidden\" name=\"pojo.sku["+ countSku +"].image\">" +
             "                       </div>" +
             "                   </td>" +
             "                   <td style='width: 30%;'>" +
@@ -402,12 +417,15 @@
         reIndexSkuPosition();
         bindEventDeleteSku();
         bindEventAddSkuDimension();
+        bindEventImageProductClick();
     }
 
     function reIndexSkuPosition() {
         $("div.table-sku").each(function (index) {
             // sku title
             $(this).find("input.sku-title").attr("name", "pojo.sku["+ index +"].title");
+            // image
+            $(this).find("img.image-product").attr("name", "pojo.sku["+ index +"].image");
             // status
             $(this).find("input[type=radio]").attr("name", "pojo.sku["+ index +"].status")
             // table id

@@ -9,9 +9,11 @@ import com.tathao.eshopping.ultils.CoreConstants;
 import com.tathao.eshopping.ultils.FileUtils;
 import com.tathao.eshopping.ultils.RequestUtils;
 import com.tathao.eshopping.ultils.WebConstants;
+import com.tathao.eshopping.ultils.config.Config;
 import com.tathao.eshopping.validator.ProductValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -100,17 +102,17 @@ public class ProductController extends ApplicationObjectSupport {
             if(!StringUtils.isEmpty(crudaction) && WebConstants.INSERT_OR_UPDATE.equals(crudaction)) {
                 productValidator.validate(command, result);
                 if(!result.hasErrors()) {
-                    if(pojo.getProductId() != null) { // update product
-                        productService.update(pojo);
-                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
-                                this.getMessageSourceAccessor().getMessage("label.product.edit.successful"));
-                    } else { // add new product
-                        productService.add(pojo);
-                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
-                                this.getMessageSourceAccessor().getMessage("label.product.add.successful"));
-                    }
-                    redirectAttributes.addFlashAttribute(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
-                    return new ModelAndView("redirect:/admin/product.html");
+//                    if(pojo.getProductId() != null) { // update product
+//                        productService.update(pojo);
+//                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+//                                this.getMessageSourceAccessor().g8etMessage("label.product.edit.successful"));
+//                    } else { // add new product
+//                        productService.add(pojo);
+//                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+//                                this.getMessageSourceAccessor().getMessage("label.product.add.successful"));
+//                    }
+//                    redirectAttributes.addFlashAttribute(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
+//                    return new ModelAndView("redirect:/admin/product.html");
                 }
             }
             if(pojo != null && !StringUtils.isEmpty(pojo.getCode())) {
@@ -128,15 +130,18 @@ public class ProductController extends ApplicationObjectSupport {
 
     @RequestMapping(value = "/ajax/admin/product/upload/file.html", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFile(@RequestParam("imageProduct") MultipartFile multipartFile) {
+    public String uploadFile(@RequestParam("imageProduct") MultipartFile multipartFile, HttpServletRequest request) {
         String pathFile = "";
         try {
             Timestamp now = new Timestamp(System.currentTimeMillis());
             SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyhhss");
             String fileName = "product_" + sdf.format(now) + "_" + multipartFile.getOriginalFilename();
-            pathFile = FileUtils.uploadFile(WebConstants.ROOT_PRODUCT_UPLOAD_IMAGE, fileName, multipartFile);
+            String originalImagePath =  Config.getInstance().getProperty("output.image.root");
+            String productPath = WebConstants.ROOT_PRODUCT_UPLOAD_IMAGE;
+            pathFile = originalImagePath + productPath;
+            pathFile = FileUtils.uploadFile(pathFile, fileName, multipartFile);
         } catch (Exception e) {
-            logger.error("error: " + e);
+            logger.error("method uploadFile error: " + e);
         }
         return pathFile;
     }

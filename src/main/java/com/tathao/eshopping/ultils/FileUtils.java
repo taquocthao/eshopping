@@ -2,6 +2,7 @@ package com.tathao.eshopping.ultils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class FileUtils {
             InputStream inputStream = multipartFile.getInputStream();
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            return filePath.getFileName().toString();
+            logger.info("FileUtils - method uploadFile success: " + path + fileName);
+            return path + fileName;
         } catch (IOException e) {
             logger.error("Could not save file: " + fileName, e);
             return "";
