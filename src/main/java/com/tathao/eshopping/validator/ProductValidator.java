@@ -42,7 +42,7 @@ public class ProductValidator extends ApplicationObjectSupport implements Valida
         ProductDTO productDTO = command.getPojo();
 
         // category name
-        if(productDTO.getCatGroup().getCatGroupId() == null) {
+        if(productDTO.getCatGroup().getCode() == null) {
             errors.rejectValue("pojo.catGroup.code", "errors.required",
                     new Object[]{this.getMessageSourceAccessor().getMessage("label.catgroup.name")}, "non-empty value required");
         }
@@ -50,6 +50,16 @@ public class ProductValidator extends ApplicationObjectSupport implements Valida
         if(StringUtils.isBlank(productDTO.getName())) {
             errors.rejectValue("pojo.name", "errors.required",
                     new Object[]{this.getMessageSourceAccessor().getMessage("label.product.name")}, "non-empty value required");
+        }
+
+        // product image
+        if(StringUtils.isBlank(productDTO.getImage())) {
+            errors.rejectValue("pojo.image", "errors.required", new Object[]{this.getMessageSourceAccessor().getMessage("label.image")}, "none-empty value required");
+        }
+
+        // product sku
+        if(productDTO.getSku() == null) {
+            errors.rejectValue(null, "errors.required", new Object[]{this.getMessageSourceAccessor().getMessage("label.sku")}, "none-empty value required");
         }
 
         // product description

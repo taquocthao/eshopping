@@ -45,6 +45,15 @@
                 <div class="card mb-5">
                     <div class="card-body">
 
+                        <c:if test="${not empty messageResponse}">
+                            <div class="alert alert-${alert} alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>${messageResponse}</strong>
+                            </div>
+                        </c:if>
+
                         <input type="hidden" name="pojo.productId" value="${item.pojo.productId}">
 
                         <div class="form-group row required">
@@ -125,7 +134,7 @@
                                     <thead>
                                         <tr>
                                             <td style="width: 20%"><fmt:message key="label.image"/></td>
-                                            <td style="width: 30%"><fmt:message key="label.sku.name"/></td>
+                                            <td style="width: 30%" class="required"><span class="col-form-label"><fmt:message key="label.sku.name"/></span></td>
                                             <td style="width: 20%"><fmt:message key="label.sku.code"/></td>
                                             <td style="width: 20%"><fmt:message key="label.status"/> </td>
                                             <td style="width: 10%"><fmt:message key="label.action"/></td>
@@ -139,6 +148,7 @@
                                             <table class="table text-center table-striped table-sku-item" id="table${stt.index}">
                                                 <tbody>
                                                     <tr>
+                                                        <input type="hidden" name="pojo.sku[${stt.index}].productSkuId" value="${sku.productSkuId}">
                                                         <td style="width: 20%">
                                                             <div class="col-image-product">
                                                                 <img src="${sku.image}" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
@@ -183,17 +193,18 @@
                                                     <tr>
                                                         <td style="width: 5%">STT</td>
                                                         <td style="width: 15%"><fmt:message key="label.product.dimension.code"/></td>
-                                                        <td style="width: 10%"><fmt:message key="label.size"/></td>
+                                                        <td style="width: 10%" class="required"><span class="col-form-label"><fmt:message key="label.size"/></span></td>
                                                         <td style="width: 10%"><fmt:message key="label.width"/></td>
                                                         <td style="width: 10%"><fmt:message key="label.height"/></td>
-                                                        <td style="width: 15%" class="text-right"><fmt:message key="label.original-price"/></td>
-                                                        <td style="width: 15%" class="text-right"><fmt:message key="label.sale-price"/></td>
+                                                        <td style="width: 15%" class="text-center required"><span class="col-form-label"><fmt:message key="label.original-price"/></span></td>
+                                                        <td style="width: 15%" class="text-center required"><span class="col-form-label"><fmt:message key="label.sale-price"/></span></td>
                                                         <td style="width: 10%"><fmt:message key="label.action"/></td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach items="${sku.skuDimensionDTOs}" var="skuDimension" varStatus="stt2">
                                                         <tr>
+                                                            <input type="hidden" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].productSkuDimensionId" value="${skuDimension.productSkuDimensionId}">
                                                             <td class="index-number">${stt2.index + 1}</td>
                                                                 <%-- Dimension code --%>
                                                             <td>
@@ -243,7 +254,7 @@
                             </div>
                         </div>
                         <%--description--%>
-                        <div class="form-group row">
+                        <div class="form-group row required">
                             <label for="productDescription" class="col-sm-2 col-form-label"><fmt:message key="label.description"/></label>
                             <div class="col-sm-10">
                                 <form:textarea path="pojo.description" id="productDescription" cssClass="form-control"/>
@@ -365,7 +376,7 @@
             dataType: 'html'
         }).done(function (response) {
             targetElment.attr("src", "/EShoping" + response);
-            let nearElement = targetElment.closest("div.col-image-product").find("input.image-hidden").val(response);
+            targetElment.closest("div.col-image-product").find("input.image-hidden").val(response);
         });
     }
 
@@ -425,7 +436,7 @@
             // sku title
             $(this).find("input.sku-title").attr("name", "pojo.sku["+ index +"].title");
             // image
-            $(this).find("img.image-product").attr("name", "pojo.sku["+ index +"].image");
+            $(this).find("input.image-hidden").attr("name", "pojo.sku["+ index +"].image");
             // status
             $(this).find("input[type=radio]").attr("name", "pojo.sku["+ index +"].status")
             // table id

@@ -1,16 +1,8 @@
 package com.tathao.eshopping.config;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
@@ -24,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**").addResourceLocations("/asset/css/");
 		registry.addResourceHandler("/img/**").addResourceLocations("/asset/images/");
-		registry.addResourceHandler("/repository/image/**").addResourceLocations("file:///D:/repository/image/");
+		registry.addResourceHandler("/repository/image/**").addResourceLocations("file:///C:/repository/image/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/asset/js/");
 		registry.addResourceHandler("/fonts/**").addResourceLocations("/asset/fonts/");
 	}
