@@ -63,6 +63,8 @@
                                     <form:option value=""><fmt:message key="label.choose.catgroup"/></form:option>
                                     <form:options items="${catGroups}" itemLabel="name" itemValue="code"></form:options>
                                 </form:select>
+                                <br/>
+                                <form:errors path="pojo.catGroup.code" cssClass="error"/>
                             </div>
                         </div>
 
@@ -121,7 +123,7 @@
                                         <img id="productImage" name="pojo.image" class="img-fluid imageSizeThumb" src="<c:url value="/img/default-placeholder.png"/>">
                                     </c:otherwise>
                                 </c:choose>
-                                <input type="hidden" class="image-hidden" name="pojo.image" value="${item.pojo.image}">
+                                <input type="hidden" class="image-hidden" name="pojo.image" value="${item.pojo.image}"><br/>
                                 <form:errors path="pojo.image" cssClass="error"/>
                             </div>
                         </div>
@@ -153,10 +155,12 @@
                                                             <div class="col-image-product">
                                                                 <img src="${sku.image}" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
                                                                 <input type="hidden" class="image-hidden" name="pojo.sku[${stt.index}].image" value="${sku.image}">
+                                                                <br><form:errors path="pojo.sku[${stt.index}].image" cssClass="error"/>
                                                             </div>
                                                         </td>
                                                         <td style="width: 30%">
                                                             <input class="form-control" type="text" name="pojo.sku[${stt.index}].title" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
+                                                            <form:errors path="pojo.sku[${stt.index}].title" cssClass="error"/>
                                                         </td>
                                                         <td style="width: 20%">
                                                             <input class="form-control" type="text" name="pojo.sku[${stt.index}].skuCode" value="${sku.skuCode}" readonly>
@@ -213,6 +217,7 @@
                                                                 <%-- Size --%>
                                                             <td>
                                                                 <input type="text" class="form-control dimension-size" value="${skuDimension.size}" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size">
+                                                                <br/><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].size" cssClass="error"/>
                                                             </td>
                                                                 <%-- width --%>
                                                             <td>
@@ -225,10 +230,12 @@
                                                                 <%-- original price --%>
                                                             <td>
                                                                 <input type="text" class="form-control dimension-original-price" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
+                                                                <br/><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice" cssClass="error"/>
                                                             </td>
                                                                 <%-- sale price --%>
                                                             <td>
                                                                 <input type="text" class="form-control dimension-sale-price" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
+                                                                <br/><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice" cssClass="error"/>
                                                             </td>
                                                                 <%-- action --%>
                                                             <td>
@@ -242,9 +249,11 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
+                                            <br><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs" cssClass="error"/>
                                         </div>
                                     </c:forEach>
                                 </div>
+                                <form:errors path="pojo.sku" cssClass="error"/>
                             </div>
                         </div>
                         <div class="form-group row">

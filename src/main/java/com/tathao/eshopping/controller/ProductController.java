@@ -102,29 +102,30 @@ public class ProductController extends ApplicationObjectSupport {
             if(!StringUtils.isEmpty(crudaction) && WebConstants.INSERT_OR_UPDATE.equals(crudaction)) {
                 productValidator.validate(command, result);
                 if(!result.hasErrors()) {
-//                    if(pojo.getProductId() != null) { // update product
-//                        productService.update(pojo);
-//                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
-//                                this.getMessageSourceAccessor().g8etMessage("label.product.edit.successful"));
-//                    } else { // add new product
-//                        productService.add(pojo);
-//                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
-//                                this.getMessageSourceAccessor().getMessage("label.product.add.successful"));
-//                    }
-//                    redirectAttributes.addFlashAttribute(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
-//                    return new ModelAndView("redirect:/admin/product.html");
+                    if(pojo.getProductId() != null) { // update product
+                        productService.update(pojo);
+                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+                                this.getMessageSourceAccessor().getMessage("label.product.edit.successful"));
+                    } else { // add new product
+                        productService.add(pojo);
+                        redirectAttributes.addFlashAttribute(CoreConstants.MESSAGE_RESPONSE,
+                                this.getMessageSourceAccessor().getMessage("label.product.add.successful"));
+                    }
+                    redirectAttributes.addFlashAttribute(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
+                    return new ModelAndView("redirect:/admin/product.html");
+                }
+            } else {
+                if(pojo != null && !StringUtils.isEmpty(pojo.getCode())) {
+                    pojo = productService.findByCode(pojo.getCode());
+                    command.setPojo(pojo);
                 }
             }
-            if(pojo != null && !StringUtils.isEmpty(pojo.getCode())) {
-                pojo = productService.findByCode(pojo.getCode());
-                command.setPojo(pojo);
-            }
-            referenceData4Admin(mav);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(" - edit - error:" , e);
             mav.addObject(WebConstants.ALER, WebConstants.TYPE_DANGER);
             mav.addObject(WebConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("label.error.occurred"));
         }
+        referenceData4Admin(mav);
         return mav;
     }
 

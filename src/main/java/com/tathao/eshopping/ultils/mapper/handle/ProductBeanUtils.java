@@ -11,6 +11,9 @@ import java.util.List;
 public class ProductBeanUtils {
 
     public static ProductEntity dto2Entity(ProductDTO dto) {
+        if(dto == null) {
+            return null;
+        }
         ProductEntity entity = new ProductEntity();
         entity.setBrandId(dto.getBrandId());
         if(dto.getCatGroup() != null) {

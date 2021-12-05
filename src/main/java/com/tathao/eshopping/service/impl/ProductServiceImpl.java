@@ -1,16 +1,15 @@
 package com.tathao.eshopping.service.impl;
 
+import com.tathao.eshopping.dao.CatGroupDAO;
 import com.tathao.eshopping.dao.ProductDAO;
 import com.tathao.eshopping.dao.ProductSkuDAO;
 import com.tathao.eshopping.dao.ProductSkuDimensionDAO;
 import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDimensionDTO;
-import com.tathao.eshopping.model.entity.CatGroupEntity;
-import com.tathao.eshopping.model.entity.ProductEntity;
-import com.tathao.eshopping.model.entity.ProductSkuDimensionEntity;
-import com.tathao.eshopping.model.entity.ProductSkuEntity;
+import com.tathao.eshopping.model.entity.*;
 import com.tathao.eshopping.service.ProductService;
+import com.tathao.eshopping.ultils.CommonUtils;
 import com.tathao.eshopping.ultils.mapper.handle.ProductBeanUtils;
 import com.tathao.eshopping.ultils.mapper.handle.ProductSkuBeanUtils;
 import com.tathao.eshopping.ultils.mapper.handle.ProductSkuDimensionBeanUtils;
@@ -34,6 +33,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductSkuDAO productSkuDAO;
     @Autowired
     private ProductSkuDimensionDAO productSkuDimensionDAO;
+    @Autowired
+    private CatGroupDAO catGroupDAO;
 
     @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems) {
@@ -98,6 +99,56 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO add(ProductDTO pojo) {
-        return null;
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setStatus(pojo.getStatus());
+        productEntity.setName(pojo.getName());
+        productEntity.setImage(pojo.getImage());
+        productEntity.setDescription(pojo.getDescription());
+        productEntity.setCreatedDate(now);
+        productEntity.setCode(CommonUtils.generateCode());
+//        ProductReferencePriceEntity referencePriceEntity = new ProductReferencePriceEntity();
+//        productEntity.setReferencePrice(referencePriceEntity);
+        CatGroupEntity catGroupEntity = catGroupDAO.findEqualUnique("code", pojo.getCatGroup().getCode());
+        productEntity.setCatGroup(catGroupEntity);
+        List<ProductSkuEntity> productSkus = new ArrayList<>();
+        Double lowestPrice = 0D;
+        Double highestPrice = 0D;
+        for(ProductSkuDTO skuDTO : pojo.getSku()) {
+            ProductSkuEntity skuEntity = ProductSkuBeanUtils.dto2Entity(skuDTO);
+            skuEntity.setCreatedDate(now);
+            skuEntity.setSkuCode(CommonUtils.generateCode());
+            // sku dimension
+            List<ProductSkuDimensionEntity> skuDimensionEntities = new ArrayList<>();
+            for(ProductSkuDimensionDTO dimensionDTO : skuDTO.getSkuDimensionDTOs()) {
+                ProductSkuDimensionEntity skuDimensionEntity = ProductSkuDimensionBeanUtils.dto2Entity(dimensionDTO);
+                String code = CommonUtils.generateCode();
+                skuDimensionEntity.setCreatedDate(now);
+                skuDimensionEntity.setCode(code);
+                skuDimensionEntity.setBarCode(code);
+                skuDimensionEntity.setSku(skuEntity);
+                skuDimensionEntities.add(skuDimensionEntity);
+
+                if(lowestPrice == 0D || lowestPrice > dimensionDTO.getSalePrice()) {
+                    lowestPrice = dimensionDTO.getSalePrice();
+                } else if(lowestPrice < dimensionDTO.getSalePrice()) {
+                    highestPrice = dimensionDTO.getSalePrice();
+                }
+
+            }
+            skuEntity.setSkuDimensions(skuDimensionEntities);
+            skuEntity.setProduct(productEntity);
+            productSkus.add(skuEntity);
+        }
+        productEntity.setProductSkus(productSkus);
+        productEntity = productDAO.save(productEntity);
+//
+//        ProductReferencePriceEntity referencePriceEntity = new ProductReferencePriceEntity();
+//        referencePriceEntity.setHighestPrice(highestPrice);
+//        referencePriceEntity.setLowestPrice(lowestPrice);
+//        referencePriceEntity.setCreatedDate(now);
+//        referencePriceEntity.setProduct(productEntity);
+
+        return ProductBeanUtils.entity2DTO(productEntity);
     }
 }

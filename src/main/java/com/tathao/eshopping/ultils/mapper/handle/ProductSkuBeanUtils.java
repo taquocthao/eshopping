@@ -10,6 +10,9 @@ public class ProductSkuBeanUtils {
 
 
     public static ProductSkuEntity dto2Entity(ProductSkuDTO dto) {
+        if(dto == null) {
+            return null;
+        }
         ProductSkuEntity entity = new ProductSkuEntity();
         entity.setImage(dto.getImage());
         entity.setProduct(ProductBeanUtils.dto2Entity(dto.getProduct()));
@@ -28,6 +31,9 @@ public class ProductSkuBeanUtils {
     }
 
     public static ProductSkuDTO entity2DTO(ProductSkuEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         ProductSkuDTO dto = new ProductSkuDTO();
         dto.setImage(entity.getImage());
         if(entity.getProduct() != null) {

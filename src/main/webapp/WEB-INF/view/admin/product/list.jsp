@@ -154,7 +154,7 @@
                                                 <fmt:formatDate value="${tableList.createdDate}" pattern="dd/MM/yyyy"/>
                                             </display:column>
                                             <display:column titleKey="label.image" class="text-center">
-                                                <div class="zoom"><img src="${tableList.image}"></div>
+                                                <div class="zoom"><img src="<c:url value="${tableList.image}"/>"></div>
                                             </display:column>
                                             <display:column class="text-center" titleKey="label.action">
                                                 <a href="${productEditUrl}?pojo.code=${tableList.code}" class="teal-text" data-toggle="tooltip"

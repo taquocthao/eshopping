@@ -114,7 +114,7 @@ public class ProductSkuEntity {
         this.description = description;
     }
 
-    @OneToMany(mappedBy = "sku")
+    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL)
     public List<ProductSkuDimensionEntity> getSkuDimensions() {
         return skuDimensions;
     }

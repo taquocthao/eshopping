@@ -35,9 +35,11 @@ public class ProductSkuDimensionBeanUtils {
         ProductSkuDimensionEntity entity = new ProductSkuDimensionEntity();
         entity.setActive(dto.getActive());
         entity.setWidth(dto.getWidth());
-        ProductSkuEntity skuEntity = new ProductSkuEntity();
-        skuEntity.setProductSkuId(dto.getSku().getProductSkuId());
-        entity.setSku(skuEntity);
+        if(dto.getSku() != null) {
+            ProductSkuEntity skuEntity = new ProductSkuEntity();
+            skuEntity.setProductSkuId(dto.getSku().getProductSkuId());
+            entity.setSku(skuEntity);
+        }
         entity.setSize(dto.getSize());
         entity.setSalePrice(dto.getSalePrice());
         entity.setProductSkuDimensionId(dto.getProductSkuDimensionId());
