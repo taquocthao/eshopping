@@ -134,8 +134,7 @@ public class ProductEntity {
         this.productSkus = productSkus;
     }
 
-    @OneToOne
-    @JoinColumn(name = "ReferencePriceId", referencedColumnName = "ProductReferencePriceId")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")
     public ProductReferencePriceEntity getReferencePrice() {
         return referencePrice;
     }

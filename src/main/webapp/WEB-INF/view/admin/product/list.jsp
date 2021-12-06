@@ -28,6 +28,16 @@
             <div class="card mb-5">
                 <div class="card-body">
                     <form:form modelAttribute="items" action="${formListUrl}" id="listForm">
+
+                        <c:if test="${not empty messageResponse}">
+                            <div class="alert alert-${alert} alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>${messageResponse}</strong>
+                            </div>
+                        </c:if>
+
                         <%--search--%>
                         <div class="search-filter">
                             <div class="form-group row">

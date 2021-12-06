@@ -33,6 +33,12 @@ public class CatGroupServiceImpl implements CatGroupService {
     }
 
     @Override
+    public List<CatGroupDTO> findAllExcludeParent() {
+        List<CatGroupEntity> entities = catGroupDAO.findAllExcludeParent();
+        return entities.stream().map(entity -> CatGroupBeanUtils.entity2DTO(entity)).collect(Collectors.toList());
+    }
+
+    @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems, String whereClause) {
         Object[] result = catGroupDAO.findByProperties(properties, sortExpression, sortDirection, firstItem, maxPageItems, whereClause);
         List<CatGroupDTO> catGroupDTOS = new ArrayList<CatGroupDTO>();

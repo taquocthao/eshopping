@@ -153,7 +153,7 @@
                                                         <input type="hidden" name="pojo.sku[${stt.index}].productSkuId" value="${sku.productSkuId}">
                                                         <td style="width: 20%">
                                                             <div class="col-image-product">
-                                                                <img src="${sku.image}" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
+                                                                <img src="<c:url value="${sku.image}"/>" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
                                                                 <input type="hidden" class="image-hidden" name="pojo.sku[${stt.index}].image" value="${sku.image}">
                                                                 <br><form:errors path="pojo.sku[${stt.index}].image" cssClass="error"/>
                                                             </div>

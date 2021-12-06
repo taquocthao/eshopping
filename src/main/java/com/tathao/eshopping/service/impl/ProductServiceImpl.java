@@ -74,27 +74,74 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productDB = productDAO.findById(productDTO.getProductId());
         productDB.setModifiedDate(now);
         productDB.setBrandId(productDTO.getBrandId());
-        CatGroupEntity catGroupEntity = new CatGroupEntity();
-        catGroupEntity.setCatGroupId(productDTO.getCatGroup().getCatGroupId());
+        CatGroupEntity catGroupEntity = catGroupDAO.findEqualUnique("code", productDTO.getCatGroup().getCode());
         productDB.setCatGroup(catGroupEntity);
         productDB.setDescription(productDTO.getDescription());
         productDB.setImage(productDTO.getImage());
         productDB.setName(productDTO.getName());
         productDB.setStatus(productDTO.getStatus());
-        //update sku
+        List<ProductSkuEntity> skuEntities = new ArrayList<>();
         for (ProductSkuDTO skuDTO : productDTO.getSku()) {
-            ProductSkuEntity productSkuEntity = ProductSkuBeanUtils.dto2Entity(skuDTO);
-            productSkuEntity.setModifiedDate(now);
-            //update dimension
-            for(ProductSkuDimensionDTO dimensionDTO : skuDTO.getSkuDimensionDTOs()) {
-                ProductSkuDimensionEntity dimensionEntity = ProductSkuDimensionBeanUtils.dto2Entity(dimensionDTO);
-                dimensionEntity.setModifiedDate(now);
-                productSkuDimensionDAO.update(dimensionEntity);
-            }
-            productSkuDAO.update(productSkuEntity);
+            ProductSkuEntity skuEntity = saveOrUpdate(skuDTO);
+            skuEntities.add(skuEntity);
         }
+        productDB.setProductSkus(skuEntities);
         productDB = productDAO.update(productDB);
         return ProductBeanUtils.entity2DTO(productDB);
+    }
+
+    private ProductSkuEntity saveOrUpdate(ProductSkuDTO skuDTO) {
+        ProductSkuEntity productSkuEntity = null;
+        if(skuDTO == null) {
+            return productSkuEntity;
+        }
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        if(skuDTO.getProductSkuId() == null) { // insert
+            productSkuEntity = ProductSkuBeanUtils.dto2Entity(skuDTO);
+            productSkuEntity.setCreatedDate(now);
+            productSkuEntity.setSkuCode(CommonUtils.generateCode());
+
+        } else { // update
+            productSkuEntity = productSkuDAO.findById(skuDTO.getProductSkuId());
+            productSkuEntity.setModifiedDate(now);
+            productSkuEntity.setTitle(skuDTO.getTitle());
+            productSkuEntity.setStatus(skuDTO.getStatus());
+            productSkuEntity.setImage(skuDTO.getImage());
+        }
+
+        List<ProductSkuDimensionEntity> skuDimensionEntities = new ArrayList<>();
+        for(ProductSkuDimensionDTO dimensionDTO : skuDTO.getSkuDimensionDTOs()) {
+            ProductSkuDimensionEntity dimensionEntity = saveOrUpdate(dimensionDTO);
+            skuDimensionEntities.add(dimensionEntity);
+        }
+        productSkuEntity.setSkuDimensions(skuDimensionEntities);
+        return productSkuEntity;
+    }
+
+    private ProductSkuDimensionEntity saveOrUpdate(ProductSkuDimensionDTO dimensionDTO) {
+        ProductSkuDimensionEntity dimensionEntity = null;
+        if(dimensionDTO == null) {
+            return dimensionEntity;
+        }
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        if(dimensionDTO.getProductSkuDimensionId() == null) { // insert
+            dimensionEntity = ProductSkuDimensionBeanUtils.dto2Entity(dimensionDTO);
+            dimensionEntity.setCreatedDate(now);
+            dimensionEntity.setActive(true);
+            String code = CommonUtils.generateCode();
+            dimensionEntity.setBarCode(code);
+            dimensionEntity.setCode(code);
+        } else { // update
+            dimensionEntity = productSkuDimensionDAO.findById(dimensionDTO.getProductSkuDimensionId());
+            dimensionEntity.setModifiedDate(now);
+            dimensionEntity.setActive(dimensionDTO.getActive());
+            dimensionEntity.setDepth(dimensionDTO.getDepth());
+            dimensionEntity.setHeight(dimensionDTO.getHeight());
+            dimensionEntity.setOriginalPrice(dimensionDTO.getOriginalPrice());
+            dimensionEntity.setSalePrice(dimensionDTO.getSalePrice());
+            dimensionEntity.setSize(dimensionDTO.getSize());
+        }
+        return dimensionEntity;
     }
 
     @Override
@@ -107,8 +154,6 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setDescription(pojo.getDescription());
         productEntity.setCreatedDate(now);
         productEntity.setCode(CommonUtils.generateCode());
-//        ProductReferencePriceEntity referencePriceEntity = new ProductReferencePriceEntity();
-//        productEntity.setReferencePrice(referencePriceEntity);
         CatGroupEntity catGroupEntity = catGroupDAO.findEqualUnique("code", pojo.getCatGroup().getCode());
         productEntity.setCatGroup(catGroupEntity);
         List<ProductSkuEntity> productSkus = new ArrayList<>();
@@ -141,13 +186,13 @@ public class ProductServiceImpl implements ProductService {
             productSkus.add(skuEntity);
         }
         productEntity.setProductSkus(productSkus);
+        ProductReferencePriceEntity referencePriceEntity = new ProductReferencePriceEntity();
+        referencePriceEntity.setHighestPrice(highestPrice);
+        referencePriceEntity.setLowestPrice(lowestPrice);
+        referencePriceEntity.setCreatedDate(now);
+        referencePriceEntity.setProduct(productEntity);
+        productEntity.setReferencePrice(referencePriceEntity);
         productEntity = productDAO.save(productEntity);
-//
-//        ProductReferencePriceEntity referencePriceEntity = new ProductReferencePriceEntity();
-//        referencePriceEntity.setHighestPrice(highestPrice);
-//        referencePriceEntity.setLowestPrice(lowestPrice);
-//        referencePriceEntity.setCreatedDate(now);
-//        referencePriceEntity.setProduct(productEntity);
 
         return ProductBeanUtils.entity2DTO(productEntity);
     }

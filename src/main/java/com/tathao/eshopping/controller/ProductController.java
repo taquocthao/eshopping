@@ -166,7 +166,7 @@ public class ProductController extends ApplicationObjectSupport {
     }
 
     private void referenceData4Admin(ModelAndView mav) {
-        List<CatGroupDTO> catGroups = catGroupService.findAll4Admin();
+        List<CatGroupDTO> catGroups = catGroupService.findAllExcludeParent();
         mav.addObject("catGroups", catGroups);
     }
 }

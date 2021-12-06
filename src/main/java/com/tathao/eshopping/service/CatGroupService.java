@@ -9,6 +9,8 @@ public interface CatGroupService {
 
     List<CatGroupDTO> findAll4Admin();
 
+    List<CatGroupDTO> findAllExcludeParent();
+
     Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer firstItem, Integer maxPageItems, String whereClause);
 
     CatGroupDTO findByCode(String code);

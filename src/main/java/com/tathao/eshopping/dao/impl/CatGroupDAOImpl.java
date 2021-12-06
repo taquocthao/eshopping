@@ -27,4 +27,11 @@ public class CatGroupDAOImpl extends AbstractHibernateDAO<CatGroupEntity, Long> 
         query.setParameter("status", status);
         return query.executeUpdate() > 0;
     }
+
+    @Override
+    public List<CatGroupEntity> findAllExcludeParent() {
+        StringBuilder sql = new StringBuilder("FROM CatGroupEntity c where c.parent is not null");
+        Query query = getCurrentSession().createQuery(sql.toString());
+        return query.getResultList();
+    }
 }
