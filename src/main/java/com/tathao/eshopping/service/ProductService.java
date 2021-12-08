@@ -18,4 +18,6 @@ public interface ProductService {
     ProductDTO update(ProductDTO pojo);
 
     ProductDTO add(ProductDTO pojo);
+
+    boolean updateStatus(List<Long> ids, boolean active);
 }

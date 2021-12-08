@@ -196,4 +196,13 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductBeanUtils.entity2DTO(productEntity);
     }
+
+    @Override
+    public boolean updateStatus(List<Long> ids, boolean active) {
+        boolean result = false;
+        if(ids != null && ids.size() > 0) {
+            return productDAO.updateStatus(ids, active);
+        }
+        return result;
+    }
 }

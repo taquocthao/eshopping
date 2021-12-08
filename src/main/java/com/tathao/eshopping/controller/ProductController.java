@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,18 @@ public class ProductController extends ApplicationObjectSupport {
     @RequestMapping(value = "/admin/product.html")
     public ModelAndView productManagement(@ModelAttribute(value = CoreConstants.FORM_MODEL_KEYS) ProductCommand command, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("/admin/product/list");
+        String crudaction = command.getCrudaction();
         try {
+            if(!StringUtils.isEmpty(crudaction) && crudaction.equals(CoreConstants.FORM_ACTION_ACTIVE)) {
+                productService.updateStatus(this.convertList(command.getCheckList()), true);
+                mav.addObject(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
+                mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.active.product.success"));
+            } else if(!StringUtils.isEmpty(crudaction) && crudaction.equals(CoreConstants.FORM_ACTION_DEACTIVE)) {
+                productService.updateStatus(convertList(command.getCheckList()), false);
+                mav.addObject(CoreConstants.ALTER, CoreConstants.TYPE_SUCCESS);
+                mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.dactive.product.success"));
+            }
+
             Map<String, Object> buildProperties = buildProperties4AdminSearch(request, command);
             StringBuilder whereClause = new StringBuilder("1 = 1");
             if(command.getPojo() != null && command.getPojo().getStatus() != null) {
@@ -88,7 +100,14 @@ public class ProductController extends ApplicationObjectSupport {
             command.setTotalItems(Integer.parseInt(result[0].toString()));
             referenceData4Admin(mav);
         } catch (Exception e) {
-            logger.error(e.getCause());
+            if(!StringUtils.isEmpty(crudaction) && crudaction.equals(CoreConstants.FORM_ACTION_ACTIVE)) {
+                mav.addObject(CoreConstants.ALTER, CoreConstants.TYPE_DANGER);
+                mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.active.product.failure"));
+            } else if(!StringUtils.isEmpty(crudaction) && crudaction.equals(CoreConstants.FORM_ACTION_DEACTIVE)) {
+                mav.addObject(CoreConstants.ALTER, CoreConstants.TYPE_DANGER);
+                mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.dactive.product.failure"));
+            }
+            logger.error("POSITION method productManagement - error ", e);
         }
         return mav;
     }
@@ -168,5 +187,15 @@ public class ProductController extends ApplicationObjectSupport {
     private void referenceData4Admin(ModelAndView mav) {
         List<CatGroupDTO> catGroups = catGroupService.findAllExcludeParent();
         mav.addObject("catGroups", catGroups);
+    }
+
+    private List<Long> convertList(String[] stringList) {
+        List<Long> result = new ArrayList<>();
+        if(stringList != null && stringList.length > 0) {
+            for(String id : stringList) {
+                result.add(Long.valueOf(id));
+            }
+        }
+        return result;
     }
 }

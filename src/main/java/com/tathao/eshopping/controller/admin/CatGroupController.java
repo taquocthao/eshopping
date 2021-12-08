@@ -62,7 +62,7 @@ public class CatGroupController extends ApplicationObjectSupport {
                 mav.addObject(CoreConstants.ALTER, CoreConstants.TYPE_DANGER);
                 mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.dactive.catgroup.failure"));
             }
-            logger.error(e.getMessage());
+            logger.error("- get list catgroup - error", e);
         }
         return mav;
     }

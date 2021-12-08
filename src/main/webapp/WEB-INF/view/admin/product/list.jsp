@@ -98,12 +98,12 @@
                                     &nbsp;<fmt:message key="label.button.export.product"/>
                                 </button>&nbsp;
                                 <!--Active product-->
-                                <button class="btn btn-sm btn-success waves-effect waves-light">
+                                <button id="btnActive" class="btn btn-sm btn-success waves-effect waves-light">
                                     <i class="fa fa-check"></i>
                                     &nbsp;<fmt:message key="label.button.active"/>
                                 </button>&nbsp;
                                 <!--Deactive product-->
-                                <button class="btn btn-sm btn-danger waves-effect waves-light">
+                                <button id="btnDeActive" class="btn btn-sm btn-danger waves-effect waves-light">
                                     <i class="fa fa-ban"></i>
                                     &nbsp;<fmt:message key="label.button.deactive"/>
                                 </button>
@@ -122,7 +122,7 @@
                                             <display:column title="" class="text-center table_menu_items"
                                                             headerClass="white_text text-center" style="width:2%" >
                                                 <fieldset class='custom-control text-center'>
-                                                    <input type="checkbox" name="checkList" id="checkbox${tableList_rowNum}">
+                                                    <input type="checkbox" name="checkList" id="checkbox${tableList_rowNum}" value="${tableList.productId}">
                                                     <label for="checkbox${tableList_rowNum}" class="">&nbsp;</label>
                                                 </fieldset>
                                             </display:column>
@@ -181,6 +181,7 @@
                                     </div>
                                 </div>
                             </div>
+                        <input type="hidden" name="crudaction" id="crudaction">
                     </form:form>
                 </div>
             </div>
@@ -192,6 +193,40 @@
         $("#btnSearch").click(function (e) {
             e.preventDefault();
             $("#listForm").submit();
-        })
+        });
+
+        // event active
+        $("#btnActive").click(function (e) {
+            e.preventDefault();
+            let checkedBox = $("input[name='checkList']:checked");
+            if(checkedBox.length <= 0) {
+                bootbox.alert("<fmt:message key="message.warning.choose.product"/>");
+                return;
+            }
+            bootbox.confirm('<fmt:message key="message.confirm.active"/>', function (ok) {
+                if(ok) {
+                    $("#crudaction").val("active");
+                    $("#listForm").submit();
+                }
+            });
+
+        });
+
+        // event deActive
+        $("#btnDeActive").click(function (e) {
+            e.preventDefault();
+            let checkedBox = $("input[name='checkList']:checked");
+            if(checkedBox.length <= 0) {
+                bootbox.alert("<fmt:message key="message.warning.choose.catgroup"/>");
+                return;
+            }
+            bootbox.confirm('<fmt:message key="message.confirm.deactive"/>', function (ok) {
+                if(ok) {
+                    $("#crudaction").val("deactive");
+                    $("#listForm").submit();
+                }
+            });
+
+        });
     })
 </script>
