@@ -17,5 +17,7 @@ public class WebConstants {
     public static final String INSERT_OR_UPDATE = "insert-update";
 
     public static final String ROOT_PRODUCT_UPLOAD_IMAGE = "/product/";
-	
+    public static final String ROOT_CATGROUP_EXCEL_FILE = "/catgroup/excel/";
+    public static final String ROOT_PRODUCT_EXCEL_FILE = "/product/excel/";
+
 }

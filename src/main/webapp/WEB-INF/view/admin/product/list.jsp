@@ -4,6 +4,7 @@
 
 <c:url var="formListUrl" value="/admin/product.html"/>
 <c:url var="productEditUrl" value="/admin/product/edit.html"/>
+<c:url var="ajaxExportProductUrl" value="/ajax/admin/product/export.html"/>
 
 <div class="container-fluid">
 
@@ -93,7 +94,7 @@
                                     &nbsp;<fmt:message key="label.button.import.product"/>
                                 </button>&nbsp;
                                 <!--Export product-->
-                                <button class="btn btn-sm btn-primary waves-effect waves-light">
+                                <button id="btnExport" class="btn btn-sm btn-primary waves-effect waves-light">
                                     <i class="fa fa-file"></i>
                                     &nbsp;<fmt:message key="label.button.export.product"/>
                                 </button>&nbsp;
@@ -227,6 +228,19 @@
                 }
             });
 
+        });
+
+        $('#btnExport').click(function (e) {
+            e.preventDefault();
+            showSpinner()
+            $.ajax({
+                url: '${ajaxExportProductUrl}',
+                method: 'POST',
+                data: $('#listForm').serialize(),
+            }).done(function (result) {
+                hideSpinner();
+                window.location.href = "/EShoping" + result;
+            })
         });
     })
 </script>

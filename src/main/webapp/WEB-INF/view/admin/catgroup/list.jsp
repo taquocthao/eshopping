@@ -236,8 +236,7 @@
                 data: $('#listForm').serialize(),
             }).done(function (result) {
                 hideSpinner();
-                console.log(result);
-                window.location.replace = result;
+                window.location.href = "/EShoping" + result;
             })
         });
 

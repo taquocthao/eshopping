@@ -3,6 +3,7 @@ package com.tathao.eshopping.controller.admin;
 import com.tathao.eshopping.model.command.CatGroupCommand;
 import com.tathao.eshopping.model.dto.CatGroupDTO;
 import com.tathao.eshopping.service.CatGroupService;
+import com.tathao.eshopping.ultils.WebConstants;
 import com.tathao.eshopping.ultils.config.Config;
 import com.tathao.eshopping.ultils.CoreConstants;
 import com.tathao.eshopping.ultils.RequestUtils;
@@ -30,7 +31,7 @@ import java.util.*;
 public class CatGroupController extends ApplicationObjectSupport {
 
     private static final Logger logger = Logger.getLogger(CatGroupController.class);
-    private static final String OUT_PATH_EXCEL = Config.getInstance().getProperty("output.catgroup");
+    private static final String OUT_PATH_EXCEL = Config.getInstance().getProperty("output.file.root");
 
     @Autowired
     private CatGroupService catGroupService;
@@ -115,7 +116,7 @@ public class CatGroupController extends ApplicationObjectSupport {
             executeSearchListCatGroup(command, request);
             url = exportExcel(command, request, response);
         } catch (Exception e){
-            logger.error(e.getCause());
+            logger.error(" method exportExcelCatGroup error:", e);
         }
         return url;
     }
@@ -162,61 +163,6 @@ public class CatGroupController extends ApplicationObjectSupport {
     }
 
     private String exportExcel(CatGroupCommand command, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        Calendar cal = Calendar.getInstance();
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//
-//        String fileName = "/file/catgroup" + cal.get(Calendar.DAY_OF_YEAR) + "_" + System.currentTimeMillis() + ".xlsx";
-//        String pathExport = request.getSession().getServletContext().getRealPath(fileName);
-//        String templatePath = request.getSession().getServletContext().getRealPath("/file/template-export/catgroup.xlsx");
-//        FileInputStream fileInputStream = new FileInputStream(new File(templatePath));
-
-//        XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
-//        XSSFSheet sheet = workbook.getSheetAt(0);
-//        XSSFCellStyle cellStyle = workbook.createCellStyle();
-//        cellStyle.setWrapText(false);
-//        cellStyle.setBorderLeft(BorderStyle.THIN);
-//        cellStyle.setBorderRight(BorderStyle.THIN);
-//        cellStyle.setBorderTop(BorderStyle.THIN);
-//        cellStyle.setBorderBottom(BorderStyle.THIN);
-//        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-//
-//        int rowIndex = 3;
-//        for(CatGroupDTO dto : command.getListResult()) {
-//            XSSFRow row = sheet.createRow(rowIndex);
-//
-//            XSSFCell cell = row.createCell(0);
-//            cell.setCellValue(rowIndex - 2);
-//            cell.setCellStyle(cellStyle);
-//
-//            int positionNextCell = 0;
-//            addCellValue(row, positionNextCell + 1, dto.getCode(), cellStyle);
-//            addCellValue(row, positionNextCell + 2, dto.getName(), cellStyle);
-//            addCellValue(row, positionNextCell + 3, dto.getParent() != null ? dto.getParent().getName() : "", cellStyle);
-//            String status = "Hoạt động";
-//            if(!dto.getStatus()) {
-//                status = "Ngưng hoạt động";
-//            }
-//            addCellValue(row, positionNextCell + 4, status, cellStyle);
-//            addCellValue(row, positionNextCell + 5, sdf.format(new Date(dto.getCreatedDate().getTime())), cellStyle);
-//            rowIndex++;
-//        }
-//
-//        FileOutputStream fileOutputStream = new FileOutputStream(new File(pathExport));
-//        workbook.write(fileOutputStream);
-//        fileOutputStream.close();
-
-//        response.setContentType("application/octet-stream");
-//        String headerKey = "Content-Disposition";
-//        String headerValue = "attachment; filename=catgroup_" + cal.get(Calendar.DAY_OF_YEAR) + "_" + System.currentTimeMillis()  + ".xlsx";
-//        response.setHeader(headerKey, headerValue);
-//        ServletOutputStream outputStream = response.getOutputStream();
-
-//        workbook.write(outputStream);
-//        workbook.close();
-//        outputStream.flush();
-
-//        return request.getSession().getServletContext().getContextPath() + fileName;
-
         String templatePath = request.getSession().getServletContext().getRealPath("/file/template-export/catgroup.xlsx");
         String fileName = "catgroup_";
         List<Object[]> listValue = new ArrayList<>();
@@ -230,7 +176,8 @@ public class CatGroupController extends ApplicationObjectSupport {
             listValue.add(item);
         }
 
-        return ExcelUtils.export(listValue, templatePath, OUT_PATH_EXCEL, fileName);
+        String outputPath = OUT_PATH_EXCEL + WebConstants.ROOT_CATGROUP_EXCEL_FILE;
+        return ExcelUtils.export(listValue, templatePath, outputPath, fileName);
     }
 
     private void addCellValue(XSSFRow row, Integer position, String value, XSSFCellStyle cellStyle) {

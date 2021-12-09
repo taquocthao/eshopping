@@ -1,5 +1,6 @@
 package com.tathao.eshopping.controller;
 
+import com.tathao.eshopping.model.command.CatGroupCommand;
 import com.tathao.eshopping.model.command.ProductCommand;
 import com.tathao.eshopping.model.dto.CatGroupDTO;
 import com.tathao.eshopping.model.dto.ProductDTO;
@@ -10,6 +11,7 @@ import com.tathao.eshopping.ultils.FileUtils;
 import com.tathao.eshopping.ultils.RequestUtils;
 import com.tathao.eshopping.ultils.WebConstants;
 import com.tathao.eshopping.ultils.config.Config;
+import com.tathao.eshopping.ultils.excel.ExcelUtils;
 import com.tathao.eshopping.validator.ProductValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +41,7 @@ import java.util.Map;
 public class ProductController extends ApplicationObjectSupport {
 
     private final Logger logger = Logger.getLogger(this.getClass());
+    private static final String OUT_PATH_EXCEL = Config.getInstance().getProperty("output.file.root");
 
     @Autowired
     private ProductService productService;
@@ -90,14 +96,7 @@ public class ProductController extends ApplicationObjectSupport {
                 mav.addObject(CoreConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("message.notify.dactive.product.success"));
             }
 
-            Map<String, Object> buildProperties = buildProperties4AdminSearch(request, command);
-            StringBuilder whereClause = new StringBuilder("1 = 1");
-            if(command.getPojo() != null && command.getPojo().getStatus() != null) {
-                whereClause.append("AND A.status = ").append(command.getPojo().getStatus());
-            }
-            Object[] result = productService.findByProperties(buildProperties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getTotalItems(), whereClause.toString());
-            command.setListResult((List<ProductDTO>) result[1]);
-            command.setTotalItems(Integer.parseInt(result[0].toString()));
+            executeSearchListProduct(command, request);
             referenceData4Admin(mav);
         } catch (Exception e) {
             if(!StringUtils.isEmpty(crudaction) && crudaction.equals(CoreConstants.FORM_ACTION_ACTIVE)) {
@@ -164,6 +163,60 @@ public class ProductController extends ApplicationObjectSupport {
             logger.error("method uploadFile error: " + e);
         }
         return pathFile;
+    }
+
+    @RequestMapping(value = "/ajax/admin/product/export.html")
+    @ResponseBody
+    public String exportExcelProduct(ProductCommand command, HttpServletRequest request, HttpServletResponse response) {
+        String url = "";
+        try {
+            executeSearchListProduct(command, request);
+            url = exportExcel(command, request, response);
+        } catch (Exception e){
+            logger.error(" method exportExcelCatGroup error:", e);
+        }
+        return url;
+    }
+
+    private void executeSearchListProduct(ProductCommand command, HttpServletRequest request) {
+        Map<String, Object> buildProperties = buildProperties4AdminSearch(request, command);
+        StringBuilder whereClause = new StringBuilder("1 = 1");
+        if(command.getPojo() != null && command.getPojo().getStatus() != null) {
+            whereClause.append("AND A.status = ").append(command.getPojo().getStatus());
+        }
+        Object[] result = productService.findByProperties(buildProperties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getTotalItems(), whereClause.toString());
+        command.setListResult((List<ProductDTO>) result[1]);
+        command.setTotalItems(Integer.parseInt(result[0].toString()));
+    }
+
+    private String exportExcel(ProductCommand command, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String templatePath = request.getSession().getServletContext().getRealPath("/file/template-export/product.xlsx");
+        String fileName = "product_";
+        List<Object[]> listValue = new ArrayList<>();
+        for(ProductDTO productDTO : command.getListResult()) {
+            Object[] item = new Object[8];
+            item[0] = productDTO.getCatGroup().getName();
+            item[1] = productDTO.getCode();
+            item[2] = productDTO.getName();
+            if(productDTO.getReferencePrice() != null) {
+                Double lowestPrice = productDTO.getReferencePrice().getLowestPrice();
+                Double highestPrice = productDTO.getReferencePrice().getHighestPrice();
+                item[3] = new BigDecimal(lowestPrice).toPlainString();
+                if(highestPrice != null) {
+                    item[3] += ("~" +new BigDecimal(highestPrice).toPlainString());
+                }
+            } else {
+                item[3] = "0";
+            }
+            item[4] = productDTO.getStatus() != null && productDTO.getStatus() ? "Hoạt động" : "Ngưng hoạt động";
+            item[5] = "";
+            item[6] = productDTO.getCreatedDate().toString();
+            item[7] = productDTO.getImage();
+            listValue.add(item);
+        }
+
+        String outputPath = OUT_PATH_EXCEL + WebConstants.ROOT_PRODUCT_EXCEL_FILE;
+        return ExcelUtils.export(listValue, templatePath, outputPath, fileName);
     }
 
     private Map<String, Object> buildProperties4AdminSearch(HttpServletRequest request, ProductCommand command) {

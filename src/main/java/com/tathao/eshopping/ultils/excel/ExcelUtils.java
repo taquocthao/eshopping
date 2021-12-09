@@ -3,6 +3,8 @@ package com.tathao.eshopping.ultils.excel;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.xssf.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Calendar;
@@ -26,7 +28,8 @@ public class ExcelUtils {
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
 
         //3. write content for sheet
-        int rowIndex = 3;
+        int rowIndex = 4;
+        int count = 1;
 
         for(int i = 0; i < listValue.size(); i++) {
             XSSFRow row = sheet.createRow(rowIndex);
@@ -36,16 +39,24 @@ public class ExcelUtils {
 
             Object[] item = listValue.get(i);
 
-            int positionNextCell = 0;
+            //add index
+            addCellValue(row, 0, String.valueOf(count), cellStyle);
+
+            int positionNextCell = 1;
             for(int j = 0; j < item.length; j++) {
                 addCellValue(row, positionNextCell + j, (String) item[j], cellStyle);
             }
             rowIndex++;
+            count++;
         }
 
         //4. write file
         Calendar cal = Calendar.getInstance();
         fileName += cal.get(Calendar.DAY_OF_YEAR) + "_" + System.currentTimeMillis() + ".xlsx";
+        File outFile = new File(outputPath);
+        if(!outFile.isDirectory()) {
+            outFile.mkdirs();
+        }
         outputPath += fileName;
         FileOutputStream fileOutputStream = new FileOutputStream(new File(outputPath));
         workbook.write(fileOutputStream);
