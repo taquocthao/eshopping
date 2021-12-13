@@ -139,7 +139,7 @@ public class ProductController extends ApplicationObjectSupport {
                 }
             }
         } catch (Exception e) {
-            logger.error(" - edit - error:" , e);
+            logger.error("method edit - error:" , e);
             mav.addObject(WebConstants.ALER, WebConstants.TYPE_DANGER);
             mav.addObject(WebConstants.MESSAGE_RESPONSE, this.getMessageSourceAccessor().getMessage("label.error.occurred"));
         }

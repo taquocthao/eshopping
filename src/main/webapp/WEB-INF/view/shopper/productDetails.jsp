@@ -12,7 +12,7 @@
                     <%--product image--%>
                     <div class="preview_image">
                         <div class="preview-small">
-                            <img src="${product.image}" alt="product image" onerror="this.onerror=null;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
+                            <img src="<c:url value="${product.image}"/>" alt="product image" onerror="this.onerror=null;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
                         </div>
                         <div class="thum-image">
                             <ul id="gallery_01" class="prev-thum">

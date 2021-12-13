@@ -114,12 +114,17 @@ public class ProductSkuEntity {
         this.description = description;
     }
 
-    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<ProductSkuDimensionEntity> getSkuDimensions() {
         return skuDimensions;
     }
 
     public void setSkuDimensions(List<ProductSkuDimensionEntity> skuDimensions) {
-        this.skuDimensions = skuDimensions;
+        if(this.skuDimensions != null) {
+            this.skuDimensions.clear();
+        }
+        if(this.skuDimensions != null && skuDimensions != null) {
+            this.skuDimensions.addAll(skuDimensions);
+        }
     }
 }

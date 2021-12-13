@@ -125,13 +125,18 @@ public class ProductEntity {
         this.modifiedDate = modifiedDate;
     }
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<ProductSkuEntity> getProductSkus() {
         return productSkus;
     }
 
     public void setProductSkus(List<ProductSkuEntity> productSkus) {
-        this.productSkus = productSkus;
+        if(this.productSkus != null) {
+            this.productSkus.clear();
+        }
+        if(this.productSkus != null && productSkus != null) {
+            this.productSkus.addAll(productSkus);
+        }
     }
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")

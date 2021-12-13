@@ -83,9 +83,25 @@ public class ProductServiceImpl implements ProductService {
         List<ProductSkuEntity> skuEntities = new ArrayList<>();
         for (ProductSkuDTO skuDTO : productDTO.getSku()) {
             ProductSkuEntity skuEntity = saveOrUpdate(skuDTO);
+            skuEntity.setProduct(productDB);
             skuEntities.add(skuEntity);
         }
         productDB.setProductSkus(skuEntities);
+        ProductReferencePriceEntity referencePriceEntity = productDB.getReferencePrice();
+        Double lowestPrice = 0D;
+        Double highestPrice = null;
+        for(ProductSkuEntity skuEntity : skuEntities) {
+            for(ProductSkuDimensionEntity dimensionEntity: skuEntity.getSkuDimensions()) {
+
+                if(lowestPrice == 0D || lowestPrice > dimensionEntity.getSalePrice()) {
+                    lowestPrice = dimensionEntity.getSalePrice();
+                } else if(lowestPrice < dimensionEntity.getSalePrice()) {
+                    highestPrice = dimensionEntity.getSalePrice();
+                }
+            }
+        }
+        referencePriceEntity.setLowestPrice(lowestPrice);
+        referencePriceEntity.setHighestPrice(highestPrice);
         productDB = productDAO.update(productDB);
         return ProductBeanUtils.entity2DTO(productDB);
     }
@@ -112,6 +128,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductSkuDimensionEntity> skuDimensionEntities = new ArrayList<>();
         for(ProductSkuDimensionDTO dimensionDTO : skuDTO.getSkuDimensionDTOs()) {
             ProductSkuDimensionEntity dimensionEntity = saveOrUpdate(dimensionDTO);
+            dimensionEntity.setSku(productSkuEntity);
             skuDimensionEntities.add(dimensionEntity);
         }
         productSkuEntity.setSkuDimensions(skuDimensionEntities);
@@ -158,7 +175,7 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setCatGroup(catGroupEntity);
         List<ProductSkuEntity> productSkus = new ArrayList<>();
         Double lowestPrice = 0D;
-        Double highestPrice = 0D;
+        Double highestPrice = null;
         for(ProductSkuDTO skuDTO : pojo.getSku()) {
             ProductSkuEntity skuEntity = ProductSkuBeanUtils.dto2Entity(skuDTO);
             skuEntity.setCreatedDate(now);

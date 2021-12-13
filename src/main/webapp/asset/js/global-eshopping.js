@@ -106,6 +106,17 @@ function formatNumber(number) {
     return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
 
+/**
+ * Format string to number
+ */
+function formatStringToNumber(stringNumber) {
+    if(!stringNumber || stringNumber == 0) {
+        return 0;
+    }
+    stringNumber = stringNumber.toString().replace(/\./g, "").replace(",", ".");
+    return Number(stringNumber);
+}
+
 
 function generateProductItems(cartItems) {
     var table = $("div.table-product-items");

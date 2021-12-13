@@ -229,12 +229,12 @@
                                                             </td>
                                                                 <%-- original price --%>
                                                             <td>
-                                                                <input type="text" class="form-control dimension-original-price" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
+                                                                <input type="text" class="form-control dimension-original-price number-price" value="<fmt:formatNumber value="${skuDimension.originalPrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice">
                                                                 <br/><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].originalPrice" cssClass="error"/>
                                                             </td>
                                                                 <%-- sale price --%>
                                                             <td>
-                                                                <input type="text" class="form-control dimension-sale-price" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
+                                                                <input type="text" class="form-control dimension-sale-price number-price" value="<fmt:formatNumber value="${skuDimension.salePrice}"/>" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice">
                                                                 <br/><form:errors path="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].salePrice" cssClass="error"/>
                                                             </td>
                                                                 <%-- action --%>
@@ -349,6 +349,9 @@
         $("#btnSave").click(function (e) {
             e.preventDefault();
             $("#crudaction").val("insert-update");
+            $('.number-price').each(function () {
+                $(this).val(formatStringToNumber($(this).val()));
+            });
             $("#formProduct").submit();
         });
 
@@ -372,10 +375,12 @@
             let formData = new FormData($("#formImage")[0]);
             formData.append('imageProduct', $(this)[0].files[0]);
             uploadImage("${uploadImageURL}", formData, imageElement);
+            $("#buttonUploadHidden")[0].value = '';
         });
     }
 
     function uploadImage(url, formData, targetElment) {
+        console.log("hit");
         $.ajax({
             url: url,
             data: formData,
@@ -486,11 +491,11 @@
                 "               <tr>" +
                 "                   <td style='width: 5%'>STT</td>" +
                 "                   <td style='width: 15%'>"+ $("#labelDimensionCode").val() +"</td>" +
-                "                   <td style='width: 10%'>" + $("#labelSize").val() + "</td>" +
+                "                   <td style='width: 10%' class='required'><span class='col-form-label'>" + $("#labelSize").val() + "</span></td>" +
                 "                   <td style='width: 10%'>"+ $("#labelWidth").val() +"</td>" +
                 "                   <td style='width: 10%'>"+ $("#labelHeight").val() +"</td>" +
-                "                   <td style='width: 15%' class='text-right'>"+ $("#labelOriginalPrice").val() +"</td>" +
-                "                   <td style='width: 15%' class='text-right'>"+ $("#labelSalePrice").val() +"</td>" +
+                "                   <td style='width: 15%' class='text-center required'><span class='col-form-label'>"+ $("#labelOriginalPrice").val() +"</span></td>" +
+                "                   <td style='width: 15%' class='text-center required'><span class='col-form-label'>"+ $("#labelSalePrice").val() +"</span></td>" +
                 "                   <td style='width: 10%'>"+ $("#labelAction").val() +"</td>" +
                 "                </tr>" +
                 "         </thead>" +
@@ -516,10 +521,10 @@
             "               <input type='text' class='form-control dimension-height' name=''" +
             "           </td>" +
             "           <td style='width: 15%'>" +
-            "               <input type='text' class='form-control dimension-original-price' name=''" +
+            "               <input type='text' class='form-control dimension-original-price number-price' name=''" +
             "           </td>" +
             "           <td style='width: 15%'>" +
-            "               <input type='text' class='form-control dimension-sale-price' name=''" +
+            "               <input type='text' class='form-control dimension-sale-price number-price' name=''" +
             "           </td>" +
             "           <td style='width: 10%'>" +
             "               <a href='javascript:void(0)' class='red-text btn-delete-dimension' data-toggle='tooltip'" +
