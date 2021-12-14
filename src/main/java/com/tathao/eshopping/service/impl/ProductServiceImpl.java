@@ -80,6 +80,9 @@ public class ProductServiceImpl implements ProductService {
         productDB.setImage(productDTO.getImage());
         productDB.setName(productDTO.getName());
         productDB.setStatus(productDTO.getStatus());
+        //delete product sku
+        deleteProductSku(productDTO.getSku(), productDB.getProductSkus());
+        // save or update sku
         List<ProductSkuEntity> skuEntities = new ArrayList<>();
         for (ProductSkuDTO skuDTO : productDTO.getSku()) {
             ProductSkuEntity skuEntity = saveOrUpdate(skuDTO);
@@ -104,6 +107,19 @@ public class ProductServiceImpl implements ProductService {
         referencePriceEntity.setHighestPrice(highestPrice);
         productDB = productDAO.update(productDB);
         return ProductBeanUtils.entity2DTO(productDB);
+    }
+
+    private void deleteProductSku(List<ProductSkuDTO> newSku, List<ProductSkuEntity> dbSku) {
+        List<Long> idsDelete = new ArrayList<>();
+        for(ProductSkuEntity entity : dbSku) {
+            for(ProductSkuDTO dto : newSku) {
+                if(entity.getProductSkuId().equals(dto.getProductSkuId()) && dto.getProductSkuId() != null) {
+                    continue;
+                }
+                idsDelete.add(entity.getProductSkuId());
+            }
+        }
+        productSkuDAO.delete(idsDelete);
     }
 
     private ProductSkuEntity saveOrUpdate(ProductSkuDTO skuDTO) {

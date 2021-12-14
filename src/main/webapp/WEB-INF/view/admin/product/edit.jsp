@@ -150,7 +150,8 @@
                                             <table class="table text-center table-striped table-sku-item" id="table${stt.index}">
                                                 <tbody>
                                                     <tr>
-                                                        <input type="hidden" name="pojo.sku[${stt.index}].productSkuId" value="${sku.productSkuId}">
+                                                        <input type="hidden" class="sku-id" name="pojo.sku[${stt.index}].productSkuId" value="${sku.productSkuId}">
+                                                        <!--image-->
                                                         <td style="width: 20%">
                                                             <div class="col-image-product">
                                                                 <img src="<c:url value="${sku.image}"/>" alt="product sku image" class="img-fluid imageSizeThumb image-product" onerror="this.error;this.src='<c:url value="/img/default-placeholder.png"/>'"/>
@@ -158,13 +159,16 @@
                                                                 <br><form:errors path="pojo.sku[${stt.index}].image" cssClass="error"/>
                                                             </div>
                                                         </td>
+                                                        <!--title-->
                                                         <td style="width: 30%">
-                                                            <input class="form-control" type="text" name="pojo.sku[${stt.index}].title" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
+                                                            <input class="form-control sku-title" type="text" name="pojo.sku[${stt.index}].title" value="${sku.title}" <fmt:message key="label.product.sku.input.place-holder"/>>
                                                             <form:errors path="pojo.sku[${stt.index}].title" cssClass="error"/>
                                                         </td>
+                                                        <!--sku code-->
                                                         <td style="width: 20%">
-                                                            <input class="form-control" type="text" name="pojo.sku[${stt.index}].skuCode" value="${sku.skuCode}" readonly>
+                                                            <input class="form-control sku-code" type="text" name="pojo.sku[${stt.index}].skuCode" value="${sku.skuCode}" readonly>
                                                         </td>
+                                                        <!--status-->
                                                         <td style="width: 20%">
                                                             <label>
                                                                 <input type="radio" name="pojo.sku[${stt.index}].status" value="true" <c:if test="${item.pojo.sku[stt.index].status == true}">checked</c:if>>
@@ -208,7 +212,7 @@
                                                 <tbody>
                                                     <c:forEach items="${sku.skuDimensionDTOs}" var="skuDimension" varStatus="stt2">
                                                         <tr>
-                                                            <input type="hidden" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].productSkuDimensionId" value="${skuDimension.productSkuDimensionId}">
+                                                            <input type="hidden" class="dimension-id" name="pojo.sku[${stt.index}].skuDimensionDTOs[${stt2.index}].productSkuDimensionId" value="${skuDimension.productSkuDimensionId}">
                                                             <td class="index-number">${stt2.index + 1}</td>
                                                                 <%-- Dimension code --%>
                                                             <td>
@@ -402,6 +406,7 @@
         let item = " <div class='table-sku'>" +
             "           <table class='table text-center table-striped table-sku-item'>" +
             "               <tr>" +
+            "                   <input type=\"hidden\" class=\"sku-id\" name=\"\" value=\"\">" +
             "                   <td style='width: 20%;'>" +
             "                       <div class='col-image-product'>" +
             "                           <img src='"+ $("#defaultImage").val() +"' alt='image' class='img-fluid imageSizeThumb image-product'/>" +
@@ -449,6 +454,10 @@
         $("div.table-sku").each(function (index) {
             // sku title
             $(this).find("input.sku-title").attr("name", "pojo.sku["+ index +"].title");
+            // sku id
+            $(this).find("input.sku-id").attr("name", "pojo.sku["+ index +"].productSkuId");
+            // sku code
+            $(this).find("input.sku-code").attr("name", "pojo.sku["+ index +"].code");
             // image
             $(this).find("input.image-hidden").attr("name", "pojo.sku["+ index +"].image");
             // status
@@ -507,6 +516,7 @@
         }
 
         let item = "<tr>" +
+            "           <input type='hidden' class='dimension-id' name='' value=''>" +
             "           <td style='width: 5%' class='index-number'>" + 1 + "</td>" +
             "           <td style='width: 15%'>" +
             "                <input type='text' class='form-control dimension-code' name='' readonly>" +
@@ -545,6 +555,8 @@
             tableSkuIndex =  $(tableSkuDimension).closest("div.table-sku").find("table.table-sku-item").attr("id").replace("table", "");
             // stt
             $(this).find(".index-number").text(index + 1);
+            // dimension id
+            $(this).find(".dimension-id").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].productSkuDimensionId");
             //code
             $(this).find(".dimension-code").attr("name", "pojo.sku["+ tableSkuIndex +"].skuDimensionDTOs["+ index +"].code");
             // size
