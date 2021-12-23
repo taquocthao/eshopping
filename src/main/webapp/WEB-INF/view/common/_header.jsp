@@ -219,7 +219,7 @@
 					row = "<div class='item-product d-flex flex-wrap'> " +
 							"<div class='item-left mr-3'>" +
 							"<div class='image-item'>" +
-							"<img src='"+ item.image +"' class='img-fluid' width='50px' height='50px'/>" +
+							"<img src='"+ "/EShoping/" + item.image +"' class='img-fluid' width='50px' height='50px'/>" +
 							"</div>" +
 							"</div>" +
 							"<div class='item-right'>" +

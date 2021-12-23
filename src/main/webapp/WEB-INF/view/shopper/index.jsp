@@ -18,7 +18,7 @@
 											<%--								<div class="offer">- %20</div>--%>
 										<a href="<c:url value="/product/${product.catGroup.name}/${product.code}/detail.html"/>">
 											<div class="thumbnail">
-												<img src="${product.image}" alt="Product Name" style="width: auto; height: 100%" />
+												<img src="<c:url value="${product.image}"/>" alt="Product Name" style="width: auto; height: 100%" />
 											</div>
 										</a>
 										<div class="productname">${product.name}</div>
