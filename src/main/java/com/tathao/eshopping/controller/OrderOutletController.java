@@ -63,7 +63,8 @@ public class OrderOutletController extends ApplicationObjectSupport {
         totalDelivering = Integer.parseInt(result[4].toString());
         totalSuccess = Integer.parseInt(result[5].toString());
         totalCancel = Integer.parseInt(result[6].toString());
-        totalOrder = totalWaitingForConfirm + totalPicking + totalDelivering + totalSuccess + totalCancel;
+        totalReturn = Integer.parseInt(result[7].toString());
+        totalOrder = totalWaitingForConfirm + totalPicking + totalDelivering + totalSuccess + totalCancel + totalReturn;
 
         command.setListResult(listOrders);
         command.setTotalItems(totalItems);

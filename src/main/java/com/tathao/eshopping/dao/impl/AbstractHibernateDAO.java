@@ -203,7 +203,7 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 		try {
 			Object[] nameQuery = HibernateUtil.buildNameQuery(this.getPersistentClass(), properties, (Map)null, sortExpression, sortDirection, true, false, whereClause, true);
 			String queryString = "select A " + nameQuery[0] + nameQuery[1];
-			Query query = getCurrentSession().createQuery(queryString);
+			Query query = getCurrentOrOpenSession().createQuery(queryString);
 			if (nameQuery.length == 4) {
 				String[] params = (String[])((String[])nameQuery[2]);
 				Object[] values = (Object[])((Object[])nameQuery[3]);
@@ -224,7 +224,7 @@ public abstract class AbstractHibernateDAO <T, ID extends Serializable> implemen
 			List<T> res = query.getResultList();
 			Object totalItem = 0;
 			String queryTotal = "SELECT COUNT(*) " + nameQuery[0];
-			Query query2 = getCurrentSession().createQuery(queryTotal);
+			Query query2 = getCurrentOrOpenSession().createQuery(queryTotal);
 			if (nameQuery.length == 4) {
 				String[] params = (String[])((String[])nameQuery[2]);
 				Object[] values = (Object[])((Object[])nameQuery[3]);

@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface OrderOutletDAO extends GenericDAO<OrderOutletEntity, Long> {
 
-    Object[] findByPropertiesFetchTotalOrder(Map<String, Object> properties, String sortExpression, String sortDirection, int firstItem, int totalItems, String whereClause);
+    Integer countTotalOrderByStatus(String status);
 }

@@ -67,8 +67,8 @@
 									<li class="user-menu"><a href="#" class="log"><security:authentication property="name"/></a></li>
 								</security:authorize>
 								<security:authorize access="!isAuthenticated()">
-									<li><a href="<c:url value="/login.html"/>" class="log">Login</a></li>
-									<li><a href="<c:url value="/register.html"/>" class="reg">Register</a></li>
+									<li><a href="<c:url value="/login.html"/>" class="log"><fmt:message key="label.login"/></a></li>
+									<li><a href="<c:url value="/signup.html"/>" class="reg"><fmt:message key="label.sign-up"/></a></li>
 								</security:authorize>
 							</ul>
 						</div>
