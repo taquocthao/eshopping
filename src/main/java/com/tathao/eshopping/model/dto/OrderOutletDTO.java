@@ -1,18 +1,15 @@
-package com.tathao.eshopping.model.entity;
+package com.tathao.eshopping.model.dto;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity
-@Table(name = "orderoutlet")
-public class OrderOutletEntity {
-
+public class OrderOutletDTO implements Serializable {
     private Long orderOutletId;
     private String code;
     private String status;
-    private CustomerEntity customer;
-    private UserEntity createdBy;
+    private CustomerDTO customer;
+    private UserDTO createdBy;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
     private Double totalPrice; // totalPrice = totalOriginalPrice - totalDiscountPrice
@@ -21,11 +18,8 @@ public class OrderOutletEntity {
     private Double totalStoreDiscount;
     private Double totalLoyaltyDiscount;
     private Double totalPromotionDiscount;
-    private List<ProductOrderItemEntity> orderItems;
+    private List<ProductOrderItemDTO> orderItems;
 
-    @Id
-    @Column(name = "OrderOutletId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getOrderOutletId() {
         return orderOutletId;
     }
@@ -42,23 +36,27 @@ public class OrderOutletEntity {
         this.code = code;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "CustomerId", referencedColumnName = "customerid")
-    public CustomerEntity getCustomer() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public CustomerDTO getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerEntity customer) {
+    public void setCustomer(CustomerDTO customer) {
         this.customer = customer;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "createdBy", referencedColumnName = "userid")
-    public UserEntity getCreatedBy() {
+    public UserDTO getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(UserEntity createdBy) {
+    public void setCreatedBy(UserDTO createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -126,21 +124,11 @@ public class OrderOutletEntity {
         this.totalPromotionDiscount = totalPromotionDiscount;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @OneToMany
-    @JoinColumn(name = "ProductOrderItemId", referencedColumnName = "orderoutletid")
-    public List<ProductOrderItemEntity> getOrderItems() {
+    public List<ProductOrderItemDTO> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<ProductOrderItemEntity> orderItems) {
+    public void setOrderItems(List<ProductOrderItemDTO> orderItems) {
         this.orderItems = orderItems;
     }
 }

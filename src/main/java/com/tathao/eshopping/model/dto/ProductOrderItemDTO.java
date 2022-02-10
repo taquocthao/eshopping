@@ -1,25 +1,21 @@
-package com.tathao.eshopping.model.entity;
+package com.tathao.eshopping.model.dto;
 
-import javax.persistence.*;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "ProductOrderItem")
-public class ProductOrderItemEntity {
+public class ProductOrderItemDTO implements Serializable {
 
     private Long productOrderItemId;
     private String code;
     private boolean active;
-    private ProductSkuDimensionEntity skuDimensionEntity;
+    private ProductSkuDimensionDTO skuDimensionDTO;
     private Double originalPrice;
     private Double salePrice;
     private Double discountPrice;
     private Timestamp createdDate;
     private Timestamp modifiedDate;
 
-    @Id
-    @Column(name = "ProductOrderItemId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getProductOrderItemId() {
         return productOrderItemId;
     }
@@ -44,14 +40,12 @@ public class ProductOrderItemEntity {
         this.active = active;
     }
 
-    @OneToOne
-    @JoinColumn(name = "ProductSkuDimensionId", referencedColumnName = "productskudimensionid")
-    public ProductSkuDimensionEntity getSkuDimensionEntity() {
-        return skuDimensionEntity;
+    public ProductSkuDimensionDTO getSkuDimensionDTO() {
+        return skuDimensionDTO;
     }
 
-    public void setSkuDimensionEntity(ProductSkuDimensionEntity skuDimensionEntity) {
-        this.skuDimensionEntity = skuDimensionEntity;
+    public void setSkuDimensionDTO(ProductSkuDimensionDTO skuDimensionDTO) {
+        this.skuDimensionDTO = skuDimensionDTO;
     }
 
     public Double getOriginalPrice() {

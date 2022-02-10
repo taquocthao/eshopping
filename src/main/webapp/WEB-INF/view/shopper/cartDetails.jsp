@@ -23,6 +23,9 @@
                                     &nbsp;&nbsp;<span>1247 Huỳnh Tấn Phát, Quận 7, Tp.Hồ Chí Minh</span>
                                 </li>
                             </ul>
+                            <table>
+
+                            </table>
                         </div>
                     </div><hr class="my-border">
                     <%--Cart items--%>

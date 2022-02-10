@@ -139,7 +139,7 @@
 											<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">Quản lý và vận hành</a>
 											<div class="dropdown-menu">
 												<ul class="mega-menu-links">
-													<li><a href="<c:url value="/admin/order.html"/>">Quản lý đơn hàng</a></li>
+													<li><a href="<c:url value="/admin/order/list.html"/>">Quản lý đơn hàng</a></li>
 													<li><a href="javascript:void(0)">Quản lý khuyến mãi</a></li>
 													<li><a href="<c:url value="/admin/product.html"/>">Quản lý sản phẩm</a></li>
 													<li><a href="<c:url value="/admin/catgroup/list.html"/>">Quản lý danh mục sản phẩm</a></li>

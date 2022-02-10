@@ -65,7 +65,7 @@ function appendItemToCart(items) {
     items.forEach(function (item) {
         var li = '<li>' +
                     '<div class="cart-item">' +
-                        '<div class="image"><img src="'+ item.skuDimension.sku.image +'" alt=""></div>' +
+                        '<div class="image"><img src="/EShoping'+ item.skuDimension.sku.image +'" alt=""></div>' +
                         '<div class="item-description">' +
                             '<p class="name"> '+ item.skuDimension.sku.product.name + '</p>' +
                             '<p>Size: <span class="light-red">'+ item.skuDimension.size +'</span><br>Quantity: <span class="light-red">'+ item.quantity +'</span></p>' +
@@ -139,7 +139,7 @@ function renderRowItem(item) {
         "                   <div class='col-7'>" +
         "                       <div class='row'>" +
         "                           <div class='col-2'>" +
-        "                               <img src='"+ item.skuDimension.sku.image +"' alt='image' onerror='this.error=null;this.src="+ $("#defaultImage").val() +"'>" +
+        "                               <img src='/EShoping"+ item.skuDimension.sku.image +"' alt='image' onerror='this.error=null;this.src="+ $("#defaultImage").val() +"'>" +
         "                           </div>" +
         "                           <div class='col-8'>" +
         "                               <span>"+ item.skuDimension.sku.product.name +"</span>" +
