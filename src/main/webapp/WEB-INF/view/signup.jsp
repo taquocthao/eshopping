@@ -68,8 +68,8 @@
                         <form:errors path="re_password" cssClass="error"/>
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" id="agreeTerm" class="agree-term" />
-                        <span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></span>
+                        <input type="checkbox" id="agreeTerm" class="agree-term" style="display: inline-block"/>
+                        <span>I agree all statements in <a href="#" class="term-service">Terms of service</a></span>
                     </div>
                     <div class="form-group">
                         <input type="submit" id="submitForm" class="form-submit" value="<fmt:message key="label.sign-up"/>" disabled>
@@ -130,7 +130,7 @@
     }
 
     function eventAgree() {
-        $("#agree-term").on("click", function () {
+        $("#agreeTerm").on("click", function () {
             if($(this).is(':checked')) {
                 $("#submitForm").prop("disabled", false);
             } else {
