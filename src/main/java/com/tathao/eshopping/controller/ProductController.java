@@ -55,10 +55,11 @@ public class ProductController extends ApplicationObjectSupport {
     public ModelAndView viewDetail(@PathVariable("catGroup") String catGroup, @PathVariable("productCode") String productCode) {
         ModelAndView mav = new ModelAndView("/shopper/productDetails");
         try {
+            logger.info("view product detail - code: " + productCode + " - catGroup: " + catGroup);
             ProductDTO dto = productService.findByCodeAndFetchRelatedProducts(productCode);
             mav.addObject("product", dto);
         } catch (Exception e) {
-             logger.error(e.getMessage());
+             logger.error("view product detail error", e);
         }
         return mav;
     }

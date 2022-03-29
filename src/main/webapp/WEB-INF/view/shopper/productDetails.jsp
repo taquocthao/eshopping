@@ -63,7 +63,6 @@
                             <span class="col-2 col-form-label"><fmt:message key="label.price"/></span>
                             <div class="col-10">
                                 <span class="new_price"><fmt:formatNumber value="${product.referencePrice.lowestPrice}"/></span>
-                                <jsp:useBean id="product" scope="request" type="com.tathao.eshopping.model.entity.ProductEntity"/>
                                 <c:if test="${product.referencePrice.highestPrice != null && product.referencePrice.highestPrice != 0}">
                                     <span>&nbsp;~&nbsp;</span>
                                     <span class="new_price"><fmt:formatNumber value="${product.referencePrice.highestPrice}"/></span>
