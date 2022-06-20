@@ -37,6 +37,17 @@ public class OrderOutletController extends ApplicationObjectSupport {
         return mav;
     }
 
+    @RequestMapping(value = "/admin/order/pos.html")
+    public ModelAndView pos(@ModelAttribute(CoreConstants.FORM_MODEL_KEY) OrderOutletCommand command) {
+        ModelAndView mav = new ModelAndView("/admin/order/pos");
+        try {
+
+        } catch (Exception e) {
+            logger.error("POSITION OrderOutletController - method pos() error", e);
+        }
+        return mav;
+    }
+
     private void executeSearchOrder(ModelAndView mav, OrderOutletCommand command, HttpServletRequest request) {
         Integer totalOrder = 0;
         Integer totalWaitingForConfirm = 0;

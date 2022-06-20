@@ -39,6 +39,8 @@ public class ProductSkuBeanUtils {
         if(entity.getProduct() != null) {
             ProductDTO productDTO = new ProductDTO();
             productDTO.setProductId(entity.getProduct().getProductId());
+            productDTO.setName(entity.getProduct().getName());
+            productDTO.setCatGroup(CatGroupBeanUtils.entity2DTO(entity.getProduct().getCatGroup()));
             dto.setProduct(productDTO);
         }
         dto.setProductSkuId(entity.getProductSkuId());

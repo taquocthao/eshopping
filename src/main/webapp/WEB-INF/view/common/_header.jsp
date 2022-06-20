@@ -161,7 +161,7 @@
 												</div>
 											</div>
 										</li>
-										<li class="nav-item"><a class="nav-link" href="javascript:void(0)">POS</a></li>
+										<li class="nav-item"><a class="nav-link" href="<c:url value="/admin/order/pos.html"/>" target="_blank">POS</a></li>
 									</ul>
 								</div>
 							</nav>

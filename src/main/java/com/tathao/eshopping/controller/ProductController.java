@@ -68,15 +68,17 @@ public class ProductController extends ApplicationObjectSupport {
     @ResponseBody
     public Object searchProducts(@RequestParam(value = "query") String query) {
         Map<String, Object> map = new HashMap<>();
-        map.put("result", true);
+        map.put("result", false);
         try {
             Map<String, Object> properties = new HashMap<>();
             properties.put("name", query);
             String whereClause = "A.status = true";
             Object[] resultObject = productService.findByProperties(properties, "name", CoreConstants.SORT_ASC, 0, CoreConstants.TEN_ITEMS, whereClause);
+            if(Integer.parseInt(resultObject[0].toString()) > 0) {
+                map.put("result", true);
+            }
             map.put("products", resultObject[1]);
         } catch (Exception e) {
-            map.put("result", false);
             logger.error(e.getMessage());
         }
         return map;

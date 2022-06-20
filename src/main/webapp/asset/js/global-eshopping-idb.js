@@ -1,5 +1,5 @@
 (function ($) {
-    const DB_VERSION = 3;
+    const DB_VERSION = 4;
     const DB_NAME = 'eshopping';
     var myDB;
 
@@ -30,6 +30,7 @@
     
     function createTables() {
         createTableShoppingCart();
+        createTableOrderOutlet();
     }
 
     function clearDataTable(callback) {
@@ -55,6 +56,26 @@
         objectStore.createIndex("quantity", "quantity", {unique : false});
         objectStore.createIndex("skuDimension", "skuDimension", {unique : false});
         objectStore.createIndex("customer", "customer", {unique : false});
+    }
+
+    function createTableOrderOutlet() {
+        var objectStore = myDB.createObjectStore("OrderOutlet", {keyPath: "invoiceNumber"});
+        objectStore.createIndex("orderOutletId", "orderOutletId", {unique: false});
+        objectStore.createIndex("invoiceNumber", "invoiceNumber", {unique: false});
+        objectStore.createIndex("outletId", "outletId", {unique: false});
+        objectStore.createIndex("customerId", "customerId", {unique: false});
+        objectStore.createIndex("totalPrice", "totalPrice", {unique: false});
+        objectStore.createIndex("totalItem", "totalItem", {unique: false});
+        objectStore.createIndex("status", "status", {unique: false});
+        objectStore.createIndex("code", "code", {unique: false});
+        objectStore.createIndex("createdDate", "createdDate", {unique: false});
+        objectStore.createIndex("note", "note", {unique: false});
+        objectStore.createIndex("loyaltyPoint", "loyaltyPoint", {unique: false});
+        objectStore.createIndex("totalOriginalPrice", "totalOriginalPrice", {unique: false});
+        objectStore.createIndex("totalOutletDiscountPrice", "totalOutletDiscountPrice", {unique: false});
+        objectStore.createIndex("totalPromotionDiscountPrice", "totalPromotionDiscountPrice", {unique: false});
+        objectStore.createIndex("isOpen", "isOpen", {unique: false});
+        objectStore.createIndex("productOrderItems", "productOrderItems", {unique: false, multiEntry: true});
     }
 
     $.fn.saveObjectsToIndexedDB = function (objectName, objectArray) {
@@ -142,6 +163,44 @@
 
             transaction.oncomplete = (ev) => {
                 resolve(true);
+            }
+
+        });
+    }
+
+    /**
+     *
+     * @param objectName name of table
+     * @param keyParam column of table to find
+     * @param keyValue value to find
+     * @returns {Promise<resolve, reject>} true, error
+     */
+    $.fn.deleteObjectStore = function (objectName, keyParam, keyValue) {
+        return new Promise((resolve, reject) => {
+            debugger;
+            let transaction = myDB.transaction(objectName, "readwrite");
+            let objectStore = transaction.objectStore(objectName);
+
+            let cusorRequest = objectStore.index(keyParam).openCursor();
+
+            cusorRequest.onerror = (ev) => {
+                reject(new Error(`Get object ${objectName} to delete failure`));
+            }
+
+            cusorRequest.onsuccess = ev => {
+                let cursor = ev.target.result;
+                if(cursor) {
+                    if(keyValue == cursor.key) {
+                        let requestDelete = objectStore.delete(cursor.key);
+                        requestDelete.onsuccess = ev2 => {
+                            resolve(true);
+                        }
+                        requestDelete.onerror = ev2 => {
+                            reject(new Error(`Delete object ${objectName} failure`));
+                        }
+                    }
+                    cursor.continue();
+                }
             }
 
         });

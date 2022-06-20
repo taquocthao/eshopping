@@ -1,5 +1,6 @@
 package com.tathao.eshopping.ultils.mapper.handle;
 
+import com.tathao.eshopping.model.dto.ProductDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDTO;
 import com.tathao.eshopping.model.dto.ProductSkuDimensionDTO;
 import com.tathao.eshopping.model.entity.ProductSkuDimensionEntity;
@@ -14,7 +15,17 @@ public class ProductSkuDimensionBeanUtils {
         ProductSkuDimensionDTO dto = new ProductSkuDimensionDTO();
         dto.setActive(entity.getActive());
         dto.setWidth(entity.getWidth());
-        dto.setSku(null);
+        if(entity.getSku() != null) {
+            ProductSkuDTO skuDTO = new ProductSkuDTO();
+            skuDTO.setProductSkuId(entity.getSku().getProductSkuId());
+            skuDTO.setImage(entity.getSku().getImage());
+            skuDTO.setTitle(entity.getSku().getTitle());
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setName(entity.getSku().getProduct().getName());
+            productDTO.setCatGroup(CatGroupBeanUtils.entity2DTO(entity.getSku().getProduct().getCatGroup()));
+            skuDTO.setProduct(productDTO);
+            dto.setSku(skuDTO);
+        }
         dto.setSize(entity.getSize());
         dto.setSalePrice(entity.getSalePrice());
         dto.setProductSkuDimensionId(entity.getProductSkuDimensionId());
