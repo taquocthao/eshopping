@@ -277,6 +277,14 @@
     <input type="hidden" id="messageWarningDeleteTab" value="<fmt:message key="label.pos.message-warning-delete-tab"/>"/>
     <input type="hidden" id="messageErrorOccur" value="<fmt:message key="label.pos.message-error-occur"/>"/>
     <input type="hidden" id="messageNoProductsFound" value="<fmt:message key="label.pos.message-no-product-found"/>"/>
+    <input type="hidden" id="labelSkuDimensionCode" value="<fmt:message key="label.pos.label.Code"/>"/>
+    <input type="hidden" id="labelProductName" value="<fmt:message key="label.pos.label.product-name"/>"/>
+    <input type="hidden" id="labelSkuTitle" value="<fmt:message key="label.pos.label.product-sku-title"/>"/>
+    <input type="hidden" id="labelQuantity" value="<fmt:message key="label.pos.label.quantity"/>"/>
+    <input type="hidden" id="labelSalePrice" value="<fmt:message key="label.pos.label.sale-price"/>"/>
+    <input type="hidden" id="labelTempPrice" value="<fmt:message key="label.pos.label.temp-price"/>"/>
+    <input type="hidden" id="labelTotalPrice" value="<fmt:message key="label.pos.label.totalPrice"/>"/>
+    <input type="hidden" id="labelSize" value="<fmt:message key="label.pos.label.size"/>"/>
 
     <%--url--%>
     <c:url var="searchProductUrl" value="/ajax/admin/sku/dimension/search.json"/>

@@ -1,22 +1,19 @@
 (function ($) {
-    const DB_VERSION = 4;
+    const DB_VERSION = 5;
     const DB_NAME = 'eshopping';
     var myDB;
 
     $.fn.openIndexedDB = function () {
         return new Promise((resolve, reject) => {
-            console.log("open db...");
             let request = indexedDB.open(DB_NAME, DB_VERSION);
 
             request.onsuccess = function (event) {
                 myDB = event.target.result;
-                console.log("open db success");
                 resolve(true);
             }
 
             request.onupgradeneeded = function (event) {
                 myDB = event.target.result;
-                console.log("need to upgrade db...");
                 clearDataTable(function () {
                     createTables();
                 });
@@ -31,6 +28,7 @@
     function createTables() {
         createTableShoppingCart();
         createTableOrderOutlet();
+        createObjectProductOrderItem();
     }
 
     function clearDataTable(callback) {
@@ -61,7 +59,7 @@
     function createTableOrderOutlet() {
         var objectStore = myDB.createObjectStore("OrderOutlet", {keyPath: "invoiceNumber"});
         objectStore.createIndex("orderOutletId", "orderOutletId", {unique: false});
-        objectStore.createIndex("invoiceNumber", "invoiceNumber", {unique: false});
+        objectStore.createIndex("invoiceNumber", "invoiceNumber", {unique: true});
         objectStore.createIndex("outletId", "outletId", {unique: false});
         objectStore.createIndex("customerId", "customerId", {unique: false});
         objectStore.createIndex("totalPrice", "totalPrice", {unique: false});
@@ -76,6 +74,29 @@
         objectStore.createIndex("totalPromotionDiscountPrice", "totalPromotionDiscountPrice", {unique: false});
         objectStore.createIndex("isOpen", "isOpen", {unique: false});
         objectStore.createIndex("productOrderItems", "productOrderItems", {unique: false, multiEntry: true});
+    }
+
+    function createObjectProductOrderItem() {
+        var objectStore = myDB.createObjectStore("ProductOrderItem", {autoIncrement: true});
+        objectStore.createIndex("productOrderItemId", "productOrderItemId", {unique: false});
+        objectStore.createIndex("orderOutletId", "orderOutletId", {unique: false});
+        objectStore.createIndex("invoiceNumber", "invoiceNumber", {unique: false});
+        objectStore.createIndex("skuId", "skuId", {unique: false});
+        objectStore.createIndex("skuCode", "skuCode", {unique: false});
+        objectStore.createIndex("skuTitle", "skuTitle", {unique: false});
+        objectStore.createIndex("skuDimensionId", "skuDimensionId", {unique: false});
+        objectStore.createIndex("skuDimensionCode", "skuDimensionCode", {unique: false});
+        objectStore.createIndex("size", "size", {unique: false});
+        objectStore.createIndex("productName", "productName", {unique: false});
+        objectStore.createIndex("quantity", "quantity", {unique: false});
+        objectStore.createIndex("salePrice", "salePrice", {unique: false});
+        objectStore.createIndex("discountPrice", "discountPrice", {unique: false});
+        objectStore.createIndex("barCode", "barCode", {unique: false});
+        objectStore.createIndex("image", "image", {unique: false});
+        objectStore.createIndex("catGroup", "catGroup", {unique: false});
+        objectStore.createIndex("catGroupName", "catGroupName", {unique: false});
+        objectStore.createIndex("brandId", "brandId", {unique: false});
+        objectStore.createIndex("applyPromotion", "applyPromotion", {unique: false});
     }
 
     $.fn.saveObjectsToIndexedDB = function (objectName, objectArray) {
@@ -109,6 +130,8 @@
                     let field = null;
                     if(objectName === 'ShoppingCart') {
                         field = cursor.value.skuDimensionCode;
+                    } else if(objectName === 'OrderOutlet') {
+                        field = cursor.value.invoiceNumber;
                     }
                     if(field == param) {
                         resolve(cursor.value);
@@ -177,7 +200,6 @@
      */
     $.fn.deleteObjectStore = function (objectName, keyParam, keyValue) {
         return new Promise((resolve, reject) => {
-            debugger;
             let transaction = myDB.transaction(objectName, "readwrite");
             let objectStore = transaction.objectStore(objectName);
 
@@ -205,5 +227,64 @@
 
         });
     }
+
+    /**
+     * Get ProductOrderItem by invoiceNumber and SkuDimensionId
+     * @param invoiceNumber
+     * @param skuDimensionId
+     */
+    $.fn.getOrderItemByInvoiceNumberAndSkuId = function (invoiceNumber, skuDimensionId) {
+        return new Promise((resolve, reject) => {
+            let transaction = myDB.transaction(["ProductOrderItem"], "readwrite");
+            var objectStore = transaction.objectStore("ProductOrderItem");
+            var object = null;
+            transaction.oncomplete = function (ev) {
+                resolve(object);
+            };
+
+            var cursorRequest = objectStore.index("invoiceNumber").openCursor(invoiceNumber);
+
+            cursorRequest.onerror = function (ev) {
+                reject(new Error(`Get ProductOrderItem failure`));
+            };
+            cursorRequest.onsuccess = function (ev) {
+                var cursor = ev.target.result;
+                if (cursor) {
+                    if (skuDimensionId == cursor.value.skuDimensionId && invoiceNumber == cursor.key) {
+                        object = cursor.value;
+                    }
+                    cursor.continue();
+                }
+            }
+        })
+    };
+
+    /**
+     * Get list of product order item by invoiceNumber
+     * @param invoiceNumber {number} number of invoice
+     */
+    $.fn.getProductOrderItems = function (invoiceNumber) {
+        return new Promise((resolve, reject) => {
+            let transaction = myDB.transaction(["ProductOrderItem"]);
+            let objectStore = transaction.objectStore("ProductOrderItem");
+            let objects = [];
+            transaction.oncomplete = function (ev) {
+                resolve(objects);
+            };
+            var cursorRequest = objectStore.index("invoiceNumber").openCursor();
+            cursorRequest.onerror = function (ev) {
+                reject(new Error(`Get ProductOrderItems failure`));
+            };
+            cursorRequest.onsuccess = function (ev) {
+                var cursor = ev.target.result;
+                if (cursor) {
+                    if (invoiceNumber.toString() === cursor.key) {
+                        objects.push(cursor.value);
+                    }
+                    cursor.continue();
+                }
+            }
+        })
+    };
 
 })($);
