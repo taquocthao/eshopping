@@ -1,5 +1,5 @@
 (function ($) {
-    const DB_VERSION = 5;
+    const DB_VERSION = 7;
     const DB_NAME = 'eshopping';
     var myDB;
 
@@ -77,7 +77,7 @@
     }
 
     function createObjectProductOrderItem() {
-        var objectStore = myDB.createObjectStore("ProductOrderItem", {autoIncrement: true});
+        var objectStore = myDB.createObjectStore("ProductOrderItem", {keyPath: "id", autoIncrement: true});
         objectStore.createIndex("productOrderItemId", "productOrderItemId", {unique: false});
         objectStore.createIndex("orderOutletId", "orderOutletId", {unique: false});
         objectStore.createIndex("invoiceNumber", "invoiceNumber", {unique: false});
@@ -192,6 +192,30 @@
     }
 
     /**
+     * Save object
+     * @param objectName
+     * @param objectValue
+     * @returns {Promise<unknown>}
+     */
+    $.fn.saveObjectStored = function(objectName, objectValue) {
+        return new Promise((resolve, reject) => {
+            let transaction = myDB.transaction(objectName, "readwrite");
+            let objectStore = transaction.objectStore(objectName);
+
+            let requestUpdate = objectStore.add(objectValue);
+
+            requestUpdate.onerror = (ev) => {
+                reject(new Error(`Save object ${objectName} failure`));
+            }
+
+            transaction.oncomplete = (ev) => {
+                resolve(true);
+            }
+
+        });
+    }
+
+    /**
      *
      * @param objectName name of table
      * @param keyParam column of table to find
@@ -215,9 +239,11 @@
                     if(keyValue == cursor.key) {
                         let requestDelete = objectStore.delete(cursor.key);
                         requestDelete.onsuccess = ev2 => {
+                            console.log("delete true");
                             resolve(true);
                         }
                         requestDelete.onerror = ev2 => {
+                            console.log("delete fail");
                             reject(new Error(`Delete object ${objectName} failure`));
                         }
                     }
@@ -242,7 +268,7 @@
                 resolve(object);
             };
 
-            var cursorRequest = objectStore.index("invoiceNumber").openCursor(invoiceNumber);
+            var cursorRequest = objectStore.index("invoiceNumber").openCursor(invoiceNumber.toString());
 
             cursorRequest.onerror = function (ev) {
                 reject(new Error(`Get ProductOrderItem failure`));

@@ -285,10 +285,56 @@
     <input type="hidden" id="labelTempPrice" value="<fmt:message key="label.pos.label.temp-price"/>"/>
     <input type="hidden" id="labelTotalPrice" value="<fmt:message key="label.pos.label.totalPrice"/>"/>
     <input type="hidden" id="labelSize" value="<fmt:message key="label.pos.label.size"/>"/>
+    <input type="hidden" id="messagePaymentNotFound" value="<fmt:message key="label.pos.message-payments-method-not-found"/>"/>
+    <input type="hidden" id="labelCustomerDefault" value="<fmt:message key="label.pos.customer.default"/>"/>
+    <input type="hidden" id="labelReceiveInformation" value="<fmt:message key="label.pos.receive.information"/>"/>
+    <input type="hidden" id="labelOrderInformation" value="<fmt:message key="label.pos.order.information"/>"/>
+    <input type="hidden" id="labelCustomerName" value="<fmt:message key="label.pos.customer.name"/>"/>
+    <input type="hidden" id="labelAmountMustPay" value="<fmt:message key="label.pos.amount.must-pay"/>"/>
 
     <%--url--%>
     <c:url var="searchProductUrl" value="/ajax/admin/sku/dimension/search.json"/>
+    <c:url var="getAllPaymentsMethodUrl" value="/ajax/admin/payment/get-all.json"/>
     <input type="hidden" id="searchProductUrl" value="${searchProductUrl}">
+    <input type="hidden" id="getAllPaymentsMethodUrl" value="${getAllPaymentsMethodUrl}">
+</section>
+
+<section>
+    <%--modal choose payment--%>
+    <div id="modalChoosePayment" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><fmt:message key="label.payment.choose"/></h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="label.close"/></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%--modal customer order infor--%>
+    <div id="modalCustomerOrderInfor" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><fmt:message key="label.pos.message.confirm-proccess-payment"/></h5>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="label.close"/></a>
+                    <a type="button" id="btnConfirmPayment" class="btn btn-primary" ><fmt:message key="label.OK"/></a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 

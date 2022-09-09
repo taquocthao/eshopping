@@ -223,7 +223,7 @@ async function switchTab(invoiceNumber) {
     $("div.invoice-list-nav li.nav-item").removeClass("active");
     $(`#navItem${invoiceNumber}`).addClass("active");
     $("a[href='#invoice" + invoiceNumber +"']").addClass("active show");
-    loadOrderContent();
+    loadOrderContent(invoiceNumber, false, false);
 }
 
 function bindingEventOnBlurQuantityBox() {
@@ -233,34 +233,9 @@ function bindingEventOnBlurQuantityBox() {
         if(!quantity) {
             quantity = 1;
         }
-        var skuDimensionId = e.target.dataset.skuid;
+        var skuDimensionId = e.target.dataset.skudimensionid;
         var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
         updateQuantity(formatStringToNumber(quantity), skuDimensionId, invoiceNumber);
-    });
-}
-
-function bindingEventOnBlurUnitPriceBox() {
-    $(".unit-price").blur(function (e) {
-        e.preventDefault();
-        var value = e.target.value;
-        if(!value) {
-            value = 1;
-        }
-        var price = formatStringToNumber(e.target.value);
-        var skuId = e.target.dataset.skuid;
-        $.fn.getProductOutletSkuById(skuId, function (callbackProductSku) {
-            var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
-            if(callbackProductSku) {
-                var originalPrice = callbackProductSku.originalPrice;
-                if( (originalPrice > 0 && originalPrice <= price ) || originalPrice === 0) {
-
-                    updatePriceProductOrderItem(invoiceNumber, skuId, price, callbackProductSku.listPrice);
-                } else {
-                    loadOrderContent(invoiceNumber, false, true);
-                    notification('error', msgCannotUpdateUnitPirce, false);
-                }
-            }
-        });
     });
 }
 
@@ -571,7 +546,7 @@ function bindingEventUpdateProductQuantity() {
         e.target.value = quantity;
         if(charCode === 13) {
             e.preventDefault();
-            var skuDimensionId = e.target.dataset.skuid;
+            var skuDimensionId = e.target.dataset.skudimensionid;
             var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
             updateQuantity(formatStringToNumber(quantity), skuDimensionId, invoiceNumber);
         }
@@ -683,7 +658,7 @@ function searchByPressKey() {
                     applyPromotion : false
                 };
                 addOrUpdateProduct2CartOffline(productOrderItem).then(() => {
-                    loadOrderContent(invoiceNumber, true, false)
+                    loadOrderContent(invoiceNumber, false, false)
                 });
             }
         },
@@ -764,9 +739,11 @@ async function addOrUpdateProduct2CartOffline(productOrderItem) {
     if(productOrderItemDB) { // exists order item
         productOrderItem = productOrderItemDB;
         productOrderItem.quantity += quantity;
-
+        await $.fn.updateObjectStored("ProductOrderItem", productOrderItem);
+    } else {
+        await $.fn.saveObjectStored("ProductOrderItem", productOrderItem);
     }
-    await $.fn.updateObjectStored("ProductOrderItem", productOrderItem);
+
 }
 
 function bindingEventOnSearchCustomer() {
@@ -942,7 +919,7 @@ function removeTab(invoiceNumber) {
         },
         callback: function (yes) {
             if(yes) {
-                deleteInvoiceOffline(invoiceNumber, true);
+                deleteInvoiceOffline(invoiceNumber);
             }
         }
     });
@@ -954,9 +931,9 @@ function removeTab(invoiceNumber) {
  * @param invoiceNumber
  */
 async function deleteInvoiceOffline(invoiceNumber) {
-    // get OrderOutlet. if orderOutletId != null delete database in server
-    let resultDelete = await $.fn.deleteObjectStore("OrderOutlet", "invoiceNumber", invoiceNumber);
-    if(resultDelete) {
+    const [resultDeleteOrderOutlet, resultDeleteOrderItem] = await Promise.all([$.fn.deleteObjectStore("OrderOutlet", "invoiceNumber", invoiceNumber)
+                                                                                ,$.fn.deleteObjectStore("ProductOrderItem", "invoiceNumber", invoiceNumber)])
+    if(resultDeleteOrderOutlet && resultDeleteOrderItem) {
         refreshPage();
     } else {
         bootbox.alert(messageErrorOccur);
@@ -995,8 +972,6 @@ async function loadOrderContent(invoiceNumber, focusRow, isUpdatePrice, focusPro
  * @param loyaltyOutletEvents {array} optional
  * @param orderProvide {object} optional
  */
-var productPromotionsRender = [];
-var giftsRender = [];
 function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromotionCode, resultPromotion, loyaltyOutletEvents, orderProvide, callback) {
     var table = "";
     var totalItem = 0;
@@ -1005,27 +980,14 @@ function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromo
     var totalStoreDiscountPrice = 0;
     var totalPromotionDiscountPrice = 0;
     var deliveryPrice = formatStringToNumber($("#deliveryFee").text());
-    var tax = 0;
-    var loyaltyPoint = 0;
-    var gifts = [];
-    var productPromotions = [];
-    var productsFixPrice = [];
     var totalAmountOff = 0;
-    var amountOffProducts = [];
-    var percentOffProducts = [];
     var totalFixPriceDiscount = 0;
-    var totalPercentOff = 0; // %
     var voucherDiscount = 0;
     var totalShippingFixPrice = 0; // amount
     var totalShippingDiscount = 0;
-    var rewardProducts = [];
     var rewardProductDiscountValue = 0;
-    var numberApplyShippingFixPrice = 0;
-    var saleChannel = $("#selectSaleChanel").val();
     var subtotalPrice = 0;
 
-    $("#promtionDiscountPercent").text(0);
-    $("#promtionDiscountByCash").text(0);
     $("#totalLoyaltyPoint").text(0);
 
     if(orderItems && orderItems.length > 0) {
@@ -1039,7 +1001,6 @@ function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromo
                     "<th class='text-center'><strong>"+ $("#labelQuantity").val() +"</strong></th>" +
                     "<th></th>" +
                     "<th class='text-center'><strong>"+ $("#labelSalePrice").val() +"</strong></th>" +
-                    "<th class='text-center'><strong>"+ $("#labelTempPrice").val() +"</strong></th>" +
                     "<th class='text-center'><strong>"+ $("#labelTotalPrice").val() +"</strong></th>" +
                 "</tr></thead>";
         table += "<tbody>";
@@ -1048,7 +1009,7 @@ function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromo
         orderItems.reverse().forEach(function (orderItem, index) {
 
             // calculate total price
-            totalItem += orderItem.quantity;
+            totalItem++;
             totalOriginalPrice += Number(((orderItem.salePrice + orderItem.discountPrice) * orderItem.quantity).toFixed(2));
             totalStoreDiscountPrice += Number((orderItem.discountPrice * orderItem.quantity).toFixed(2));
 
@@ -1075,14 +1036,7 @@ function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromo
                 "</div>" +
                 "</td>" +
                 "<td></td>" +
-                "<td width='7%' class='text-center'>" + formatNumber('0') + "</td>" +
-                "<td class='text-right align-middle' width='9%'>" +
-                "<div class='form-group'>" +
-                "<div>" +
-                "<input type='tel' class='form-control text-right unit-price' value='" + formatNumber(orderItem.salePrice) + "' data-skuDimensionId='" + orderItem.skuDimensionId + "'>" +
-                "</div>" +
-                "</div>" +
-                "</td>" +
+                "<td width='7%' class='text-center text-right unit-price align-middle'>" + formatNumber(orderItem.salePrice) + "</td>" +
                 "<td class='text-right align-middle font-weight-bold total-price'>" +
                 "<div class='form-group'>" +
                 "<div style='padding: 6px 0'>" +
@@ -1094,25 +1048,25 @@ function renderCartItems(orderOutlet, customer, orderItems, focusRow, focusPromo
             totalPromotionDiscountPrice += (totalAmountOff + totalFixPriceDiscount + totalShippingDiscount + totalShippingFixPrice);
             subtotalPrice = totalOriginalPrice - (totalAmountOff + totalFixPriceDiscount);
             totalPrice = Number((totalOriginalPrice - totalStoreDiscountPrice - totalPromotionDiscountPrice - rewardProductDiscountValue - voucherDiscount + deliveryPrice).toFixed(2));
-
         })
         table += (row + "</tbody></table>");
+        deliveryPrice = formatStringToNumber($("#deliveryFee").text());
+        totalPrice += deliveryPrice;
+
+        orderOutlet.totalOriginalPrice = totalOriginalPrice;
+        orderOutlet.totalItem = totalItem;
+        orderOutlet.totalStoreDiscountPrice = totalStoreDiscountPrice;
+        orderOutlet.totalPrice = totalPrice;
     } else { // empty cart
         table = "<div class='text-center align-items-center'>" +
                 "   <p class='text-danger'>"+ messageCartEmpty +"</p>" +
                 "</div>";
     }
 
-    deliveryPrice = formatStringToNumber($("#deliveryFee").text());
-    totalPrice += deliveryPrice;
-
-    orderOutlet.totalOriginalPrice = totalOriginalPrice;
-    orderOutlet.totalItem = totalItem;
-    orderOutlet.totalStoreDiscountPrice = totalStoreDiscountPrice;
-    orderOutlet.totalPrice = totalPrice;
-
-    // binding product cart
     $(".product-cart").html(table);
+    $("#totalOriginalPrice").text(formatNumber(totalOriginalPrice));
+    $("#totalItem").text(totalItem);
+    $("#moneyCustomerMustPay").text(formatNumber(totalPrice));
     bindingEventOnBlurQuantityBox();
     bindingEventInputFocus();
     bindingEventUpdateProductQuantity();
@@ -1154,224 +1108,6 @@ function generateOrderItemName(skuId, productName, productsPromotion, promotionB
     return stringBuilder;
 }
 
-function bindEventHoverLabelPromotion() {
-    $(".label-promotion").tooltip();
-}
-
-function generateItemProductPromotion(productIds) {
-    var rowHeader = $("#productCart .promotion-row-product");
-    if(productIds.length > 0 && rowHeader.length == 0) {
-        var rowTitle = "<tr class='promotion-row-product text-primary'><td>" + $("#labelProductPromotion").val() + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-        $("#productCart").append(rowTitle);
-    }
-    productIds.forEach(function (productId) {
-        $.fn.getProductOutletSkuById(productId, function (product) {
-            if(product) {
-                if($("#product_" + productId).length > 0) {
-                    var quantity = $("#product_" + productId + "_quantity");
-                    quantity.text(1 + formatStringToNumber(quantity.text()));
-                } else {
-                    var row = "<tr class='gifts'>" +
-                        "<td class='align-middle'><span class='text-price-medium text-primary'><i class='fa fa-gift'></i></span></td>" +
-                        "<td class='align-middle'>"+ product.skuCode +"</td>" +
-                        "<td class='align-middle'>"+ product.productName +"</td>" +
-                        "<td class='align-middle'>"+ product.skuName +"</td>" +
-                        "<td class='align-middle' width='140px'>" +
-                        "<div class='text-center'>" +
-                        "<span id='product_"+ productId +"_quantity'>1</span>" +
-                        "</div>" +
-                        "</td>" +
-                        "<td></td>" +
-                        "<td class='text-right align-middle' width='100px'></td>" +
-                        "<td class='text-right align-middle font-weight-bold total-price'></td>" +
-                        "<input type='hidden' id='product_" + productId + "'/>" +
-                        "<td></td>" +
-                        "</tr>";
-
-                    $("#productCart .promotion-row-product").after(row);
-                }
-            } else {
-                var row = "<tr><td>"+ $("#labelProductInvalid").val() +"</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tr>"
-                $("#productCart .promotion-row-product").after(row);
-            }
-        });
-    });
-}
-
-function generateItemGiftPromotion(giftIds, type) {
-    var rowHeader = $("#productCart .promotion-row-gift");
-    if(giftIds.length > 0 && rowHeader.length === 0) {
-        var rowTitle = "<tr class='promotion-row-gift text-primary'><td>" + $("#labelGiftPromotion").val() + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-        $("#productCart").append(rowTitle);
-    }
-    var count = 0;
-    giftIds.forEach(function (giftId) {
-        $.fn.getGiftById(giftId, function (gift) {
-            if (gift) {
-                count++;
-                if((gift.quantityPromotion >= count && type === 'promotion') || (type === 'reward' && gift.quantityLoyalty >= count)) {
-                    if ($("#gift_" + giftId).length > 0) {
-                        var quantity = $("#gift_" + giftId + "_quantity");
-                        quantity.text(1 + formatStringToNumber(quantity.text()));
-                    } else {
-                        var row = "<tr class='gifts'>" +
-                            "<td class='align-middle'><span class='text-price-medium text-primary'><i class='fa fa-gift'></i></span></td>" +
-                            "<td class='align-middle'></td>" +
-                            "<td class='align-middle'>" + gift.name + "</td>" +
-                            "<td class='align-middle'></td>" +
-                            "<td class='align-middle' width='140px'>" +
-                            "<div class='text-center'>" +
-                            "<span id='gift_" + giftId + "_quantity'>1</span>" +
-                            "</div>" +
-                            "</td>" +
-                            "<td></td>" +
-                            "<td class='text-right align-middle' width='100px'></td>" +
-                            "<td class='text-right align-middle font-weight-bold total-price'></td>" +
-                            "<input type='hidden' id='gift_" + giftId + "'/>";
-                            if(type === 'reward') {
-                                row += "<input type='hidden' class='reward_gift' data-giftid='"+ giftId +"'/>";
-                            }
-                            row += "<td></td>";
-                            row += "</tr>";
-                        $("#productCart .promotion-row-gift").after(row);
-                    }
-                }
-            } else {
-                var row = "<tr><td>" + $("#labelGiftInvalid").val() + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tr>"
-                $("#productCart .promotion-row-gift").after(row);
-            }
-        });
-    });
-}
-
-function generateItemProductFixPrice(productsFixPrice, invoiceNumber, type) {
-    var rowHeader = $("#productCart .promotion-row-fix-price");
-    if(productsFixPrice.length > 0 && rowHeader.length === 0) {
-        var rowTitle = "<tr class='promotion-row-fix-price text-primary'><td>" + $("#labelProductFixPricePromotion").val() + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-        $("#productCart").append(rowTitle);
-    }
-    productsFixPrice.forEach(function (productFixed) {
-        var productIds = productFixed.productIds;
-        productIds.forEach(function (productId) {
-            $.fn.getProductOutletSkuById(productId, function (product) {
-                if(product) {
-                    $.fn.getOrderItemByInvoiceNumberAndSkuId(invoiceNumber, productId, function (productOrderItem) {
-                        var isExistProduct = $("#productFixPrice_" + productId).length > 0;
-                        if(!isExistProduct) {
-                            var numberCount = 0;
-                            var numberRemain = 0;
-                            if (productOrderItem) {
-                                numberCount = productOrderItem.quantity;
-                            }
-                            numberRemain = (productsFixPrice.length - numberCount) > 0 ? (productsFixPrice.length - numberCount) : 0;
-                            var discountValue = productFixed.discountValue;
-                            if(type === 'reward') {
-                                discountValue = productFixed.discountValue;
-                                var discountType = productFixed.discountType;
-
-                            }
-                            var row = "<tr class='product-fix-price'>" +
-                                "<td class='align-middle'><span class='text-price-medium text-primary'><i class='fa fa-gift'></i></span></td>" +
-                                "<td class='align-middle'>" + product.skuCode + "</td>" +
-                                "<td class='align-middle'>" + product.productName + "</td>" +
-                                "<td class='align-middle'>" + product.skuName + "</td>" +
-                                "<td class='align-middle' width='140px'>" +
-                                "<div class='text-center text-success'>" +
-                                "<span>x<span><span id='product_"+ productId +"_quantity'>" + numberRemain + "<span>" +
-                                "</div>" +
-                                "</td>" +
-                                "<td></td>" +
-                                "<td></td>" +
-                                "<td class='text-right align-middle' width='100px'>" + discountValue + "</td>" +
-                                "<td class='text-right align-middle font-weight-bold total-price'></td>" +
-                                "<input type='hidden' id='productFixPrice_" + productId + "'/>";
-
-                                if(type === "reward") {
-                                    row += "<input type='hidden' class='reward_fixprice' data-skuDimensionId='"+ productId +"'/>";
-                                }
-                                row +="</tr>";
-
-                            $("#productCart .promotion-row-fix-price").after(row);
-                        }
-                    });
-                } else {
-                    var row = "<tr><td>"+ $("#labelProductInvalid").val() +"</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tr>"
-                    $("#productCart .promotion-row-fix-price").after(row);
-                }
-            });
-        });
-    });
-}
-
-function convertStatus(status) {
-    return status ? $("#labelStatusActive").val() : $("#labelStatusInActive").val();
-}
-
-function updateProductOrderItemsBaseOnPricing(invoiceNumber, productOrderItems, customerPricingId, callback) {
-    var count = 0;
-    productOrderItems.map(function (orderItem) {
-        $.fn.getProductOutletSkuById(orderItem.skuId, function (productSku) {
-            count++;
-            if(productSku) {
-                if(customerPricingId) { // update order item base on pricing
-                    var customerPrices = productSku.customerPrices;
-                    for (var i = 0; i < customerPrices.length; i++) {
-                        if (customerPricingId == customerPrices[i].pricingId) {
-                            var salePrice = customerPrices[i].price;
-                            var discountPrice = Number((productSku.listPrice - customerPrices[i].price).toFixed(2));
-
-                            if (salePrice) {
-                                orderItem.salePrice = salePrice;
-                            }
-
-                            if (discountPrice) {
-                                orderItem.discountPrice = discountPrice;
-                            }
-
-                            $.fn.updateData2ProductOrderItem(orderItem, function () {});
-                            break;
-                        }
-                    }
-                } else { // get normal price
-                    orderItem.salePrice = productSku.listPrice;
-                    orderItem.discountPrice = 0;
-                    $.fn.updateData2ProductOrderItem(orderItem, function () {});
-                }
-
-                if (count >= productOrderItems.length) {
-                    $.fn.getProductOrderItems(invoiceNumber, function (updatedOrderItems) {
-                        callback(updatedOrderItems);
-                    });
-                }
-            } else { // not exists product -> delete from product order item
-                console.log("not exists product -> delete from product order item ", orderItem.skuCode);
-                $.fn.deleteProductOrderItem(orderItem.skuId, invoiceNumber, function(result) {
-                    console.log("delete success");
-                });
-                if (count >= productOrderItems.length) {
-                    $.fn.getProductOrderItems(invoiceNumber, function (updatedOrderItems) {
-                        callback(updatedOrderItems);
-                    });
-                }
-            }
-        });
-    });
-}
-
-function renderDiscountPrice(discountPrice, quantity) {
-    if(discountPrice > 0) {
-        if(quantity) {
-            return "<div class='cash-discount text-danger'>" +
-                "- " + formatNumber(discountPrice  * quantity) +
-                "</div>"
-        }
-        return "<div class='cash-discount text-danger'>" +
-            "- " + formatNumber(discountPrice) +
-            "</div>"
-    }
-    return "";
-}
-
 /**
  * Calculate the total amount of money owed by the customer
  */
@@ -1399,7 +1135,7 @@ function deleteProduct(productId, orderOutletId, invoiceNumber, skuid) {
 /**
  *  Decrease quantity order item
  * @param boxIndex
- * @param skuId optional for offline
+ * @param skuDimensionId optional for offline
  * @param invoiceNumber optional for offline
  */
 function decreaseQuantity(boxIndex, skuDimensionId, invoiceNumber) {
@@ -1431,7 +1167,7 @@ function increaseQuantity(boxIndex, skuDimensionId, invoiceNumber) {
 /**
  * Update quantity
  * @param quantity
- * @param skuId
+ * @param skuDimensionId
  * @param invoiceNumber
  */
 function updateQuantity(quantity, skuDimensionId, invoiceNumber){
@@ -1444,8 +1180,11 @@ function updateQuantity(quantity, skuDimensionId, invoiceNumber){
                     bootbox.alert(messageErrorOccur);
                 }
             });
+        } else {
+            bootbox.alert(messageErrorOccur);
         }
     }).finally(function () {
+        loadOrderContent(invoiceNumber, false, false, false, true);
         searchProductBox.select();
     });
 
@@ -1496,11 +1235,6 @@ function bindingHotKeyEventKeyDown(event, key) {
         case 120:{ // F9
             event.preventDefault();
             printReceipt(true);
-            break;
-        }
-        case 121:{ // F10
-            event.preventDefault();
-            printPickList();
             break;
         }
         case 122:{ // 122 -> F11
@@ -1738,68 +1472,65 @@ function renderProduct2PanelOffline(topCats, topCatId, subCats, subCatId, produc
 
 /**
  * Print invoice
- * @param processPayment {Boolean} proccess to payment and close invoice
+ * @param processPayment {Boolean} process to payment and close invoice
  */
-function printReceipt(processPayment) {
-    validateBeforePrint(processPayment, function (result) {
-        if(result) {
-            // show payment method
-            $.fn.getAllObject('PaymentMethod', function (payments) {
-                if(payments) {
-                    var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
-                    $.fn.getOrderOutletByInoviceNumber(invoiceNumber, function (orderOutlet) {
-                        if(orderOutlet) {
+async function printReceipt(processPayment) {
 
-                            var customerId = orderOutlet.customerId;
-
-                            if(!customerId){
-                                customerId = -1;
-                            }
-
-                            $.fn.getCustomerById(customerId, function (customer) {
-                                renderAllPaymentMethod(payments, customer);
-                            });
-                        } else {
-                            notification('error', messageErrorOccur, false);
-                        }
-                    });
-                } else {
-                    notification($("#messagePaymentNotFound").val(), 'error', false);
-                }
-            });
+    let resultValidate = await validateBeforePrint();
+    if(resultValidate) {
+        // show payment method
+        const payments = await ajaxGetAllPaymentMethod();
+        if(payments) {
+            renderAllPaymentMethod(payments);
+        } else {
+            bootbox.alert($("#messagePaymentNotFound").val());
         }
+    }  else {
+        bootbox.alert(result);
+    }
+}
+
+function ajaxGetAllPaymentMethod() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: $("#getAllPaymentsMethodUrl").val(),
+            method: "GET",
+            contentType: 'application/json',
+        }).done(function (response) {
+            if(response && response.result) {
+                resolve(response.payments);
+            } else {
+                reject(new Error(messageErrorOccur));
+            }
+        });
     });
 }
 
-function renderAllPaymentMethod(payments, customer) {
+function renderAllPaymentMethod(payments) {
     var stringBuilder = "";
     payments.forEach(function (payment) {
-        if((payment.code === 'CREDIT' && (!customer || !customer.terms)) || payment.code === "POINT") {
-            return;
-        }
         stringBuilder += "<div class='card card-payment m-b-15 btn' data-paymentcode='"+ payment.code +"'>" +
                             "<div class='card-body'>" +
-                                "<div class='form-group'><p class='card-text'>"+ $("#payment" + payment.code).val() +"</p></div>" +
+                                "<div class='form-group'><p class='card-text'>"+ payment.value +"</p></div>" +
                             "</div>" +
                         "</div>"
     });
     $("#modalChoosePayment .modal-body").html(stringBuilder);
     $("#modalChoosePayment").modal('show');
-    bindEventChoosePaymentMethod(customer);
+    bindEventChoosePaymentMethod();
 }
 
-function bindEventChoosePaymentMethod(customer) {
+function bindEventChoosePaymentMethod() {
     $(".card-payment").on("click", function() {
         var payment = $(this).data("paymentcode");
         $("#selectPayment").val(payment);
         $("#modalChoosePayment").modal('hide');
-        showOrderInformationToPayment(customer);
+        showOrderInformationToPayment();
     })
 }
 
 function showOrderInformationToPayment(customer) {
-    var customerName = customer != null ? customer.customerName : $("#labelCustomerDefault").val();
-    var saleChannel = $("#selectSaleChanel").val();
+    var customerName = searchCustomerBox.val() != "" ? searchCustomerBox.val() : $("#labelCustomerDefault").val();
     var payment = $("#selectPayment").val();
     var stringBuilder = '<div class="row"><p class="hide error-msg text-danger"></p></div>' +
                         '<div class="row">' +
@@ -1811,70 +1542,15 @@ function showOrderInformationToPayment(customer) {
                             '<div class="col-5 text-right"><span>'+ customerName +'</span></div>' +
                         '</div>';
 
-    if(customer && customer.terms) {
-
-        var creditLimit = customer.creditLimit != null ? customer.creditLimit : 0;
-        var totalDebt = customer.totalDebt != null ? customer.totalDebt : 0;
-        var creditBalance = formatNumber(calculateCreditAvaiable(creditLimit, totalDebt));
-        var paymentDueDate = customer.paymentDueDate;
-        if(paymentDueDate) {
-            paymentDueDate = new Date(paymentDueDate).toDateString();
-        } else {
-            paymentDueDate = '';
-        }
-
-        stringBuilder += '<div class="form-group row">' +
-                            '<div class="form-label col-md-7">' +
-                                '<span>'+ $("#labelCreditLimit").val() +'</span>&nbsp;' +
-                            '</div>' +
-                            '<div class="form-output col-md-5 text-right">' +
-                                '<span>'+ creditLimit +'</span>' +
-                            '</div>' +
-                         '</div>' +
-                         '<div class="form-group row">' +
-                            '<div class="form-label col-md-7">' +
-                                '<span>'+ $("#labelCreditBalance").val() +'</span>&nbsp;' +
-                            '</div>' +
-                            '<div class="form-output col-md-5 text-right">' +
-                                '<span>'+ creditBalance +'</span>' +
-                            '</div>' +
-                         '</div>' +
-                         '<div class="form-group row">' +
-                             '<div class="form-label col-md-5">' +
-                                '<span>'+ $("#labelCreditDueDate").val() +'</span>&nbsp;' +
-                            '</div>' +
-                            '<div class="form-output col-md-7 text-right">' +
-                                '<span>'+ paymentDueDate +'</span>' +
-                            '</div>' +
-                        '</div>';
-    }
     stringBuilder += '<hr/><div class="row"><h6>'+ $("#labelOrderInformation").val() +'</h6></div>' +
                      '<div class="form-group row">' +
                         '<div class="form-label col-md-7">' +
-                            '<span>'+ $("#labelCustomerMustPay").val() +'</span>' +
+                            '<span>'+ $("#labelAmountMustPay").val() +'</span>' +
                         '</div>' +
                         '<div class="form-output col-md-5 text-right">' +
                             '<span>'+ $("#moneyCustomerMustPay").text() +'</span>' +
                         '</div>' +
                     '</div>';
-    if(saleChannel === SALE_CHANEL[1] || payment === 'CREDIT') { // offline
-        stringBuilder += '<div class="form-group row">' +
-            '<div class="form-label col-md-7">' +
-            '<span>'+ $("#labelCustomerPaymentTitle").val() +'</span>' +
-            '</div>' +
-            '<div class="form-output col-md-5">' +
-            '<input type="text" id="inputCustomPaid" class="form-control text-right text-price-medium pr-0"' +
-            '</div>' +
-            '</div></div>' +
-            '<div class="form-group row">' +
-            '<div class="form-label col-md-7">' +
-            '<span>'+ $("#labelRefundTitle").val() +'</span>' +
-            '</div>' +
-            '<div class="form-output col-md-5 text-right">' +
-            '<span id="labelRefund" class="text-price-medium">0</span>' +
-            '</div>' +
-            '</div>';
-    }
 
     stringBuilder += '</div>';
 
@@ -2057,7 +1733,7 @@ function clearPage(statusConnect) {
     $("#subtotalPrice").text('0');
 
     var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
-    deleteInvoiceOffline(invoiceNumber, false);
+    deleteInvoiceOffline(invoiceNumber);
 
     if($("#selectSaleChanel").val() === SALE_CHANEL[0]) {
         findAllDeliveryMethods();
@@ -2170,62 +1846,16 @@ function renderInvoiceHtml(orderOutlet, outlet, customer, orderItems, customerPa
     return stringBuilder;
 }
 
-function printPickList() {
-    validateBeforePrint(false, function (result) {
-        if(result) {
-            // find open invoice;
-            $.fn.getOrderOutletOpening(function (orderOutlet) {
-                if(orderOutlet !== null && orderOutlet !== undefined){
-                    // get outlet by id
-                    $.fn.getOutletById(orderOutlet.outletId, function (callbackOutlet) {
-                        loadPrintPickListPreviewOffline(orderOutlet, callbackOutlet);
-                    });
-                }
-            });
+function validateBeforePrint() {
+    return new Promise((resolve, reject) => {
+        var totalItem = $("#totalItem").text();
+        //1. check total item
+        if(totalItem <= 0) {
+            reject(new Error(messageCartEmpty));
+        } else {
+            resolve(true);
         }
     });
-}
-
-/**
- *
- * @param processPayment {Boolean} for payment
- * @param callback
- */
-function validateBeforePrint(processPayment, callback) {
-    var totalItem = $("#totalItem").text();
-
-    //1. check total item
-    if(totalItem <= 0) {
-        notification('error', $("#messageEmptyCart").val(), false);
-        callback(false);
-    } else if(!processPayment) {
-        callback(true);
-    } else {
-        var saleChanel = $("#selectSaleChanel").val();
-
-        if(saleChanel === SALE_CHANEL[0]) { // sale online
-            //1.1 check has customer
-            var customerName = $("#customerName").val();
-            if(!customerName) {
-                notification('error', messageNotCustomerYet,false);
-                callback(false);
-                return;
-            }
-            //1.2 check delivery address
-            var deliveryAddress = $("#deliveryAddress").val();
-            var deliveryMethod = $("#deliveryMethod").val();
-            if(deliveryMethod !== 'PICK_N_GO' && (!deliveryAddress)) {
-                notification('error', messageNotDeliveryAddressYet, false);
-                callback(false);
-                return;
-            }
-
-            callback(true);
-
-        } else { // sale offline
-            callback(true);
-        }
-    }
 }
 
 function warningCredit(totalPrice, creditObject, callback) {
@@ -2878,55 +2508,6 @@ function payTheBill(orderOutletPaid, callback) {
     });
 }
 
-function syncAllInvoice2Server(refreshData) {
-    if(refreshData == null) {
-        refreshData = true;
-    }
-    // get all orderOutlet paid
-    $.fn.getAllOrderOutletPaid(function (orderOutlets) {
-        if(orderOutlets && orderOutlets.length > 0) {
-            $.ajax({
-                url: syncInvoice2ServerUrl,
-                method: "POST",
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(orderOutlets),
-            }).done(function (response) {
-                var orderSize = orderOutlets.length;
-                if(response.result && !response.errorList) {
-                    $.fn.deleteAllOrderOutletPaid(function () {
-                        if(navigator.onLine && refreshData) {
-                            syncDataHideEvent(false, $("#selectSaleChanel").val());
-                        } else {
-                            showTotalItemOrderOutletPaid();
-                            refreshPage();
-                        }
-                    });
-                } else if(response.errorList) {
-                    // delete order outlet paid has success
-                    orderOutlets.forEach(function (orderOutlet, index) {
-                        orderSize--;
-                        response.errorList.forEach(function (orderOutletError) {
-                           if(index != orderOutletError.positionError) {
-                               // delete all orderOutletPaid
-                               $.fn.deleteOrderOutletPaid(orderOutlet.code, function (result) {});
-                           }
-                       });
-                        if(orderSize <= 0) {
-                            if(navigator.onLine && refreshData) {
-                                syncDataHideEvent(false, $("#selectSaleChanel").val());
-                            } else {
-                                showTotalItemOrderOutletPaid();
-                                refreshPage();
-                            }
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
-
 function getCustomerFromServer(customerId, outletId, callback) {
     $.ajax({
         url: getCustomerInforUrl,
@@ -2944,99 +2525,6 @@ function getCustomerFromServer(customerId, outletId, callback) {
             callback(respond.result);
         }
     })
-}
-
-function showLastSyncTime(outletId) {
-    var lastTimeSync = $("#lastSyncTime");
-    $.fn.getOutletById(outletId, function (outlet) {
-        if (outlet !== null && outlet !== undefined && outlet.lastSync !== null) {
-            lastTimeSync.show();
-            lastTimeSync.text(convertTimeStamp2SimpleDate(outlet.lastSync));
-        } else {
-            lastTimeSync.hide();
-            lastTimeSync.text('');
-        }
-    });
-}
-
-function copyOrder(){
-    // validate exists item in cart
-    validateBeforePrint(false, function (result) {
-        if(result) {
-            // check connection
-            if(navigator.onLine) {
-                //1. get OrderOutlet opening
-                $.fn.getOrderOutletOpening(function (orderOutlet) {
-                    if(orderOutlet) {
-                        $.fn.getProductOrderItems(orderOutlet.invoiceNumber, function (orderItems) {
-                            if(orderItems) {
-                                orderOutlet.productOrderItems = orderItems;
-                                //2. save or update orderOutlet first
-                                var orderInformation = {};
-
-                                orderInformation.receiverName = $("#customerName").val();
-                                orderInformation.receiverPhone = "0";
-                                orderInformation.paymentMethod = "COD";
-                                orderInformation.deliveryMethod = $("#deliveryMethod").val();
-                                orderInformation.receiverLng = $("#deliveryLongitude").val();
-                                orderInformation.receiverLat = $("#deliveryLatitude").val();
-
-                                orderOutlet.orderInformation = orderInformation;
-                                saveOrUpdateOrderOutlet2Server(orderOutlet, function (result) {
-                                    if(result) {
-                                        // update data
-                                        orderOutlet.orderOutletId = result.orderOutletID;
-                                        //3. update orderOutlet in indexedDB
-                                        $.fn.updateOrderOutlet(orderOutlet, function (result2) {
-                                            if(result2) {
-                                                //4. update product orderItem id
-                                                orderItems.forEach(function (item, index) {
-                                                    item.productOrderItemId = result.productOrderItemEntities[index].productOrderItemID;
-                                                    $.fn.updateData2ProductOrderItem(item, function () {});
-                                                    if(index === (orderItems.length - 1)) {
-                                                        //4. make link
-                                                        var token = $("#hostname").val() + '/public/order/' + orderOutlet.orderOutletId + '/review.html';
-                                                        var $temp = $("<input>");
-                                                        $("body").append($temp);
-                                                        $temp.val(token).select();
-                                                        document.execCommand("copy");
-                                                        alertify.maxLogItems(1).logPosition("top right").success($("#messageCoppied").val());
-                                                        $(".common-input-chat").val(token);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        notification('error', messageErrorOccur, false);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            } else {
-                notification('error', messageCheckConnection, false);
-            }
-        }
-    });
-}
-
-function saveOrUpdateOrderOutlet2Server(dataObject, callback) {
-    $.ajax({
-        url: saveOrUpdateOrderOutlet2ServerUrl,
-        method: "POST",
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify(dataObject),
-        timeout: 60000,
-        error: function () {
-            notification('error', messageErrorOccur, false);
-        }
-    }).done(function (respond) {
-        if(respond) {
-            callback(respond.result);
-        }
-    });
 }
 
 function checkLinkedWithInventory() {
@@ -3110,18 +2598,8 @@ function realtimeInputFormartNumber(number, isQuantity, allowDecimal) {
     if(!number) {
         return 0;
     }
-    if((COUNTRIES[0] === globalCountryCode) || (COUNTRIES[2] === globalCountryCode)) {
-        priceType = PRICE_TYPE[0].VN;
-    } else {
-        priceType = PRICE_TYPE[1].International;
-    }
-    if (('#.###,##' === priceType) && number.lastIndexOf(',') !== - 1 && allowDecimal) {
-        return number;
-    } else if(('#.###,##' !== priceType) && (number.lastIndexOf('.') !== -1)){
-        return number;
-    }
     number = formatStringToNumber(number);
-    return formatNumber(number, isQuantity);
+    return formatNumber(number);
 }
 
 function calculateRefund(){
@@ -3146,11 +2624,6 @@ function calculateTotalPrice() {
 }
 
 function checkAcceptKey(key) {
-    if((COUNTRIES[0] === globalCountryCode) || (COUNTRIES[2] === globalCountryCode)) {
-        priceType = PRICE_TYPE[0].VN;
-    } else {
-        priceType = PRICE_TYPE[1].International;
-    }
     if ('#.###,##' === priceType ) {
         if(key == '.') {
             return false;
@@ -3599,19 +3072,6 @@ function fillAddress() {
     }
 }
 
-function bindEventInputPromotionCode() {
-    $("#inputPromotionCode").on("input", function () {
-        var invoiceNumber = $(".invoice-list-nav ul li.active a").attr('href').split("#invoice")[1];
-        loadOrderContent(invoiceNumber, false, false, true);
-    });
-}
-
-function calculatePromotionCode(promotionCode, callback) {
-    checkValidReward(promotionCode, $("#hiddenCustomerId").val(), function (result) {
-        callback(result);
-    });
-}
-
 function checkValidReward(promotionCode, customerId, callback) {
     if(customerId && promotionCode) {
         $.fn.getCustomerReward(promotionCode, customerId, function (reward) {
@@ -3624,33 +3084,4 @@ function checkValidReward(promotionCode, customerId, callback) {
     } else {
         callback(false);
     }
-}
-
-/**
- * Notification when action error or success.
- * @param typeMessage {string} 'error' | 'success'
- * @param stringMessage {string} content message
- * @param callback {boolean} true | false. if callback = true, reload page.
- */
-function notification(typeMessage , stringMessage, callback) {
-    if(typeMessage === null || typeMessage.length === '') {return}
-    if(stringMessage === null || stringMessage === '') {return}
-    var alertDiv = $(".alert-message");
-    if(typeMessage === "error") {
-        alertDiv.css({
-            "background-color": "#FA4E4E"
-        });
-    } else if(typeMessage === "success") {
-        alertDiv.css({
-            "background-color": "#0B8DDD"
-        });
-    }
-    alertDiv.fadeIn(300, function () {
-        alertDiv.fadeOut(2000, function () {
-            if(callback) {
-                location.reload();
-            }
-        });
-    });
-    $("#contentMessage").text(stringMessage);
 }
